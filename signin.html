@@ -1,0 +1,491 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Google Identity Services (for popup login) -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <style>
+        :root {
+            --bg-card: #ffffff;
+            --bg-input: #ffffff;
+            --navy-900: #0a1628;
+            --navy-800: #0f2140;
+            --navy-700: #132d56;
+            --blue-500: #2563eb;
+            --blue-400: #3b82f6;
+            --blue-300: #93c5fd;
+            --white: #ffffff;
+            --gray-50: #f5f7fa;
+            --gray-100: #eef1f6;
+            --gray-200: #e2e8f0;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-900: #0f172a;
+            --shadow-dark: rgba(10, 22, 40, 0.4);
+        }
+
+        [data-theme="dark"] {
+            --bg-card: #162032;
+            --bg-input: #0d1b2a;
+            --gray-50: #0d1b2a;
+            --gray-100: #162032;
+            --gray-200: #1e3050;
+            --gray-400: #64748b;
+            --gray-500: #94a3b8;
+            --gray-900: #e2e8f0;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            background: var(--gray-50);
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, #0a1628 0%, #0f2140 60%, #1a3a6c 100%);
+            color: #fff;
+            padding: 20px 32px;
+            box-shadow: 0 4px 20px var(--shadow-dark);
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        .app-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.06) 50%,
+                    rgba(255, 255, 255, 0.03) 75%, transparent 100%);
+            animation: headerShimmer 8s ease-in-out infinite;
+        }
+
+        @keyframes headerShimmer {
+            0% {
+                transform: translateX(-30%)
+            }
+
+            100% {
+                transform: translateX(30%)
+            }
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
+        }
+
+        .logo-circle svg {
+            width: 22px;
+            height: 22px;
+            fill: #fff;
+        }
+
+        .header-text h1 {
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            color: #fff;
+        }
+
+        .header-text p {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--blue-300);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 1px;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 24px;
+        }
+
+        .sign-in-card {
+            width: 100%;
+            max-width: 400px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            box-shadow: 0 4px 24px rgba(10, 22, 40, 0.08), 0 1px 3px rgba(10, 22, 40, 0.04);
+            border: 1px solid var(--gray-200);
+            padding: 48px 36px;
+            text-align: center;
+            animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .lock-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #eef2ff, #dbeafe);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        [data-theme="dark"] .lock-icon {
+            background: linear-gradient(135deg, #1a2d4a, #162032);
+        }
+
+        .lock-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--blue-500);
+        }
+
+        [data-theme="dark"] .lock-icon svg {
+            fill: #93c5fd;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 6px;
+        }
+
+        .card-subtitle {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--gray-500);
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+
+        .google-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-900);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            height: 48px;
+        }
+
+        .google-btn:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .google-btn:active {
+            background: var(--gray-100);
+        }
+
+        .google-btn.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .google-btn .g-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            flex-shrink: 0;
+        }
+
+        .google-btn .g-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .google-btn .g-label {
+            padding-right: 20px;
+            white-space: nowrap;
+        }
+
+        /* Error box */
+        .error-box {
+            display: none;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 13px;
+            color: #dc2626;
+            margin-top: 16px;
+            text-align: left;
+        }
+
+        .error-box.show {
+            display: block;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0;
+            color: var(--gray-400);
+            font-size: 12px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--gray-200);
+        }
+
+        .secure-note {
+            font-size: 12px;
+            color: var(--gray-400);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .secure-note svg {
+            width: 14px;
+            height: 14px;
+            fill: var(--gray-400);
+        }
+
+        [data-theme="dark"] .header-logo,
+        [data-theme="dark"] .logo-circle {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header (matches the existing app) -->
+    <header class="app-header">
+        <div class="header-top">
+            <div class="logo-circle">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                </svg>
+            </div>
+            <div class="header-text">
+                <h1>RDR HR System</h1>
+                <p>Secure Sign In</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="content">
+        <div class="sign-in-card">
+            <div class="lock-icon">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+                </svg>
+            </div>
+            <div class="card-title">Sign In Required</div>
+            <div class="card-subtitle">Authenticate with your Google account to access the RDR HR System</div>
+
+            <!-- Google Sign-In Button (original design, now uses popup) -->
+            <button class="google-btn" id="signInBtn" onclick="startSignIn()">
+                <div class="g-icon">
+                    <svg viewBox="0 0 48 48">
+                        <path fill="#EA4335"
+                            d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+                        <path fill="#4285F4"
+                            d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+                        <path fill="#FBBC05"
+                            d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+                        <path fill="#34A853"
+                            d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+                    </svg>
+                </div>
+                <span class="g-label">Sign in with Google</span>
+            </button>
+
+            <div class="error-box" id="errorBox"></div>
+
+            <div class="divider">or</div>
+
+            <div class="secure-note">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" />
+                </svg>
+                Secured by Google OAuth 2.0
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ══════════════════════════════════════════════════════════════
+        // CONFIG
+        // ══════════════════════════════════════════════════════════════
+        var GAS_URL = 'https://script.google.com/macros/s/AKfycbz7z3_5kyywmrkMFmfhT3Rfm9O4pJKqOu34Q5au0z7lFPNd1ME0rZlk7JsUBpK2l8rY/exec';
+        var CLIENT_ID = '92186083511-cgrg78tllu4780lb3a95b6cvl3blcsv5.apps.googleusercontent.com';
+
+        // ── Theme restore ──
+        (function () {
+            var saved = 'light';
+            try { saved = localStorage.getItem('rdr-theme') || 'light'; } catch (e) { }
+            document.documentElement.setAttribute('data-theme', saved);
+        })();
+
+        // ── If already has valid session, skip to portal ──
+        (function () {
+            var gas = sessionStorage.getItem('rdr_gas_url');
+            var sess = sessionStorage.getItem('rdr_session');
+            if (gas && sess) {
+                goToPortal();
+            }
+        })();
+
+        function goToPortal() {
+            var base = window.location.href.replace(/signin\.html.*$/, '');
+            window.location.href = base + 'index.html';
+        }
+
+        function showError(msg) {
+            var box = document.getElementById('errorBox');
+            box.textContent = msg;
+            box.classList.add('show');
+            setLoading(false);
+        }
+
+        function setLoading(on) {
+            var btn = document.getElementById('signInBtn');
+            if (on) {
+                btn.classList.add('loading');
+                btn.querySelector('.g-label').textContent = 'Signing in...';
+            } else {
+                btn.classList.remove('loading');
+                btn.querySelector('.g-label').textContent = 'Sign in with Google';
+            }
+        }
+
+        function startSignIn() {
+            setLoading(true);
+            document.getElementById('errorBox').classList.remove('show');
+
+            // Google Identity Services — popup based, stays on GitHub Pages
+            var tokenClient = google.accounts.oauth2.initTokenClient({
+                client_id: CLIENT_ID,
+                scope: 'openid email profile',
+                callback: handleTokenResponse
+            });
+            tokenClient.requestAccessToken({ prompt: 'select_account' });
+        }
+
+        function handleTokenResponse(tokenResponse) {
+            if (!tokenResponse || tokenResponse.error) {
+                showError(tokenResponse && tokenResponse.error ? tokenResponse.error : 'Sign-in cancelled.');
+                return;
+            }
+            // Get user email from Google
+            fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: { Authorization: 'Bearer ' + tokenResponse.access_token }
+            })
+                .then(function (r) { return r.json(); })
+                .then(function (info) {
+                    if (!info.email) throw new Error('No email');
+                    createSession(info.email, tokenResponse.access_token, 'access_token');
+                })
+                .catch(function () {
+                    showError('Could not get your Google account info. Try again.');
+                });
+        }
+
+        function createSession(email, token, tokenType) {
+            fetch(GAS_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'createSessionFromToken',
+                    email: email,
+                    token: token,
+                    tokenType: tokenType
+                })
+            })
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    if (data && data.success && data.session) {
+                        sessionStorage.setItem('rdr_gas_url', GAS_URL);
+                        sessionStorage.setItem('rdr_session', data.session);
+                        sessionStorage.setItem('rdr_email', email);
+                        goToPortal();
+                    } else {
+                        showError(data && data.error ? data.error : 'Access denied. Your account is not authorized.');
+                    }
+                })
+                .catch(function () {
+                    showError('Could not connect to the server. Check your internet and try again.');
+                });
+        }
+    </script>
+
+</body>
+
+</html>

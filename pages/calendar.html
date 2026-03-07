@@ -1,0 +1,1337 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RDR HR — Calendar Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-app: #f5f7fa;
+            --bg-card: #ffffff;
+            --bg-input: #ffffff;
+            --border: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --blue-400: #3b82f6;
+            --r-sm: 8px;
+            --r-md: 14px;
+            --r-xl: 28px;
+        }
+
+        [data-theme="dark"] {
+            --bg-app: #0d1b2a;
+            --bg-card: #162032;
+            --bg-input: #0d1b2a;
+            --border: #1e3050;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-app);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* HEADER */
+        .app-header {
+            background: linear-gradient(135deg, #0a1628 0%, #0f2140 60%, #1a3a6c 100%);
+            color: #fff;
+            padding: 12px 20px;
+            box-shadow: 0 4px 20px rgba(10, 22, 40, .4);
+            flex-shrink: 0;
+        }
+
+        .header-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .home-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, .12);
+            border: 1.5px solid rgba(255, 255, 255, .18);
+            border-radius: var(--r-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #fff;
+            flex-shrink: 0;
+            transition: all .2s;
+            text-decoration: none;
+        }
+
+        .home-btn:hover {
+            background: rgba(255, 255, 255, .22);
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border-radius: var(--r-sm);
+            padding: 5px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+        }
+
+        .header-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .header-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: -.02em;
+        }
+
+        .header-sub {
+            font-size: .68rem;
+            opacity: .65;
+            margin-top: 1px;
+        }
+
+        .theme-btn {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, .1);
+            border: 1.5px solid rgba(255, 255, 255, .15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #fff;
+            flex-shrink: 0;
+            transition: all .2s;
+        }
+
+        .theme-btn:hover {
+            background: rgba(255, 255, 255, .2);
+        }
+
+        /* BODY */
+        .app-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .inner {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* ADD FORM CARD */
+        .form-card {
+            background: var(--bg-card);
+            border-radius: var(--r-xl);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, .05);
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: box-shadow .3s, border-color .3s;
+        }
+
+        .form-card.pulse {
+            animation: formPulse .6s ease;
+        }
+
+        @keyframes formPulse {
+            0% {
+                box-shadow: 0 4px 24px rgba(0, 0, 0, .05);
+                border-color: var(--border);
+            }
+
+            30% {
+                box-shadow: 0 0 0 4px rgba(6, 182, 212, .35), 0 4px 24px rgba(0, 0, 0, .05);
+                border-color: #06b6d4;
+            }
+
+            70% {
+                box-shadow: 0 0 0 4px rgba(6, 182, 212, .15), 0 4px 24px rgba(0, 0, 0, .05);
+                border-color: #06b6d4;
+            }
+
+            100% {
+                box-shadow: 0 4px 24px rgba(0, 0, 0, .05);
+                border-color: var(--border);
+            }
+        }
+
+        .form-card-header {
+            padding: 14px 20px 12px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #0891b2, #06b6d4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .95rem;
+            flex-shrink: 0;
+        }
+
+        .form-title {
+            font-size: .88rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .form-sub {
+            font-size: .63rem;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+
+        .form-body {
+            padding: 14px 20px 16px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 140px 1fr 1fr auto;
+            gap: 10px;
+            align-items: end;
+        }
+
+        .fg label {
+            display: block;
+            font-size: .63rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            margin-bottom: 5px;
+        }
+
+        .fg input,
+        .fg select {
+            width: 100%;
+            padding: 9px 12px;
+            border-radius: var(--r-sm);
+            border: 1.5px solid var(--border);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: .78rem;
+            transition: border-color .2s;
+        }
+
+        .fg input:focus,
+        .fg select:focus {
+            outline: none;
+            border-color: #06b6d4;
+        }
+
+        .add-btn {
+            padding: 9px 20px;
+            border-radius: var(--r-sm);
+            border: none;
+            background: linear-gradient(135deg, #0891b2, #06b6d4);
+            color: #fff;
+            font-family: inherit;
+            font-size: .75rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all .2s;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(6, 182, 212, .4);
+        }
+
+        .add-btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* CALENDAR CARD */
+        .cal-card {
+            background: var(--bg-card);
+            border-radius: var(--r-xl);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, .05);
+            overflow: hidden;
+        }
+
+        .cal-nav {
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .cal-month-label {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .cal-nav-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1.5px solid var(--border);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-size: .9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .15s;
+        }
+
+        .cal-nav-btn:hover {
+            border-color: #06b6d4;
+            color: #06b6d4;
+        }
+
+        .cal-today-btn {
+            padding: 5px 12px;
+            border-radius: 8px;
+            border: 1.5px solid var(--border);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: .7rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .15s;
+        }
+
+        .cal-today-btn:hover {
+            border-color: #06b6d4;
+            color: #06b6d4;
+        }
+
+        /* CALENDAR GRID */
+        .cal-grid {
+            padding: 12px 14px 14px;
+        }
+
+        .cal-days-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            margin-bottom: 6px;
+        }
+
+        .cal-day-name {
+            text-align: center;
+            font-size: .62rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            padding: 6px 2px;
+        }
+
+        .cal-day-name.sun {
+            color: #ef4444;
+        }
+
+        /* SQUARE CELLS — use padding-bottom trick */
+        .cal-cells {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+        }
+
+        .cal-cell {
+            position: relative;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background .15s;
+            overflow: hidden;
+            min-height: 68px;
+            display: flex;
+            flex-direction: column;
+            padding: 5px 4px 3px;
+        }
+
+        .cal-cell:hover {
+            background: rgba(6, 182, 212, .09);
+        }
+
+        .cal-cell.other-month .cal-num {
+            opacity: .2;
+        }
+
+        .cal-cell.has-events {
+            background: rgba(6, 182, 212, .04);
+        }
+
+        .cal-cell.today .cal-num-pill {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #0891b2, #06b6d4);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .cal-cell.sunday .cal-num {
+            color: #ef4444;
+        }
+
+        .cal-num {
+            font-size: .75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 3px;
+            line-height: 1;
+        }
+
+        .cal-num-pill {
+            display: inline-block;
+            width: 24px;
+            line-height: 24px;
+            text-align: center;
+        }
+
+        .cal-event-chips {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            overflow: hidden;
+        }
+
+        .cal-chip {
+            font-size: .48rem;
+            font-weight: 700;
+            padding: 1px 3px;
+            border-radius: 3px;
+            line-height: 1.4;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .chip-rh {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .chip-snw {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .chip-sw {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .chip-wfh {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        /* POPUP MODAL (events exist) */
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 22, 40, .5);
+            backdrop-filter: blur(4px);
+            z-index: 900;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .popup-overlay.open {
+            display: flex;
+        }
+
+        .popup-modal {
+            background: var(--bg-card);
+            border-radius: var(--r-xl);
+            border: 1px solid var(--border);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, .25);
+            width: 100%;
+            max-width: 400px;
+            animation: popIn .25s cubic-bezier(.34, 1.56, .64, 1);
+            overflow: hidden;
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .popup-header {
+            padding: 16px 20px 12px;
+            background: linear-gradient(135deg, rgba(8, 145, 178, .12), rgba(6, 182, 212, .06));
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .popup-date {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .popup-date-sub {
+            font-size: .68rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .popup-close {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: none;
+            background: var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+            transition: all .15s;
+        }
+
+        .popup-close:hover {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .popup-body {
+            padding: 14px 20px 0;
+        }
+
+        .popup-footer {
+            padding: 12px 20px 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .add-more-btn {
+            width: 100%;
+            padding: 9px;
+            border-radius: var(--r-sm);
+            border: 1.5px dashed rgba(6, 182, 212, .5);
+            background: rgba(6, 182, 212, .07);
+            color: #0891b2;
+            font-family: inherit;
+            font-size: .75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .add-more-btn:hover {
+            background: rgba(6, 182, 212, .14);
+            border-color: #06b6d4;
+        }
+
+        .popup-event-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .popup-event-row:last-child {
+            border-bottom: none;
+        }
+
+        .pdot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+
+        .dot-rh {
+            background: #ef4444;
+        }
+
+        .dot-snw {
+            background: #f59e0b;
+        }
+
+        .dot-sw {
+            background: #3b82f6;
+        }
+
+        .dot-wfh {
+            background: #22c55e;
+        }
+
+        .popup-event-fields {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .popup-field-row {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .popup-field-label {
+            font-size: .58rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+
+        .popup-field-input {
+            width: 100%;
+            padding: 5px 8px;
+            border-radius: 6px;
+            border: 1.5px solid var(--border);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: .78rem;
+            font-weight: 600;
+            transition: border-color .2s;
+        }
+
+        .popup-field-input:focus {
+            outline: none;
+            border-color: #06b6d4;
+        }
+
+        .popup-field-select {
+            width: 100%;
+            padding: 5px 8px;
+            border-radius: 6px;
+            border: 1.5px solid var(--border);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: .72rem;
+            transition: border-color .2s;
+        }
+
+        .popup-field-select:focus {
+            outline: none;
+            border-color: #06b6d4;
+        }
+
+        .popup-event-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .popup-save-btn {
+            width: 30px;
+            height: 28px;
+            border-radius: 6px;
+            border: none;
+            background: #d1fae5;
+            color: #059669;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .75rem;
+            transition: all .15s;
+        }
+
+        .popup-save-btn:hover {
+            background: #a7f3d0;
+        }
+
+        .popup-del-btn {
+            width: 30px;
+            height: 28px;
+            border-radius: 6px;
+            border: none;
+            background: #fef2f2;
+            color: #dc2626;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .75rem;
+            transition: all .15s;
+        }
+
+        .popup-del-btn:hover {
+            background: #fee2e2;
+        }
+
+        /* CONFIRM MODAL */
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 22, 40, .6);
+            backdrop-filter: blur(6px);
+            z-index: 999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .confirm-overlay.open {
+            display: flex;
+        }
+
+        .confirm-modal {
+            background: var(--bg-card);
+            border-radius: var(--r-xl);
+            border: 1px solid var(--border);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, .3);
+            width: 100%;
+            max-width: 320px;
+            padding: 28px 24px 22px;
+            text-align: center;
+            animation: popIn .2s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        .confirm-icon {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .confirm-title {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .confirm-sub {
+            font-size: .78rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .confirm-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .confirm-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: var(--r-sm);
+            font-family: inherit;
+            font-size: .8rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: all .2s;
+        }
+
+        .confirm-btn.cancel {
+            background: var(--border);
+            color: var(--text-secondary);
+        }
+
+        .confirm-btn.cancel:hover {
+            filter: brightness(.9);
+        }
+
+        .confirm-btn.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+        }
+
+        .confirm-btn.danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, .35);
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            padding: 11px 22px;
+            border-radius: var(--r-md);
+            font-size: .78rem;
+            font-weight: 600;
+            color: #fff;
+            z-index: 9999;
+            transition: transform .3s ease;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .2);
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.success {
+            background: #16a34a;
+        }
+
+        .toast.error {
+            background: #dc2626;
+        }
+
+        .toast.info {
+            background: #0891b2;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 14px 20px;
+            font-size: .65rem;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer a {
+            color: var(--blue-400);
+            text-decoration: none;
+        }
+
+        /* DARK OVERRIDES */
+        [data-theme="dark"] .fg input,
+        [data-theme="dark"] .fg select,
+        [data-theme="dark"] .cal-nav-btn,
+        [data-theme="dark"] .cal-today-btn,
+        [data-theme="dark"] .popup-field-input,
+        [data-theme="dark"] .popup-field-select {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .confirm-btn.cancel {
+            background: #1e3050;
+            color: #94a3b8;
+        }
+
+        /* RESPONSIVE */
+        @media(max-width:640px) {
+            .form-row {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .add-btn {
+                grid-column: 1/-1;
+                width: 100%;
+            }
+        }
+
+        @media(max-width:420px) {
+            .header-title {
+                font-size: .92rem;
+            }
+
+            .cal-num {
+                font-size: .65rem;
+            }
+        }
+    </style>
+    <script src="../js/rdr-auth.js"></script>
+    <script src="../js/rdr-api.js"></script>
+    <script>
+        // Provide template-compatible variables from session
+        var USER_EMAIL = RDR_AUTH.getEmail();
+        var SESSION_TOKEN = RDR_AUTH.getSession();
+        var BASE_URL = RDR_AUTH.getGasUrl();
+        var userEmail = USER_EMAIL;
+        var sessionToken = SESSION_TOKEN;
+        var baseUrl = BASE_URL;
+    </script>
+</head>
+
+<body>
+
+    <header class="app-header">
+        <div class="header-inner">
+            <a class="home-btn" href="#" onclick="goHome();return false;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                </svg>
+            </a>
+            <div class="header-logo"><img id="headerLogo"
+                    src="https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png" alt="RDR"></div>
+            <div class="header-text">
+                <div class="header-title">📅 Calendar Management</div>
+                <div class="header-sub">Holidays &amp; Company WFH Days</div>
+            </div>
+            <button class="theme-btn" id="themeBtn">
+                <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="app-body">
+        <div class="inner">
+
+            <!-- ADD FORM -->
+            <div class="form-card" id="formCard">
+                <div class="form-card-header">
+                    <div class="form-icon">📅</div>
+                    <div>
+                        <div class="form-title">Add Calendar Event</div>
+                        <div class="form-sub">Declare a holiday or company-wide WFH day — affects all active employees
+                        </div>
+                    </div>
+                </div>
+                <div class="form-body">
+                    <div class="form-row">
+                        <div class="fg"><label>Date</label><input type="date" id="evtDate"></div>
+                        <div class="fg">
+                            <label>Type</label>
+                            <select id="evtType">
+                                <option value="Regular Holiday">Regular Holiday</option>
+                                <option value="Special Non-Working">Special Non-Working</option>
+                                <option value="Special Working">Special Working</option>
+                                <option value="WFH Day">WFH Day</option>
+                            </select>
+                        </div>
+                        <div class="fg"><label>Name / Description</label><input type="text" id="evtName"
+                                placeholder="e.g. Christmas Day"></div>
+                        <button class="add-btn" id="addBtn" onclick="addEvent()">+ Add</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CALENDAR -->
+            <div class="cal-card">
+                <div class="cal-nav">
+                    <div class="cal-month-label" id="calMonthLabel">March 2026</div>
+                    <div style="display:flex;gap:6px;align-items:center;">
+                        <button class="cal-today-btn" onclick="goToday()">Today</button>
+                        <button class="cal-nav-btn" onclick="prevMonth()">‹</button>
+                        <button class="cal-nav-btn" onclick="nextMonth()">›</button>
+                    </div>
+                </div>
+                <div class="cal-grid">
+                    <div class="cal-days-header">
+                        <div class="cal-day-name sun">Sun</div>
+                        <div class="cal-day-name">Mon</div>
+                        <div class="cal-day-name">Tue</div>
+                        <div class="cal-day-name">Wed</div>
+                        <div class="cal-day-name">Thu</div>
+                        <div class="cal-day-name">Fri</div>
+                        <div class="cal-day-name">Sat</div>
+                    </div>
+                    <div class="cal-cells" id="calCells"></div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        Created by: <strong>Joeross Delos Reyes</strong> &nbsp;·&nbsp; Need help? <a
+            href="https://t.me/moverings">@moverings</a> on Telegram
+    </footer>
+
+    <!-- DAY POPUP (has events) -->
+    <div class="popup-overlay" id="popupOverlay" onclick="closePopupOutside(event)">
+        <div class="popup-modal" onclick="event.stopPropagation()">
+            <div class="popup-header">
+                <div>
+                    <div class="popup-date" id="popupDayLabel"></div>
+                    <div class="popup-date-sub" id="popupDateSub"></div>
+                </div>
+                <button class="popup-close" onclick="closePopup()">✕</button>
+            </div>
+            <div class="popup-body" id="popupBody"></div>
+            <div class="popup-footer">
+                <button class="add-more-btn" onclick="addMoreFromPopup()">+ Add Another Event on This Date</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONFIRM DELETE -->
+    <div class="confirm-overlay" id="confirmOverlay">
+        <div class="confirm-modal">
+            <div class="confirm-icon">🗑️</div>
+            <div class="confirm-title">Delete Event?</div>
+            <div class="confirm-sub" id="confirmSub">This event will be permanently removed.</div>
+            <div class="confirm-btns">
+                <button class="confirm-btn cancel" onclick="closeConfirm()">Cancel</button>
+                <button class="confirm-btn danger" id="confirmOkBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- UNSAVED CHANGES MODAL -->
+    <div class="confirm-overlay" id="unsavedOverlay">
+        <div class="confirm-modal">
+            <div class="confirm-icon">⚠️</div>
+            <div class="confirm-title">Unsaved Changes</div>
+            <div class="confirm-sub">You edited an event but didn't save. Discard your changes?</div>
+            <div class="confirm-btns">
+                <button class="confirm-btn cancel" onclick="keepEditing()">Keep Editing</button>
+                <button class="confirm-btn danger" onclick="discardAndClose()">Discard</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        var BASE_URL = '' + RDR_AUTH.getGasUrl() + '';
+        var SESSION_TOKEN = '' + RDR_AUTH.getSession() + '';
+        var ADMIN_EMAIL = '' + RDR_AUTH.getEmail() + '';
+        var ALL_EVENTS = [];
+        var viewYear, viewMonth;
+        var popupDirty = false; // tracks unsaved changes in popup
+
+        function goHome() { window.location.href = BASE_URL + '?session=' + SESSION_TOKEN; }
+
+        // TOAST
+        function toast(msg, type) {
+            var t = document.getElementById('toast');
+            t.textContent = msg; t.className = 'toast ' + type;
+            setTimeout(function () { t.classList.add('show'); }, 10);
+            setTimeout(function () { t.classList.remove('show'); }, 3000);
+        }
+
+        // HELPERS
+        var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var DAYS_LONG = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        var MONTHS_SH = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        function pad(n) { return String(n).padStart(2, '0'); }
+        function getPhToday() {
+            var now = new Date();
+            var ph = new Date(now.getTime() + (8 * 3600000) + (now.getTimezoneOffset() * 60000));
+            return { y: ph.getFullYear(), m: ph.getMonth() + 1, d: ph.getDate() };
+        }
+        function chipClass(t) {
+            if (t === 'Regular Holiday') return 'cal-chip chip-rh';
+            if (t === 'Special Non-Working') return 'cal-chip chip-snw';
+            if (t === 'Special Working') return 'cal-chip chip-sw';
+            return 'cal-chip chip-wfh';
+        }
+        function dotClass(t) {
+            if (t === 'Regular Holiday') return 'pdot dot-rh';
+            if (t === 'Special Non-Working') return 'pdot dot-snw';
+            if (t === 'Special Working') return 'pdot dot-sw';
+            return 'pdot dot-wfh';
+        }
+
+        // RENDER CALENDAR
+        function renderCalendar() {
+            document.getElementById('calMonthLabel').textContent = MONTHS[viewMonth] + ' ' + viewYear;
+            var firstDay = new Date(viewYear, viewMonth, 1).getDay();
+            var daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+            var daysInPrev = new Date(viewYear, viewMonth, 0).getDate();
+            var ph = getPhToday();
+            var todayStr = ph.y + '-' + pad(ph.m) + '-' + pad(ph.d);
+            var cells = document.getElementById('calCells');
+            cells.innerHTML = '';
+            var total = Math.ceil((firstDay + daysInMonth) / 7) * 7;
+
+            for (var i = 0; i < total; i++) {
+                var day, month, year, isOther = false;
+                if (i < firstDay) {
+                    day = daysInPrev - firstDay + i + 1; month = viewMonth - 1; year = viewYear;
+                    if (month < 0) { month = 11; year--; }
+                    isOther = true;
+                } else if (i >= firstDay + daysInMonth) {
+                    day = i - firstDay - daysInMonth + 1; month = viewMonth + 1; year = viewYear;
+                    if (month > 11) { month = 0; year++; }
+                    isOther = true;
+                } else {
+                    day = i - firstDay + 1; month = viewMonth; year = viewYear;
+                }
+                var dateStr = year + '-' + pad(month + 1) + '-' + pad(day);
+                var evs = ALL_EVENTS.filter(function (e) { return e.date === dateStr; });
+                var isSun = (i % 7 === 0);
+                var isToday = (dateStr === todayStr);
+
+                var cell = document.createElement('div');
+                var cls = 'cal-cell' + (isOther ? ' other-month' : '') + (isToday ? ' today' : '') + (isSun ? ' sunday' : '') + (evs.length ? ' has-events' : '');
+                cell.className = cls;
+
+                // Number
+                var numPill = document.createElement('div'); numPill.className = 'cal-num-pill';
+                var numEl = document.createElement('div'); numEl.className = 'cal-num'; numEl.textContent = day;
+                numPill.appendChild(numEl); cell.appendChild(numPill);
+
+                // Event chips
+                if (evs.length) {
+                    var chipsWrap = document.createElement('div'); chipsWrap.className = 'cal-event-chips';
+                    evs.slice(0, 3).forEach(function (ev) {
+                        var ch = document.createElement('div'); ch.className = chipClass(ev.type);
+                        ch.textContent = ev.type; chipsWrap.appendChild(ch);
+                        if (ev.name) {
+                            var nm = document.createElement('div');
+                            nm.className = 'cal-chip'; nm.style.cssText = 'background:transparent;color:var(--text-muted);font-weight:400;padding-top:0;';
+                            nm.textContent = ev.name; chipsWrap.appendChild(nm);
+                        }
+                    });
+                    cell.appendChild(chipsWrap);
+                }
+
+                cell.addEventListener('click', (function (ds, evList) {
+                    return function () { handleCellClick(ds, evList); };
+                })(dateStr, evs));
+
+                cells.appendChild(cell);
+            }
+        }
+
+        // CELL CLICK
+        function handleCellClick(dateStr, events) {
+            // Always set form date
+            document.getElementById('evtDate').value = dateStr;
+
+            if (events.length === 0) {
+                // No events — pulse the form card and show toast hint, do NOT open popup
+                var card = document.getElementById('formCard');
+                card.classList.remove('pulse');
+                void card.offsetWidth; // reflow
+                card.classList.add('pulse');
+                setTimeout(function () { card.classList.remove('pulse'); }, 700);
+                // Scroll form into view
+                card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                toast('Date set — fill in the form above to add an event!', 'info');
+                // Focus the Name field
+                setTimeout(function () { document.getElementById('evtName').focus(); }, 400);
+            } else {
+                openPopup(dateStr, events);
+            }
+        }
+
+        // POPUP (events day)
+        function openPopup(dateStr, events) {
+            var d = new Date(dateStr + 'T00:00:00');
+            document.getElementById('popupDayLabel').textContent = DAYS_LONG[d.getDay()];
+            document.getElementById('popupDateSub').textContent = MONTHS_SH[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+            popupDirty = false; // reset dirty flag
+
+            var body = document.getElementById('popupBody');
+            body.innerHTML = '';
+            events.forEach(function (ev) {
+                var row = document.createElement('div'); row.className = 'popup-event-row';
+                var dot = document.createElement('div'); dot.className = dotClass(ev.type); row.appendChild(dot);
+
+                var fields = document.createElement('div'); fields.className = 'popup-event-fields';
+
+                // Type select (editable)
+                var typeRow = document.createElement('div'); typeRow.className = 'popup-field-row';
+                var typeLbl = document.createElement('div'); typeLbl.className = 'popup-field-label'; typeLbl.textContent = 'Type';
+                var typeSel = document.createElement('select'); typeSel.className = 'popup-field-select';
+                ['Regular Holiday', 'Special Non-Working', 'Special Working', 'WFH Day'].forEach(function (opt) {
+                    var o = document.createElement('option'); o.value = opt; o.textContent = opt;
+                    if (opt === ev.type) o.selected = true;
+                    typeSel.appendChild(o);
+                });
+                // Update dot color when type changes
+                typeSel.addEventListener('change', function () { dot.className = dotClass(typeSel.value); popupDirty = true; });
+                typeRow.appendChild(typeLbl); typeRow.appendChild(typeSel); fields.appendChild(typeRow);
+
+                // Name input (editable)
+                var nameRow = document.createElement('div'); nameRow.className = 'popup-field-row';
+                var nameLbl = document.createElement('div'); nameLbl.className = 'popup-field-label'; nameLbl.textContent = 'Name / Description';
+                var nameInput = document.createElement('input'); nameInput.type = 'text'; nameInput.className = 'popup-field-input'; nameInput.value = ev.name || '';
+                nameInput.addEventListener('input', function () { popupDirty = true; });
+                nameRow.appendChild(nameLbl); nameRow.appendChild(nameInput); fields.appendChild(nameRow);
+
+                row.appendChild(fields);
+
+                // Action buttons
+                var actions = document.createElement('div'); actions.className = 'popup-event-actions';
+                var saveBtn = document.createElement('button'); saveBtn.className = 'popup-save-btn'; saveBtn.title = 'Save changes'; saveBtn.textContent = '✓';
+                saveBtn.onclick = (function (rowNum, selEl, inputEl) {
+                    return function () {
+                        updateEvent(rowNum, selEl.value, inputEl.value);
+                    };
+                })(ev.rowNum, typeSel, nameInput);
+                var delBtn = document.createElement('button'); delBtn.className = 'popup-del-btn'; delBtn.title = 'Delete'; delBtn.textContent = '🗑';
+                delBtn.onclick = (function (rowNum, name) { return function () { askDelete(rowNum, name); }; })(ev.rowNum, ev.name);
+                actions.appendChild(saveBtn); actions.appendChild(delBtn);
+                row.appendChild(actions);
+
+                body.appendChild(row);
+            });
+
+            document.getElementById('popupOverlay').classList.add('open');
+        }
+
+        function closePopup() {
+            if (popupDirty) { showUnsavedWarning(); return; }
+            closePopupForce();
+        }
+        function closePopupOutside(e) { if (e.target === document.getElementById('popupOverlay')) closePopup(); }
+        function closePopupForce() { popupDirty = false; document.getElementById('popupOverlay').classList.remove('open'); }
+
+        function showUnsavedWarning() { document.getElementById('unsavedOverlay').classList.add('open'); }
+        function keepEditing() { document.getElementById('unsavedOverlay').classList.remove('open'); }
+        function discardAndClose() { document.getElementById('unsavedOverlay').classList.remove('open'); closePopupForce(); }
+
+        function addMoreFromPopup() {
+            if (popupDirty) { showUnsavedWarning(); return; }
+            closePopupForce();
+            var card = document.getElementById('formCard');
+            card.classList.remove('pulse'); void card.offsetWidth; card.classList.add('pulse');
+            setTimeout(function () { card.classList.remove('pulse'); }, 700);
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            setTimeout(function () { document.getElementById('evtName').focus(); }, 400);
+        }
+
+        function updateEvent(rowNum, newType, newName) {
+            if (!newName.trim()) { toast('Name cannot be empty.', 'error'); return; }
+            callGAS('updateCalendarEvent', [rowNum, newType, newName.trim()]).then(function (r) {
+                    if (r && r.success) { toast('Event updated!', 'success'); popupDirty = false; closePopupForce(); loadEvents(); }
+                    else toast((r && r.error) || 'Failed.', 'error');
+                }).catch(function () { toast('Server error.', 'error'); });
+        }
+
+        // CONFIRM DELETE
+        var pendingDeleteRow = null;
+        function askDelete(rowNum, name) {
+            pendingDeleteRow = rowNum;
+            document.getElementById('confirmSub').textContent = '"' + name + '" will be permanently removed from the calendar.';
+            document.getElementById('confirmOkBtn').onclick = doDelete;
+            document.getElementById('confirmOverlay').classList.add('open');
+        }
+        function closeConfirm() { pendingDeleteRow = null; document.getElementById('confirmOverlay').classList.remove('open'); }
+        function doDelete() {
+            var rowNum = pendingDeleteRow; closeConfirm(); closePopup();
+            callGAS('deleteCalendarEvent', [rowNum]).then(function (r) {
+                    if (r && r.success) { toast('Deleted.', 'success'); loadEvents(); }
+                    else toast('Failed.', 'error');
+                }).catch(function () { toast('Server error.', 'error'); });
+        }
+
+        // ADD EVENT
+        function addEvent() {
+            var date = document.getElementById('evtDate').value;
+            var type = document.getElementById('evtType').value;
+            var name = document.getElementById('evtName').value.trim();
+            if (!date || !name) { toast('Date and Name are required.', 'error'); return; }
+            var btn = document.getElementById('addBtn'); btn.textContent = '…'; btn.disabled = true;
+            callGAS('addCalendarEvent', [date, type, name, ADMIN_EMAIL, '']).then(function (r) {
+                    btn.textContent = '+ Add'; btn.disabled = false;
+                    if (r && r.success) { toast('Event added!', 'success'); document.getElementById('evtName').value = ''; loadEvents(); }
+                    else toast((r && r.error) || 'Failed.', 'error');
+                }).catch(function () { btn.textContent = '+ Add'; btn.disabled = false; toast('Server error.', 'error'); });
+        }
+
+        function loadEvents() {
+            callGAS('getCalendarEvents', []).then(function (data) { ALL_EVENTS = data || []; renderCalendar(); }).catch(function () { toast('Failed to load events.', 'error'); });
+        }
+
+        function prevMonth() { if (viewMonth === 0) { viewMonth = 11; viewYear--; } else viewMonth--; renderCalendar(); }
+        function nextMonth() { if (viewMonth === 11) { viewMonth = 0; viewYear++; } else viewMonth++; renderCalendar(); }
+        function goToday() { var ph = getPhToday(); viewYear = ph.y; viewMonth = ph.m - 1; renderCalendar(); }
+
+        // THEME
+        (function () {
+            var LL = 'https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png';
+            var LD = 'https://i.ibb.co/6crnBjPv/RDR-Logo-White.png';
+            var saved = 'light'; try { saved = localStorage.getItem('rdr-theme') || 'light'; } catch (e) { }
+            document.documentElement.setAttribute('data-theme', saved);
+            function upd() {
+                var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+                document.getElementById('themeIcon').innerHTML = dark
+                    ? '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>'
+                    : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+                // Swap logo and its container background based on theme
+                var logoBox = document.querySelector('.header-logo');
+                if (dark) {
+                    document.getElementById('headerLogo').src = LD;
+                    logoBox.style.background = 'rgba(255,255,255,0.08)';
+                } else {
+                    document.getElementById('headerLogo').src = LL;
+                    logoBox.style.background = '#ffffff';
+                }
+            }
+            upd();
+            document.getElementById('themeBtn').addEventListener('click', function () {
+                var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                try { localStorage.setItem('rdr-theme', next); } catch (e) { }
+                upd();
+            });
+        })();
+
+        // INIT
+        (function () {
+            var ph = getPhToday();
+            viewYear = ph.y; viewMonth = ph.m - 1;
+            document.getElementById('evtDate').value = ph.y + '-' + pad(ph.m) + '-' + pad(ph.d);
+            loadEvents();
+        })();
+    </script>
+</body>
+
+</html>

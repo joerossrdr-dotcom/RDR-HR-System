@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RDR Attendance System</title>
+
+    <!-- Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ============================================================================
+           RDR ATTENDANCE SYSTEM v2 — PREMIUM MENU/SCAN SCREEN
+           Design: Deep Navy Gradient + Glassmorphism + Animated Radar Rings
+           ============================================================================ */
+
+        :root {
+            --bg-card: #ffffff;
+            --bg-input: #ffffff;
+            --navy-900: #0a1628;
+            --navy-800: #0f2140;
+            --navy-700: #132d56;
+            --navy-600: #1a3a6c;
+            --blue-500: #2563eb;
+            --blue-400: #3b82f6;
+            --blue-300: #60a5fa;
+            --cyan-400: #22d3ee;
+            --cyan-300: #67e8f9;
+
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-900: #0f172a;
+
+            --green-500: #22c55e;
+            --green-600: #16a34a;
+            --green-50: #f0fdf4;
+            --red-500: #ef4444;
+            --red-600: #dc2626;
+            --red-50: #fef2f2;
+            --amber-500: #f59e0b;
+            --amber-600: #d97706;
+            --amber-50: #fffbeb;
+            --violet-500: #8b5cf6;
+            --violet-600: #7c3aed;
+            --violet-50: #f5f3ff;
+
+            --shadow-blue: rgba(37, 99, 235, 0.25);
+            --shadow-dark: rgba(10, 22, 40, 0.4);
+
+            --sp-xs: 0.5rem;
+            --sp-sm: 0.75rem;
+            --sp-md: 1rem;
+            --sp-lg: 1.5rem;
+            --sp-xl: 2rem;
+            --sp-2xl: 3rem;
+
+            --r-sm: 8px;
+            --r-md: 14px;
+            --r-lg: 20px;
+            --r-xl: 28px;
+            --r-full: 9999px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: var(--gray-50);
+        }
+
+        #app {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: var(--gray-50);
+        }
+
+        /* ============================================================================
+           HEADER
+           ============================================================================ */
+
+        .app-header {
+            background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 60%, var(--blue-500) 100%);
+            color: #ffffff;
+            padding: var(--sp-lg) var(--sp-xl);
+            box-shadow: 0 4px 20px var(--shadow-dark), 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+            position: relative;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .app-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.03) 75%, transparent 100%);
+            animation: headerShimmer 8s ease-in-out infinite;
+        }
+
+        @keyframes headerShimmer {
+
+            0%,
+            100% {
+                transform: translateX(-25%);
+            }
+
+            50% {
+                transform: translateX(25%);
+            }
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: var(--sp-lg);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-logo {
+            width: 54px;
+            height: 54px;
+            background: #ffffff;
+            border-radius: var(--r-md);
+            padding: 7px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            flex-shrink: 0;
+        }
+
+        .header-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-text {
+            flex: 1;
+        }
+
+        .header-title {
+            font-size: 1.55rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            background: linear-gradient(135deg, var(--white) 0%, var(--cyan-300) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-datetime {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .exit-btn {
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            border-radius: 14px;
+            color: var(--white);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .exit-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.5);
+            transform: scale(1.08);
+        }
+
+        .exit-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+        }
+
+        /* ============================================================================
+           MAIN BODY
+           ============================================================================ */
+
+        .app-body {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--sp-xl);
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .app-body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, var(--gray-200) 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* ============================================================================
+           SCAN VIEW
+           ============================================================================ */
+
+        .scan-card {
+            width: 100%;
+            max-width: 520px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--r-xl);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 60px var(--shadow-blue), 0 4px 16px rgba(0, 0, 0, 0.06);
+            padding: var(--sp-xl) var(--sp-lg);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            animation: cardFloat 0.5s ease-out;
+        }
+
+        @keyframes cardFloat {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .scan-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--blue-400), var(--cyan-400));
+            border-radius: 0 0 4px 4px;
+        }
+
+        .logo-badge {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto var(--sp-lg);
+            background: linear-gradient(135deg, var(--navy-800) 0%, var(--blue-500) 100%);
+            border-radius: var(--r-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            box-shadow: 0 8px 24px var(--shadow-blue);
+        }
+
+        .logo-badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        .radar-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto var(--sp-lg);
+        }
+
+        .radar-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: var(--r-full);
+            border: 2px solid var(--blue-400);
+            opacity: 0;
+            animation: radarPing 3s ease-out infinite;
+        }
+
+        .radar-ring:nth-child(2) {
+            animation-delay: 1s;
+        }
+
+        .radar-ring:nth-child(3) {
+            animation-delay: 2s;
+        }
+
+        @keyframes radarPing {
+            0% {
+                transform: scale(0.5);
+                opacity: 0.6;
+                border-color: var(--blue-400);
+            }
+
+            100% {
+                transform: scale(1.3);
+                opacity: 0;
+                border-color: var(--cyan-400);
+            }
+        }
+
+        .radar-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 88px;
+            height: 88px;
+            background: linear-gradient(135deg, var(--navy-800) 0%, var(--blue-500) 100%);
+            border-radius: var(--r-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px var(--shadow-blue), 0 0 0 4px rgba(37, 99, 235, 0.15);
+            animation: corePulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes corePulse {
+
+            0%,
+            100% {
+                box-shadow: 0 8px 32px var(--shadow-blue), 0 0 0 4px rgba(37, 99, 235, 0.15), 0 0 0 8px rgba(37, 99, 235, 0.08);
+            }
+
+            50% {
+                box-shadow: 0 12px 40px var(--shadow-blue), 0 0 0 6px rgba(37, 99, 235, 0.2), 0 0 0 12px rgba(37, 99, 235, 0.1);
+            }
+        }
+
+        .radar-core svg {
+            width: 40px;
+            height: 40px;
+            fill: var(--white);
+        }
+
+        .scan-title {
+            font-size: 1.65rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--navy-800);
+            margin-bottom: 5px;
+        }
+
+        .scan-subtitle {
+            font-size: 0.95rem;
+            color: var(--gray-500);
+            margin-bottom: var(--sp-lg);
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--navy-800), var(--blue-500));
+            color: var(--white);
+            padding: 10px 24px;
+            border-radius: var(--r-full);
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 4px 16px var(--shadow-blue);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--cyan-400);
+            border-radius: var(--r-full);
+            animation: dotBlink 1.5s ease-in-out infinite;
+        }
+
+        @keyframes dotBlink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        #cardIdInput {
+            position: absolute;
+            left: -9999px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .scan-footer {
+            margin-top: var(--sp-2xl);
+            padding-top: var(--sp-lg);
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .credits {
+            text-align: center;
+        }
+
+        .credits-author {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--navy-700);
+            margin-bottom: 2px;
+        }
+
+        .credits-sub {
+            font-size: 0.82rem;
+            color: var(--gray-400);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .credits-sub svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--gray-400);
+        }
+
+        /* ============================================================================
+           KIOSK START OVERLAY (tap-to-enter fullscreen)
+           ============================================================================ */
+
+        .kiosk-start-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 40%, var(--blue-500) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        .kiosk-start-overlay.hidden {
+            display: none;
+        }
+
+        .kiosk-start-logo {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: var(--r-xl);
+            padding: 16px;
+            margin-bottom: 32px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        }
+
+        .kiosk-start-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .kiosk-start-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--white);
+            letter-spacing: -0.03em;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .kiosk-start-sub {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 48px;
+            text-align: center;
+        }
+
+        .kiosk-start-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 48px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--r-full);
+            color: var(--white);
+            font-size: 1.15rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            animation: kioskPulse 2s ease-in-out infinite;
+            transition: all 0.3s;
+        }
+
+        .kiosk-start-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
+
+        .kiosk-start-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        @keyframes kioskPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 0 16px rgba(255, 255, 255, 0);
+            }
+        }
+
+        /* ============================================================================
+           LOADING OVERLAY
+           ============================================================================ */
+
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: var(--white);
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            border-top-color: var(--cyan-400);
+            border-radius: var(--r-full);
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto var(--sp-lg);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            font-size: 1rem;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        /* ============================================================================
+           MESSAGE BOX (Success / Error)
+           ============================================================================ */
+
+        .msg-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.5);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .msg-overlay.active {
+            display: flex;
+        }
+
+        .msg-box {
+            background: var(--bg-card);
+            padding: var(--sp-2xl);
+            border-radius: var(--r-xl);
+            box-shadow: 0 20px 60px var(--shadow-dark);
+            text-align: center;
+            max-width: 380px;
+            width: 90%;
+            animation: msgIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes msgIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .msg-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: var(--r-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--sp-lg);
+            font-size: 2rem;
+        }
+
+        .msg-icon.success {
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .msg-icon.error {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .msg-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--sp-xs);
+        }
+
+        .msg-text {
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            line-height: 1.5;
+        }
+
+        /* CONFIRM OVERLAY */
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+        }
+
+        .confirm-overlay.active {
+            display: flex;
+        }
+
+        .confirm-box {
+            background: var(--bg-card);
+            padding: var(--sp-2xl);
+            border-radius: var(--r-xl);
+            box-shadow: 0 20px 60px var(--shadow-dark);
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            animation: msgIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .confirm-icon {
+            font-size: 3rem;
+            margin-bottom: var(--sp-md);
+        }
+
+        .confirm-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--sp-xs);
+        }
+
+        .confirm-text {
+            font-size: 0.95rem;
+            color: var(--gray-500);
+            margin-bottom: var(--sp-sm);
+        }
+
+        .confirm-workspace {
+            font-size: 1.05rem;
+            color: var(--navy-800);
+            margin-bottom: var(--sp-sm);
+        }
+
+        .confirm-workspace strong {
+            color: var(--blue-500);
+        }
+
+        .confirm-countdown {
+            font-size: 0.8rem;
+            color: var(--gray-400);
+            margin-bottom: var(--sp-xl);
+        }
+
+        .confirm-countdown strong {
+            color: var(--red-500);
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .confirm-btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: var(--r-md);
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .confirm-btn.yes {
+            background: linear-gradient(135deg, var(--red-500), var(--red-600));
+            color: var(--white);
+            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+        }
+
+        .confirm-btn.yes:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
+        }
+
+        .confirm-btn.no {
+            background: var(--gray-100);
+            color: var(--gray-600);
+            border: 1.5px solid var(--gray-200);
+        }
+
+        .confirm-btn.no:hover {
+            background: var(--gray-200);
+        }
+
+        /* ============================================================================
+           RESPONSIVE
+           ============================================================================ */
+
+        @media (max-width: 1024px) {
+            .app-header {
+                padding: var(--sp-md) var(--sp-lg);
+            }
+
+            .header-logo {
+                width: 46px;
+                height: 46px;
+            }
+
+            .scan-card {
+                padding: var(--sp-lg) var(--sp-md);
+            }
+
+            .radar-container {
+                width: 150px;
+                height: 150px;
+            }
+
+            .radar-core {
+                width: 82px;
+                height: 82px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-header {
+                padding: var(--sp-sm) var(--sp-md);
+            }
+
+            .header-inner {
+                gap: 10px;
+            }
+
+            .header-logo {
+                width: 40px;
+                height: 40px;
+            }
+
+            .header-title {
+                font-size: 1.15rem;
+            }
+
+            .header-datetime {
+                font-size: 0.7rem;
+            }
+
+            .app-body {
+                padding: var(--sp-md);
+            }
+
+            .scan-card {
+                padding: var(--sp-lg) var(--sp-md);
+                border-radius: var(--r-lg);
+            }
+
+            .radar-container {
+                width: 130px;
+                height: 130px;
+            }
+
+            .radar-core {
+                width: 72px;
+                height: 72px;
+            }
+
+            .radar-core svg {
+                width: 34px;
+                height: 34px;
+            }
+
+            .scan-title {
+                font-size: 1.4rem;
+            }
+
+            .scan-subtitle {
+                font-size: 0.88rem;
+            }
+
+            .logo-badge {
+                width: 56px;
+                height: 56px;
+            }
+
+            .status-pill {
+                padding: 8px 20px;
+                font-size: 0.85rem;
+            }
+
+            .scan-footer {
+                margin-top: var(--sp-lg);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .app-header {
+                padding: var(--sp-xs) var(--sp-sm);
+            }
+
+            .header-title {
+                font-size: 1rem;
+            }
+
+            .app-body {
+                padding: var(--sp-sm);
+            }
+
+            .scan-card {
+                padding: var(--sp-md) var(--sp-sm);
+                border-radius: var(--r-md);
+            }
+
+            .radar-container {
+                width: 110px;
+                height: 110px;
+            }
+
+            .radar-core {
+                width: 60px;
+                height: 60px;
+            }
+
+            .radar-core svg {
+                width: 28px;
+                height: 28px;
+            }
+
+            .scan-title {
+                font-size: 1.2rem;
+            }
+
+            .scan-subtitle {
+                font-size: 0.82rem;
+            }
+
+            .logo-badge {
+                width: 48px;
+                height: 48px;
+            }
+
+            .status-pill {
+                padding: 8px 18px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-height: 700px) {
+            .logo-badge {
+                width: 52px;
+                height: 52px;
+                margin-bottom: var(--sp-sm);
+            }
+
+            .radar-container {
+                width: 130px;
+                height: 130px;
+                margin-bottom: var(--sp-sm);
+            }
+
+            .radar-core {
+                width: 72px;
+                height: 72px;
+            }
+
+            .scan-card {
+                padding: var(--sp-lg) var(--sp-md);
+            }
+
+            .scan-footer {
+                margin-top: var(--sp-md);
+            }
+        }
+
+        /* ============================================================================
+           DARK MODE — POPUP OVERRIDES
+           ============================================================================ */
+        [data-theme="dark"] .msg-box,
+        [data-theme="dark"] .confirm-box {
+            background: #162032 !important;
+            border: 1px solid #1e3050;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="dark"] .msg-title,
+        [data-theme="dark"] .confirm-title {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .msg-text,
+        [data-theme="dark"] .confirm-text {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .confirm-workspace {
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="dark"] .confirm-countdown {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .msg-icon.success {
+            background: rgba(34, 197, 94, 0.15) !important;
+            color: #4ade80 !important;
+        }
+
+        [data-theme="dark"] .msg-icon.error {
+            background: rgba(239, 68, 68, 0.15) !important;
+            color: #f87171 !important;
+        }
+
+        [data-theme="dark"] .confirm-btn.no {
+            background: #1e3050 !important;
+            color: #cbd5e1 !important;
+            border-color: #2d4a6f !important;
+        }
+
+        [data-theme="dark"] .confirm-btn.no:hover {
+            background: #2d4a6f !important;
+        }
+
+        [data-theme="dark"] .loading-content {
+            color: #e2e8f0;
+        }
+
+        [data-theme="dark"] .loading-text {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .header-logo,
+        [data-theme="dark"] .logo-circle {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+    </style>
+</head>
+
+<body tabindex="-1">
+
+    <div id="app">
+
+        <!-- ==================== HEADER ==================== -->
+        <header class="app-header">
+            <div class="header-inner">
+                <div class="header-logo">
+                    <img src="https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png"
+                        alt="RDR Business Solutions" />
+                </div>
+                <div class="header-text">
+                    <h1 class="header-title">RDR Attendance System</h1>
+                    <p class="header-datetime" id="headerDateTime">Loading...</p>
+                </div>
+                <div class="header-right">
+                    <button class="exit-btn" id="exitBtn" title="Cancel / Return to Scan">
+                        <svg viewBox="0 0 24 24">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- ==================== SCAN VIEW ==================== -->
+        <main class="app-body" id="scanView">
+            <div class="scan-card">
+                <div class="logo-badge">
+                    <img src="https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png" alt="RDR" />
+                </div>
+                <div class="radar-container">
+                    <div class="radar-ring"></div>
+                    <div class="radar-ring"></div>
+                    <div class="radar-ring"></div>
+                    <div class="radar-core">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H4V4h16v16zM18 6h-5c-1.1 0-2 .9-2 2v2.28c-.6.35-1 .98-1 1.72 0 1.1.9 2 2 2s2-.9 2-2c0-.74-.4-1.37-1-1.72V8h3v8H8V8h2V6H8c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z" />
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="scan-title">Ready to Scan</h2>
+                <p class="scan-subtitle">Tap your RFID card on the reader to begin</p>
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    Waiting for card...
+                </div>
+                <input type="text" id="cardIdInput" autocomplete="off" readonly inputmode="none" />
+                <div class="scan-footer">
+                    <div class="credits">
+                        <div class="credits-author">Created by: Joeross</div>
+                        <div class="credits-sub">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+                            </svg>
+                            Message me on Telegram for questions!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- ==================== PROFILE VIEW (hidden initially) ==================== -->
+        <main class="app-body" id="profileView" style="display:none;">
+            <?!= include('RDR_KioskProfile') ?>
+        </main>
+
+        <!-- Footer Credit -->
+        <div id="footerCredit"
+            style="text-align: center; padding: 10px 16px; font-size: 0.75rem; color: var(--gray-400); font-weight: 500; background: rgba(255,255,255,0.6); border-top: 1px solid var(--gray-200);">
+            If you have any questions, contact me on Telegram <strong>@moverings</strong> or seek support from IT
+            Operations.
+        </div>
+
+    </div>
+
+    <!-- ==================== KIOSK START OVERLAY ==================== -->
+    <div id="kioskStartOverlay" class="kiosk-start-overlay">
+        <div class="kiosk-start-logo">
+            <img src="https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png" alt="RDR" />
+        </div>
+        <h2 class="kiosk-start-title">RDR Attendance System</h2>
+        <p class="kiosk-start-sub">Tap anywhere to enter Kiosk Mode</p>
+        <button class="kiosk-start-btn" id="kioskStartBtn">
+            <svg viewBox="0 0 24 24">
+                <path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3" />
+            </svg>
+            Enter Fullscreen
+        </button>
+    </div>
+
+    <!-- ==================== LOADING OVERLAY ==================== -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text" id="loadingText">Processing...</div>
+        </div>
+    </div>
+
+    <!-- ==================== MESSAGE BOX ==================== -->
+    <div id="msgOverlay" class="msg-overlay">
+        <div class="msg-box">
+            <div class="msg-icon success" id="msgIcon">✓</div>
+            <h3 class="msg-title" id="msgTitle">Success</h3>
+            <p class="msg-text" id="msgText">Action completed successfully</p>
+        </div>
+    </div>
+
+    <!-- ==================== TIME OUT CONFIRMATION ==================== -->
+    <div id="confirmOverlay" class="confirm-overlay">
+        <div class="confirm-box">
+            <div class="confirm-icon">⏱️</div>
+            <h3 class="confirm-title">Confirm Time Out</h3>
+            <p class="confirm-text">Are you sure you want to Time Out?</p>
+            <p class="confirm-workspace" id="confirmWorkspace">Your total workspace: <strong>0h 00m</strong></p>
+            <p class="confirm-countdown" id="confirmCountdown">Auto-confirming in <strong>10s</strong></p>
+            <div class="confirm-buttons">
+                <button class="confirm-btn yes" id="confirmYes" onclick="confirmTimeOut()">Yes, Time Out</button>
+                <button class="confirm-btn no" id="confirmNo" onclick="cancelTimeOut()">No, Go Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== HIDDEN CAMERA (for TIME_IN selfie) ==================== -->
+    <video id="selfieVideo" style="position:absolute;left:-9999px;width:1px;height:1px;" playsinline autoplay
+        muted></video>
+    <canvas id="selfieCanvas" style="display:none;"></canvas>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script>
+        // ============================================================================
+        // APP STATE
+        // ============================================================================
+        // Read session token and GAS URL from URL parameters
+        // URL format: https://yoursite.github.io/kiosk/?gas=GAS_URL&session=TOKEN
+        var urlParams = new URLSearchParams(window.location.search);
+        var SESSION_TOKEN = urlParams.get('session') || '';
+        var GAS_URL = urlParams.get('gas') || '';
+
+        if (!GAS_URL || !SESSION_TOKEN) {
+            document.addEventListener('DOMContentLoaded', function () {
+                document.body.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#0a1628;color:#94a3b8;font-family:Inter,sans-serif;text-align:center;padding:40px;">'
+                    + '<h2 style="color:#f8fafc;margin-bottom:16px;">RDR Kiosk Configuration Required</h2>'
+                    + '<p>Missing URL parameters. The kiosk needs:</p>'
+                    + '<code style="display:block;margin:16px 0;padding:12px;background:#1e293b;border-radius:8px;color:#60a5fa;font-size:12px;word-break:break-all;">'
+                    + window.location.origin + window.location.pathname + '?gas=YOUR_GAS_URL&amp;session=YOUR_SESSION_TOKEN</code>'
+                    + '<p style="margin-top:12px;font-size:13px;">The GAS URL is your Apps Script deployment URL.<br>The session token comes from the on-site login.</p>'
+                    + '</div>';
+            });
+        }
+
+        var currentEmployee = null;
+        var currentState = null;
+        var idleTimer = null;
+        var idleSeconds = 60;
+        var idleInterval = null;
+        var idlePaused = false;
+        var workspaceInterval = null;
+        var cameraStream = null;
+        var confirmCountdownInterval = null;
+        var confirmSeconds = 10;
+
+        // ============================================================================
+        // GAS API HELPER — uses fetch() to call doPost endpoint
+        // ============================================================================
+        function callGAS(payload) {
+            payload.session = SESSION_TOKEN;
+            return fetch(GAS_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify(payload),
+                redirect: 'follow'
+            }).then(function (res) {
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                return res.json();
+            });
+        }
+
+        // ============================================================================
+        // CLOCK
+        // ============================================================================
+        function updateClock() {
+            var now = new Date();
+            var opts = {
+                timeZone: 'Asia/Manila',
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            };
+            document.getElementById('headerDateTime').textContent = now.toLocaleString('en-PH', opts);
+        }
+
+        // ============================================================================
+        // RFID BURST DETECTION
+        // After 100ms of no new characters, process whatever arrived as a Card ID.
+        // No Enter key required. RFID readers blast all chars within ~10-50ms.
+        // ============================================================================
+        var rfidBuffer = '';
+        var rfidTimer = null;
+        var BURST_WINDOW = 100; // 0.1 seconds
+
+        function handleRfidInput(e) {
+            if (currentEmployee) return; // ignore while profile is showing
+
+            // Skip non-printable keys (Shift, Ctrl, Alt, Tab, etc.)
+            if (e.key.length !== 1) return;
+
+            rfidBuffer += e.key;
+            clearTimeout(rfidTimer);
+
+            // After 100ms silence → process the buffer
+            rfidTimer = setTimeout(function () {
+                var id = rfidBuffer.trim();
+                rfidBuffer = '';
+                if (id) processCardId(id);
+            }, BURST_WINDOW);
+        }
+
+        function processCardId(cardId) {
+            if (!cardId) return;
+            showLoading('Looking up employee...');
+            callGAS({ action: 'lookupEmployee', cardId: cardId })
+                .then(onLookupSuccess)
+                .catch(onLookupError);
+        }
+
+        function onLookupSuccess(result) {
+            hideLoading();
+            if (!result.success) {
+                showMessage('error', 'Not Found', result.error);
+                setTimeout(resetToScan, 2500);
+                return;
+            }
+            currentEmployee = result.employee;
+            currentState = result.state;
+            showProfileView();
+        }
+
+        function onLookupError(err) {
+            hideLoading();
+            showMessage('error', 'Error', err.message || 'Server error occurred.');
+            setTimeout(resetToScan, 2500);
+        }
+
+        // ============================================================================
+        // VIEW SWITCHING
+        // ============================================================================
+        function showProfileView() {
+            document.getElementById('scanView').style.display = 'none';
+            document.getElementById('profileView').style.display = 'flex';
+            document.getElementById('exitBtn').style.display = 'flex';
+
+            populateProfile();
+            startIdleTimer();
+            startWorkspaceTimer();
+        }
+
+        function resetToScan() {
+            document.getElementById('scanView').style.display = 'flex';
+            document.getElementById('profileView').style.display = 'none';
+            document.getElementById('exitBtn').style.display = 'none';
+
+            currentEmployee = null;
+            currentState = null;
+            stopIdleTimer();
+            stopWorkspaceTimer();
+
+            hideMsgOverlay();
+
+            // Clear RFID input (no focus — avoids tablet virtual keyboard)
+            document.getElementById('cardIdInput').value = '';
+        }
+
+        // ============================================================================
+        // POPULATE PROFILE
+        // ============================================================================
+        function populateProfile() {
+            var emp = currentEmployee;
+            var st = currentState;
+
+            // Avatar initials
+            var names = emp.empName.split(',');
+            var initials = '';
+            if (names.length >= 2) {
+                initials = names[1].trim().charAt(0) + names[0].trim().charAt(0);
+            } else {
+                initials = emp.empName.substring(0, 2);
+            }
+            document.getElementById('profileAvatar').textContent = initials.toUpperCase();
+            document.getElementById('profileName').textContent = emp.empName;
+            document.getElementById('profileId').textContent = 'Employee ID: ' + emp.empId;
+
+            // Load profile photo from GDrive (replaces initials if found)
+            if (emp.empId) {
+                callGAS({ action: 'getProfilePhotoUrl', empId: emp.empId })
+                    .then(function (result) {
+                        if (result && result.url) {
+                            document.getElementById('profileAvatar').innerHTML = '<img src="' + result.url + '" alt="' + initials + '" />';
+                        }
+                    }).catch(function () { /* ignore photo errors */ });
+            }
+
+            // Status badge
+            var badge = document.getElementById('statusBadge');
+            badge.className = 'status-badge ' + st.currentStatus;
+            badge.innerHTML = '<span class="pf-status-dot"></span> ' + st.statusText;
+
+            // Last action
+            var lastEl = document.getElementById('lastAction');
+            if (st.lastAction) {
+                document.getElementById('lastActionText').textContent = st.lastAction.type + ' at ' + st.lastAction.time;
+                lastEl.style.display = 'block';
+            } else {
+                lastEl.style.display = 'none';
+            }
+
+            // Current time/date
+            updateProfileTime();
+
+            // Stamps
+            setStamp('timeInStamp', st.stamps.timeIn);
+            setStamp('lunchInStamp', st.stamps.lunchIn);
+            setStamp('lunchOutStamp', st.stamps.lunchOut);
+            setStamp('timeOutStamp', st.stamps.timeOut);
+            setStamp('pauseStamp', st.stamps.pause);
+            setStamp('resumeStamp', st.stamps.resume);
+
+            // Button states
+            toggleBtn('btnTimeIn', st.canTimeIn);
+            toggleBtn('btnLunchIn', st.canLunchIn);
+            toggleBtn('btnLunchOut', st.canLunchOut);
+            toggleBtn('btnTimeOut', st.canTimeOut);
+            toggleBtn('btnPauseWork', st.canPause);
+            toggleBtn('btnResume', st.canResume);
+        }
+
+        function setStamp(id, val) {
+            var el = document.getElementById(id);
+            el.textContent = val;
+            if (val && val !== '—') {
+                el.classList.add('recorded');
+            } else {
+                el.classList.remove('recorded');
+            }
+        }
+
+        function toggleBtn(id, enabled) {
+            var el = document.getElementById(id);
+            if (enabled) {
+                el.classList.remove('disabled');
+            } else {
+                el.classList.add('disabled');
+            }
+        }
+
+        function updateProfileTime() {
+            var now = new Date();
+            var timeEl = document.getElementById('currentTime');
+            var dateEl = document.getElementById('currentDate');
+            if (timeEl) timeEl.textContent = now.toLocaleTimeString('en-PH', { timeZone: 'Asia/Manila', hour: '2-digit', minute: '2-digit' });
+            if (dateEl) dateEl.textContent = now.toLocaleDateString('en-PH', { timeZone: 'Asia/Manila', month: 'short', day: 'numeric' });
+        }
+
+        // ============================================================================
+        // WORKSPACE TIMER
+        // ============================================================================
+        function startWorkspaceTimer() {
+            updateWorkspaceDisplay();
+            workspaceInterval = setInterval(updateWorkspaceDisplay, 1000);
+        }
+
+        function stopWorkspaceTimer() {
+            if (workspaceInterval) clearInterval(workspaceInterval);
+            workspaceInterval = null;
+        }
+
+        function updateWorkspaceDisplay() {
+            if (!currentState || !currentState.timeInMs) {
+                document.getElementById('workspaceTimer').textContent = '0h 00m';
+                return;
+            }
+            updateProfileTime();
+
+            var now = (currentState.timeOutMs) ? currentState.timeOutMs : Date.now();
+            var elapsed = now - currentState.timeInMs;
+
+            // Subtract lunch
+            if (currentState.lunchInMs) {
+                var lunchEnd = currentState.lunchOutMs || now;
+                var lunchDuration = lunchEnd - currentState.lunchInMs;
+                var oneHour = 3600000;
+                // Fixed 1-hour minimum deduction
+                var lunchDeduct = Math.max(oneHour, lunchDuration);
+                elapsed -= lunchDeduct;
+            }
+
+            // Subtract pause blocks
+            if (currentState.pauseBlocks) {
+                for (var i = 0; i < currentState.pauseBlocks.length; i++) {
+                    var block = currentState.pauseBlocks[i];
+                    var pEnd = block.resumeMs || now;
+                    elapsed -= (pEnd - block.pauseMs);
+                }
+            }
+
+            if (elapsed < 0) elapsed = 0;
+
+            var totalMin = Math.floor(elapsed / 60000);
+            var hours = Math.floor(totalMin / 60);
+            var mins = totalMin % 60;
+
+            document.getElementById('workspaceTimer').textContent =
+                hours + 'h ' + (mins < 10 ? '0' : '') + mins + 'm';
+        }
+
+        // ============================================================================
+        // IDLE / AUTO-RESET TIMER
+        // ============================================================================
+        function startIdleTimer() {
+            idleSeconds = 60;
+            updateIdleDisplay();
+            idleInterval = setInterval(function () {
+                if (idlePaused) return; // skip tick during confirmation
+                idleSeconds--;
+                if (idleSeconds <= 0) {
+                    resetToScan();
+                    return;
+                }
+                updateIdleDisplay();
+            }, 1000);
+
+            // Reset idle on any interaction
+            document.addEventListener('click', resetIdleCount);
+            document.addEventListener('touchstart', resetIdleCount);
+        }
+
+        function resetIdleCount() {
+            idleSeconds = 60;
+        }
+
+        function stopIdleTimer() {
+            if (idleInterval) clearInterval(idleInterval);
+            idleInterval = null;
+            document.removeEventListener('click', resetIdleCount);
+            document.removeEventListener('touchstart', resetIdleCount);
+        }
+
+        function updateIdleDisplay() {
+            var el = document.getElementById('idleTimerValue');
+            if (el) {
+                var m = Math.floor(idleSeconds / 60);
+                var s = idleSeconds % 60;
+                el.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+            }
+        }
+
+        // ============================================================================
+        // ACTION BUTTONS
+        // ============================================================================
+        function handleAction(actionType) {
+            if (!currentEmployee) return;
+
+            // Time Out → show confirmation dialog
+            if (actionType === 'Time Out') {
+                showTimeOutConfirm();
+                return;
+            }
+
+            // For Time In, capture selfie from the always-on camera then send
+            if (actionType === 'Time In') {
+                showLoading('Capturing selfie...');
+                captureSelfie(function (base64) {
+                    showLoading('Logging attendance...');
+                    sendAction(actionType, base64);
+                });
+            } else {
+                showLoading('Logging attendance...');
+                sendAction(actionType, null);
+            }
+        }
+
+        // ============================================================================
+        // TIME OUT CONFIRMATION
+        // ============================================================================
+        function showTimeOutConfirm() {
+            // Pause idle timer
+            idlePaused = true;
+
+            // Set workspace time in dialog
+            var wsText = document.getElementById('workspaceTimer').textContent;
+            document.getElementById('confirmWorkspace').innerHTML = 'Your total workspace: <strong>' + wsText + '</strong>';
+
+            // Start 10s countdown
+            confirmSeconds = 10;
+            document.getElementById('confirmCountdown').innerHTML = 'Auto-confirming in <strong>' + confirmSeconds + 's</strong>';
+            document.getElementById('confirmOverlay').classList.add('active');
+
+            confirmCountdownInterval = setInterval(function () {
+                confirmSeconds--;
+                if (confirmSeconds <= 0) {
+                    confirmTimeOut();
+                    return;
+                }
+                document.getElementById('confirmCountdown').innerHTML = 'Auto-confirming in <strong>' + confirmSeconds + 's</strong>';
+            }, 1000);
+        }
+
+        function confirmTimeOut() {
+            clearInterval(confirmCountdownInterval);
+            confirmCountdownInterval = null;
+            document.getElementById('confirmOverlay').classList.remove('active');
+            idlePaused = false;
+            showLoading('Logging attendance...');
+            sendAction('Time Out', null);
+        }
+
+        function cancelTimeOut() {
+            clearInterval(confirmCountdownInterval);
+            confirmCountdownInterval = null;
+            document.getElementById('confirmOverlay').classList.remove('active');
+            idlePaused = false;
+        }
+
+        function sendAction(actionType, selfieBase64) {
+            callGAS({
+                action: 'logAttendance',
+                cardId: currentEmployee.cardId,
+                empId: currentEmployee.empId,
+                empName: currentEmployee.empName,
+                actionType: actionType,
+                selfieBase64: selfieBase64 || '',
+                location: 'In Office'
+            }).then(function (result) {
+                hideLoading();
+                if (result.success) {
+                    showMessage('success', 'Done!', result.message);
+                } else {
+                    showMessage('error', 'Failed', result.error);
+                }
+                setTimeout(resetToScan, 1800);
+            }).catch(function (err) {
+                hideLoading();
+                showMessage('error', 'Error', err.message || 'Server error.');
+                setTimeout(resetToScan, 2500);
+            });
+        }
+
+        // ============================================================================
+        // NATIVE CAMERA — runs directly on the page (works on standalone pages).
+        // Camera starts on splash tap and stays idle. Capture is instant.
+        // ============================================================================
+        function startCamera() {
+            if (cameraStream) return;
+            var video = document.getElementById('selfieVideo');
+            navigator.mediaDevices.getUserMedia({
+                video: { facingMode: 'user', width: 480, height: 360 }
+            }).then(function (stream) {
+                cameraStream = stream;
+                video.srcObject = stream;
+                video.play();
+                console.log('[Camera] Started successfully');
+            }).catch(function (err) {
+                console.warn('[Camera] getUserMedia failed:', err.message);
+            });
+        }
+
+        function stopCamera() {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(function (t) { t.stop(); });
+                cameraStream = null;
+            }
+        }
+
+        function captureSelfie(callback) {
+            var video = document.getElementById('selfieVideo');
+            var canvas = document.getElementById('selfieCanvas');
+            if (!cameraStream || !video.videoWidth) {
+                console.warn('[Camera] Not ready, logging without selfie');
+                callback('');
+                return;
+            }
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            var dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+            var raw = dataUrl.replace(/^data:image\/jpeg;base64,/, '');
+            callback(raw.length > 1000 ? raw : '');
+        }
+
+        // ============================================================================
+        // LOADING / MESSAGE OVERLAYS
+        // ============================================================================
+        function showLoading(text) {
+            document.getElementById('loadingText').textContent = text || 'Processing...';
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+
+        function showMessage(type, title, text) {
+            var icon = document.getElementById('msgIcon');
+            icon.className = 'msg-icon ' + type;
+            icon.textContent = type === 'success' ? '✓' : '✕';
+            document.getElementById('msgTitle').textContent = title;
+            document.getElementById('msgText').textContent = text;
+            document.getElementById('msgOverlay').classList.add('active');
+        }
+
+        function hideMsgOverlay() {
+            document.getElementById('msgOverlay').classList.remove('active');
+        }
+
+        // ============================================================================
+        // FULLSCREEN — auto via splash overlay
+        // ============================================================================
+        var isFullscreen = false;
+
+        function enterFullscreen() {
+            var targets = [document.documentElement, document.body];
+            for (var i = 0; i < targets.length; i++) {
+                var el = targets[i];
+                var rfs = el.requestFullscreen || el.webkitRequestFullscreen
+                    || el.mozRequestFullScreen || el.msRequestFullscreen;
+                if (rfs) {
+                    try {
+                        var result = rfs.call(el);
+                        if (result && result.then) return result;
+                        return Promise.resolve();
+                    } catch (e) { /* try next target */ }
+                }
+            }
+            return Promise.resolve();
+        }
+
+        function focusPage() {
+            window.focus();
+            document.body.focus();
+        }
+
+        function startKiosk() {
+            var overlay = document.getElementById('kioskStartOverlay');
+            overlay.classList.add('hidden');
+            // Start camera on splash tap (user gesture = permission prompt allowed)
+            startCamera();
+            enterFullscreen().then(function () {
+                setTimeout(focusPage, 500);
+            }).catch(function () {
+                setTimeout(focusPage, 500);
+            });
+        }
+
+        // Track fullscreen state
+        function onFullscreenChange() {
+            isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement
+                || document.mozFullScreenElement || document.msFullscreenElement);
+            if (!isFullscreen) {
+                document.getElementById('kioskStartOverlay').classList.remove('hidden');
+            } else {
+                setTimeout(focusPage, 500);
+            }
+        }
+        document.addEventListener('fullscreenchange', onFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+        document.addEventListener('mozfullscreenchange', onFullscreenChange);
+        document.addEventListener('MSFullscreenChange', onFullscreenChange);
+
+        // ============================================================================
+        // INIT
+        // ============================================================================
+        document.addEventListener('DOMContentLoaded', function () {
+            updateClock();
+            setInterval(updateClock, 1000);
+
+            // RFID: listen on document level
+            document.addEventListener('keydown', handleRfidInput);
+
+            // Exit button
+            document.getElementById('exitBtn').addEventListener('click', resetToScan);
+
+            // Message overlay click to dismiss
+            document.getElementById('msgOverlay').addEventListener('click', function () {
+                hideMsgOverlay();
+                resetToScan();
+            });
+
+            // Kiosk start overlay — tap anywhere to enter fullscreen
+            var overlay = document.getElementById('kioskStartOverlay');
+            overlay.addEventListener('click', startKiosk);
+            overlay.addEventListener('touchend', function (e) {
+                e.preventDefault();
+                startKiosk();
+            });
+        });
+
+        // ── On-Site Session Keep-Alive ──
+        // Refresh the session every 5 hours to keep the kiosk alive (max TTL is 6h)
+        (function () {
+            if (SESSION_TOKEN) {
+                setInterval(function () {
+                    callGAS({ action: 'refreshSession' }).catch(function () { });
+                }, 5 * 60 * 60 * 1000); // every 5 hours
+            }
+        })();
+    </script>
+
+    <div
+        style="text-align:center;padding:12px 24px 20px;font-family:'Inter',sans-serif;font-size:11px;color:#94a3b8;line-height:1.5;">
+        Created by: <strong>Joeross Delos Reyes</strong>
+    </div>
+
+</body>
+
+</html>

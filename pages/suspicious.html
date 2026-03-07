@@ -1,0 +1,543 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RDR HR — Suspicious Activity</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-card: #ffffff;
+            --bg-input: #ffffff;
+            --navy-900: #0a1628;
+            --navy-800: #0f2140;
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --green-500: #22c55e;
+            --red-500: #ef4444;
+            --amber-500: #f59e0b;
+            --blue-500: #3b82f6;
+            --r-sm: 8px;
+            --r-md: 14px;
+            --r-lg: 20px;
+            --r-xl: 28px;
+        }
+
+        [data-theme="dark"] {
+            --bg-card: #162032;
+            --bg-input: #0d1b2a;
+            --gray-50: #0d1b2a;
+            --gray-100: #132237;
+            --gray-200: #1e3050;
+            --gray-300: #2a4060;
+            --gray-400: #64748b;
+            --gray-500: #94a3b8;
+            --gray-600: #cbd5e1;
+            --gray-700: #e2e8f0;
+            --gray-800: #f1f5f9;
+            --gray-900: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+            min-height: 100vh;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, #0a1628 0%, #0f2140 60%, #1a3a6c 100%);
+            color: #fff;
+            padding: 14px 24px;
+            box-shadow: 0 4px 20px rgba(10, 22, 40, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .header-logo {
+            width: 44px;
+            height: 44px;
+            background: #fff;
+            border-radius: var(--r-md);
+            padding: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            flex-shrink: 0;
+        }
+
+        .header-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .header-sub {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .back-btn {
+            padding: 8px 16px;
+            border-radius: var(--r-sm);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        .theme-toggle {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #fff;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .app-body {
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .panel {
+            background: var(--bg-card);
+            border-radius: var(--r-xl);
+            border: 1px solid var(--gray-200);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 20px 24px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .panel-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .panel-title {
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .panel-sub {
+            font-size: 0.68rem;
+            color: var(--gray-400);
+            margin-top: 2px;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .date-input,
+        .scan-btn {
+            padding: 8px 14px;
+            border-radius: var(--r-sm);
+            font-family: inherit;
+            font-size: 0.75rem;
+            border: 1px solid var(--gray-200);
+            background: var(--bg-input);
+            color: var(--gray-800);
+        }
+
+        .scan-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .scan-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .flag-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            margin-bottom: 8px;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .flag-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+
+        .flag-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .flag-title {
+            font-size: 0.82rem;
+            font-weight: 800;
+        }
+
+        .flag-emp {
+            font-size: 0.72rem;
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        .flag-emp span {
+            color: var(--gray-400);
+            font-weight: 400;
+        }
+
+        .flag-detail {
+            font-size: 0.68rem;
+            color: var(--gray-500);
+            margin-top: 3px;
+        }
+
+        .severity-high {
+            background: rgba(239, 68, 68, 0.06);
+            border-color: rgba(239, 68, 68, 0.15);
+        }
+
+        .severity-high .flag-title {
+            color: #ef4444;
+        }
+
+        .severity-medium {
+            background: rgba(245, 158, 11, 0.06);
+            border-color: rgba(245, 158, 11, 0.15);
+        }
+
+        .severity-medium .flag-title {
+            color: #f59e0b;
+        }
+
+        .severity-low {
+            background: rgba(59, 130, 246, 0.06);
+            border-color: rgba(59, 130, 246, 0.15);
+        }
+
+        .severity-low .flag-title {
+            color: #3b82f6;
+        }
+
+        .summary-bar {
+            display: flex;
+            gap: 12px;
+            padding: 14px 24px;
+            background: var(--gray-50);
+            border-top: 1px solid var(--gray-200);
+            flex-wrap: wrap;
+        }
+
+        .summary-chip {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .empty-msg {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray-400);
+            font-size: 0.82rem;
+            font-style: italic;
+        }
+
+        .all-clear {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .all-clear-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .all-clear-text {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #22c55e;
+        }
+
+        .all-clear-sub {
+            font-size: 0.75rem;
+            color: var(--gray-400);
+            margin-top: 4px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.65rem;
+            color: var(--gray-400);
+        }
+
+        .footer a {
+            color: var(--blue-500);
+            text-decoration: none;
+        }
+
+        [data-theme="dark"] .date-input {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .summary-bar {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+        }
+
+        @media (max-width: 768px) {
+            .app-body {
+                padding: 12px;
+            }
+
+            .app-header {
+                padding: 10px 14px;
+            }
+
+            .header-title {
+                font-size: 1.05rem;
+            }
+        }
+    </style>
+    <script src="../js/rdr-auth.js"></script>
+    <script src="../js/rdr-api.js"></script>
+    <script>
+        // Provide template-compatible variables from session
+        var USER_EMAIL = RDR_AUTH.getEmail();
+        var SESSION_TOKEN = RDR_AUTH.getSession();
+        var BASE_URL = RDR_AUTH.getGasUrl();
+        var userEmail = USER_EMAIL;
+        var sessionToken = SESSION_TOKEN;
+        var baseUrl = BASE_URL;
+    </script>
+</head>
+
+<body>
+    <div class="app-header">
+        <div class="header-logo">
+            <img id="headerLogo" src="https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png" alt="RDR">
+        </div>
+        <div>
+            <div class="header-title">🚨 Suspicious Activity</div>
+            <div class="header-sub">Auto-detected attendance anomalies for HR review</div>
+        </div>
+        <div class="header-actions">
+            <button class="back-btn"
+                onclick="window.location.href='' + RDR_AUTH.getGasUrl() + '?session=' + RDR_AUTH.getSession() + '&mode=admin'">← Back to
+                Admin</button>
+            <button class="theme-toggle" id="themeToggle">
+                <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="app-body">
+        <div class="panel">
+            <div class="panel-header">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <div class="panel-icon" style="background:linear-gradient(135deg,#ef4444,#dc2626);">🚨</div>
+                    <div>
+                        <div class="panel-title">Anomaly Scanner</div>
+                        <div class="panel-sub">Detects: No Lunch, No Time Out, Short Days, Late Arrivals, Weekend Logins
+                        </div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <input type="date" id="startDate" class="date-input" />
+                    <span style="color:var(--gray-400);font-size:0.72rem;font-weight:600;">to</span>
+                    <input type="date" id="endDate" class="date-input" />
+                    <button class="scan-btn" onclick="scanSuspicious()">🔍 Scan</button>
+                </div>
+            </div>
+
+            <div class="summary-bar" id="summaryBar" style="display:none;">
+                <div class="summary-chip" style="background:rgba(239,68,68,0.1);color:#ef4444;">🔴 High: <span
+                        id="sumHigh">0</span></div>
+                <div class="summary-chip" style="background:rgba(245,158,11,0.1);color:#f59e0b;">🟡 Medium: <span
+                        id="sumMedium">0</span></div>
+                <div class="summary-chip" style="background:rgba(59,130,246,0.1);color:#3b82f6;">🔵 Low: <span
+                        id="sumLow">0</span></div>
+            </div>
+
+            <div id="flagsWrap" style="padding:16px 24px 20px;max-height:600px;overflow-y:auto;">
+                <div class="empty-msg">Select date range and click Scan</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Created by: <strong>Joeross Delos Reyes</strong><br>
+        Need help? Contact <a href="https://t.me/moverings">@moverings</a> on Telegram or reach out to IT Operations
+    </div>
+
+    <script>
+        var BASE_URL = '' + RDR_AUTH.getGasUrl() + '';
+        var SESSION_TOKEN = '' + RDR_AUTH.getSession() + '';
+        var sevIcons = { high: '🔴', medium: '🟡', low: '🔵' };
+
+        function scanSuspicious() {
+            var start = document.getElementById('startDate').value;
+            var end = document.getElementById('endDate').value;
+            if (!start || !end) { alert('Select both dates.'); return; }
+            var wrap = document.getElementById('flagsWrap');
+            wrap.innerHTML = '<div class="empty-msg">Scanning for anomalies...</div>';
+            document.getElementById('summaryBar').style.display = 'none';
+
+            callGAS('getSuspiciousRecords', [start, end]).then(function (flags) {
+                    if (!flags || flags.length === 0) {
+                        wrap.innerHTML = '<div class="all-clear"><div class="all-clear-icon">✅</div><div class="all-clear-text">No suspicious activity found!</div><div class="all-clear-sub">All attendance records look clean for this period.</div></div>';
+                        return;
+                    }
+
+                    var cntHigh = 0, cntMedium = 0, cntLow = 0;
+                    var html = '';
+                    for (var i = 0; i < flags.length; i++) {
+                        var f = flags[i];
+                        if (f.severity === 'high') cntHigh++;
+                        else if (f.severity === 'medium') cntMedium++;
+                        else cntLow++;
+
+                        html += '<div class="flag-card severity-' + f.severity + '">' +
+                            '<span class="flag-icon">' + (sevIcons[f.severity] || '🔵') + '</span>' +
+                            '<div style="flex:1;min-width:0;">' +
+                            '<div class="flag-title">' + f.flag + '</div>' +
+                            '<div class="flag-emp">' + f.empName + ' <span>(' + f.empId + ')</span></div>' +
+                            '<div class="flag-detail">📅 ' + f.date + ' — ' + f.detail + '</div>' +
+                            '</div></div>';
+                    }
+                    wrap.innerHTML = html;
+
+                    document.getElementById('sumHigh').textContent = cntHigh;
+                    document.getElementById('sumMedium').textContent = cntMedium;
+                    document.getElementById('sumLow').textContent = cntLow;
+                    document.getElementById('summaryBar').style.display = 'flex';
+                }).catch(function () {
+                    wrap.innerHTML = '<div class="empty-msg" style="color:#dc2626;">Failed to scan. Please try again.</div>';
+                });
+        }
+
+        // Init — set default dates (last 7 days)
+        (function () {
+            var now = new Date();
+            var phOffset = now.getTime() + (8 * 60 * 60 * 1000) + (now.getTimezoneOffset() * 60 * 1000);
+            var phNow = new Date(phOffset);
+            var y = phNow.getFullYear();
+            var m = String(phNow.getMonth() + 1).padStart(2, '0');
+            var d = String(phNow.getDate()).padStart(2, '0');
+            document.getElementById('endDate').value = y + '-' + m + '-' + d;
+            var weekAgo = new Date(phNow.getTime() - 7 * 24 * 60 * 60 * 1000);
+            document.getElementById('startDate').value = weekAgo.getFullYear() + '-' + String(weekAgo.getMonth() + 1).padStart(2, '0') + '-' + String(weekAgo.getDate()).padStart(2, '0');
+        })();
+
+        // Theme toggle
+        (function () {
+            var LOGO_LIGHT = 'https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png';
+            var LOGO_DARK = 'https://i.ibb.co/6crnBjPv/RDR-Logo-White.png';
+            var saved = 'light';
+            try { saved = localStorage.getItem('rdr-theme') || 'light'; } catch (e) { }
+            document.documentElement.setAttribute('data-theme', saved);
+            function updateIcon() {
+                var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                document.getElementById('themeIcon').innerHTML = isDark
+                    ? '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>'
+                    : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+                var logo = document.getElementById('headerLogo');
+                if (logo) logo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
+            }
+            updateIcon();
+            document.getElementById('themeToggle').addEventListener('click', function () {
+                var cur = document.documentElement.getAttribute('data-theme');
+                var next = cur === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                try { localStorage.setItem('rdr-theme', next); } catch (e) { }
+                updateIcon();
+            });
+        })();
+    </script>
+</body>
+
+</html>

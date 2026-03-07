@@ -1,0 +1,623 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RDR HR — Semi-Monthly Report</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-card: #ffffff;
+            --bg-input: #ffffff;
+            --navy-900: #0a1628;
+            --navy-800: #0f2140;
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --green-500: #22c55e;
+            --red-500: #ef4444;
+            --amber-500: #f59e0b;
+            --blue-500: #3b82f6;
+            --purple-500: #8b5cf6;
+            --r-sm: 8px;
+            --r-md: 14px;
+            --r-lg: 20px;
+            --r-xl: 28px;
+        }
+
+        [data-theme="dark"] {
+            --bg-card: #162032;
+            --bg-input: #0d1b2a;
+            --gray-50: #0d1b2a;
+            --gray-100: #132237;
+            --gray-200: #1e3050;
+            --gray-300: #2a4060;
+            --gray-400: #64748b;
+            --gray-500: #94a3b8;
+            --gray-600: #cbd5e1;
+            --gray-700: #e2e8f0;
+            --gray-800: #f1f5f9;
+            --gray-900: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+            min-height: 100vh;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, #0a1628 0%, #0f2140 60%, #1a3a6c 100%);
+            color: #fff;
+            padding: 14px 24px;
+            box-shadow: 0 4px 20px rgba(10, 22, 40, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .header-logo {
+            width: 44px;
+            height: 44px;
+            background: #fff;
+            border-radius: var(--r-md);
+            padding: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            flex-shrink: 0;
+        }
+
+        .header-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .header-sub {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .back-btn {
+            padding: 8px 16px;
+            border-radius: var(--r-sm);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        .theme-toggle {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #fff;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .app-body {
+            padding: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .panel {
+            background: var(--bg-card);
+            border-radius: var(--r-xl);
+            border: 1px solid var(--gray-200);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 20px 24px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .panel-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .panel-title {
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .panel-sub {
+            font-size: 0.68rem;
+            color: var(--gray-400);
+            margin-top: 2px;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .ctrl-input {
+            padding: 8px 14px;
+            border-radius: var(--r-sm);
+            font-family: inherit;
+            font-size: 0.75rem;
+            border: 1px solid var(--gray-200);
+            background: var(--bg-input);
+            color: var(--gray-800);
+            cursor: pointer;
+        }
+
+        select.ctrl-input {
+            appearance: auto;
+        }
+
+        .gen-btn {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: var(--r-sm);
+            font-weight: 700;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .gen-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+        }
+
+        th {
+            padding: 12px 10px;
+            text-align: center;
+            font-weight: 700;
+            color: var(--gray-500);
+            background: var(--gray-50);
+            border-bottom: 2px solid var(--gray-200);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        th:first-child,
+        th:nth-child(2) {
+            text-align: left;
+        }
+
+        td {
+            padding: 9px 10px;
+            text-align: center;
+            border-bottom: 1px solid var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        td:first-child,
+        td:nth-child(2) {
+            text-align: left;
+        }
+
+        tr:hover td {
+            background: rgba(139, 92, 246, 0.03);
+        }
+
+        .row-weekend td {
+            background: var(--gray-50);
+            color: var(--gray-400);
+            font-style: italic;
+        }
+
+        .row-absent td {
+            background: rgba(239, 68, 68, 0.03);
+        }
+
+        .row-leave td {
+            background: rgba(59, 130, 246, 0.03);
+        }
+
+        tfoot td {
+            font-weight: 800;
+            background: var(--gray-50);
+            border-top: 2px solid var(--gray-200);
+            font-size: 0.78rem;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+            padding: 16px 24px;
+        }
+
+        .summary-card {
+            padding: 14px;
+            border-radius: 14px;
+            text-align: center;
+            border: 1px solid transparent;
+        }
+
+        .summary-card-val {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .summary-card-lbl {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+
+        .empty-msg {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray-400);
+            font-size: 0.82rem;
+            font-style: italic;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.65rem;
+            color: var(--gray-400);
+        }
+
+        .footer a {
+            color: var(--blue-500);
+            text-decoration: none;
+        }
+
+        [data-theme="dark"] .ctrl-input {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] th {
+            background: #0d1b2a !important;
+            color: #94a3b8 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] td {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] tfoot td {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .row-weekend td {
+            background: #0d1b2a !important;
+        }
+
+        @media (max-width: 768px) {
+            .app-body {
+                padding: 12px;
+            }
+
+            .app-header {
+                padding: 10px 14px;
+            }
+
+            .header-title {
+                font-size: 1.05rem;
+            }
+
+            table {
+                font-size: 0.68rem;
+            }
+
+            th,
+            td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+    <script src="../js/rdr-auth.js"></script>
+    <script src="../js/rdr-api.js"></script>
+    <script>
+        // Provide template-compatible variables from session
+        var USER_EMAIL = RDR_AUTH.getEmail();
+        var SESSION_TOKEN = RDR_AUTH.getSession();
+        var BASE_URL = RDR_AUTH.getGasUrl();
+        var userEmail = USER_EMAIL;
+        var sessionToken = SESSION_TOKEN;
+        var baseUrl = BASE_URL;
+    </script>
+</head>
+
+<body>
+    <div class="app-header">
+        <div class="header-logo">
+            <img id="headerLogo" src="https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png" alt="RDR">
+        </div>
+        <div>
+            <div class="header-title">📅 Semi-Monthly Report</div>
+            <div class="header-sub">Per-employee payroll period breakdown</div>
+        </div>
+        <div class="header-actions">
+            <button class="back-btn"
+                onclick="window.location.href='' + RDR_AUTH.getGasUrl() + '?session=' + RDR_AUTH.getSession() + '&mode=admin'">← Back to
+                Admin</button>
+            <button class="theme-toggle" id="themeToggle">
+                <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="app-body">
+        <div class="panel">
+            <div class="panel-header">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <div class="panel-icon" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);">📅</div>
+                    <div>
+                        <div class="panel-title">Payroll Period Report</div>
+                        <div class="panel-sub">Select an employee and period to generate breakdown</div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <select id="empSelect" class="ctrl-input" style="max-width:200px;">
+                        <option value="">— Select Employee —</option>
+                    </select>
+                    <select id="periodSelect" class="ctrl-input">
+                        <option value="1st">1st Half (1–15)</option>
+                        <option value="2nd">2nd Half (16–end)</option>
+                    </select>
+                    <input type="month" id="monthSelect" class="ctrl-input" />
+                    <button class="gen-btn" onclick="generateReport()">📊 Generate</button>
+                </div>
+            </div>
+
+            <!-- Summary cards (hidden until report generated) -->
+            <div class="summary-cards" id="summaryCards" style="display:none;">
+                <div class="summary-card" style="background:rgba(34,197,94,0.06);border-color:rgba(34,197,94,0.15);">
+                    <div class="summary-card-val" style="color:#22c55e;" id="sumRegular">—</div>
+                    <div class="summary-card-lbl">Regular Hours</div>
+                </div>
+                <div class="summary-card" style="background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.15);">
+                    <div class="summary-card-val" style="color:#f59e0b;" id="sumOT">—</div>
+                    <div class="summary-card-lbl">Overtime Hours</div>
+                </div>
+                <div class="summary-card" style="background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.15);">
+                    <div class="summary-card-val" style="color:#ef4444;" id="sumLate">—</div>
+                    <div class="summary-card-lbl">Late Minutes</div>
+                </div>
+                <div class="summary-card" style="background:rgba(59,130,246,0.06);border-color:rgba(59,130,246,0.15);">
+                    <div class="summary-card-val" style="color:#3b82f6;" id="sumPresent">—</div>
+                    <div class="summary-card-lbl">Present / Absent / Leave</div>
+                </div>
+            </div>
+
+            <div style="overflow-x:auto;padding:0 24px 20px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Day</th>
+                            <th>In</th>
+                            <th>Out</th>
+                            <th>Net</th>
+                            <th>OT</th>
+                            <th>Late</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportBody">
+                        <tr>
+                            <td colspan="8" class="empty-msg">Select employee, period, and click Generate</td>
+                        </tr>
+                    </tbody>
+                    <tfoot id="reportFoot" style="display:none;">
+                        <tr>
+                            <td colspan="4" style="text-align:left;font-weight:800;">TOTALS</td>
+                            <td id="footNet">—</td>
+                            <td id="footOT">—</td>
+                            <td id="footLate">—</td>
+                            <td id="footStatus">—</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Created by: <strong>Joeross Delos Reyes</strong><br>
+        Need help? Contact <a href="https://t.me/moverings">@moverings</a> on Telegram or reach out to IT Operations
+    </div>
+
+    <script>
+        var BASE_URL = '' + RDR_AUTH.getGasUrl() + '';
+        var SESSION_TOKEN = '' + RDR_AUTH.getSession() + '';
+
+        // Populate employee dropdown
+        (function () {
+            callGAS('getElementById', ['empSelect']).then(function (list) {
+                    var sel = document.getElementById('empSelect'););
+                    if (!list || list.length === 0) return;
+                    for (var i = 0; i < list.length; i++) {
+                        var opt = document.createElement('option');
+                        opt.value = list[i].empId;
+                        opt.textContent = list[i].empName + ' (' + list[i].empId + ')';
+                        sel.appendChild(opt);
+                    }
+                })
+                .withFailureHandler(function () { })
+                .getActiveEmployeeList();
+        })();
+
+        function generateReport() {
+            var empId = document.getElementById('empSelect').value;
+            var period = document.getElementById('periodSelect').value;
+            var monthVal = document.getElementById('monthSelect').value;
+            if (!empId) { alert('Select an employee.'); return; }
+            if (!monthVal) { alert('Select a month.'); return; }
+            var parts = monthVal.split('-');
+            var year = parseInt(parts[0]);
+            var month = parseInt(parts[1]);
+
+            var body = document.getElementById('reportBody');
+            var foot = document.getElementById('reportFoot');
+            foot.style.display = 'none';
+            document.getElementById('summaryCards').style.display = 'none';
+            body.innerHTML = '<tr><td colspan="8" class="empty-msg">Generating report...</td></tr>';
+
+            callGAS('indexOf', ['Leave') === 0 ? ' class="row-leave"' : '']).then(function (report) {
+                    if (report.error) {
+                        body.innerHTML = '<tr><td colspan="8" class="empty-msg" style="color:#dc2626;">' + report.error + '</td></tr>';
+                        return;
+                    }
+                    var html = '';
+                    for (var i = 0; i < report.days.length; i++) {
+                        var d = report.days[i];
+                        var rowClass = d.status === 'Weekend' ? ' class="row-weekend"' : d.status === 'Absent' ? ' class="row-absent"' : (d.status.indexOf('Leave') === 0 ? ' class="row-leave"' : ''););
+                        var statusColor = d.status === 'Complete' ? '#22c55e' : d.status === 'Absent' ? '#ef4444' : d.status === 'Weekend' ? '#94a3b8' : d.status.indexOf('Leave') === 0 ? '#3b82f6' : '#f59e0b';
+
+                        html += '<tr' + rowClass + '>' +
+                            '<td>' + d.date + '</td>' +
+                            '<td>' + d.dayName + '</td>' +
+                            '<td>' + d.timeIn + '</td>' +
+                            '<td>' + d.timeOut + '</td>' +
+                            '<td style="font-weight:700;">' + (d.netHrs || '—') + '</td>' +
+                            '<td>' + (d.otHrs || '—') + '</td>' +
+                            '<td>' + (d.lateMins ? d.lateMins + 'm' : '—') + '</td>' +
+                            '<td><span style="color:' + statusColor + ';font-weight:700;font-size:0.68rem;">' + d.status + '</span></td>' +
+                            '</tr>';
+                    }
+                    body.innerHTML = html;
+
+                    // Fill totals
+                    var s = report.summary;
+                    document.getElementById('footNet').textContent = s.totalRegular + 'h';
+                    document.getElementById('footOT').textContent = s.totalOT + 'h';
+                    document.getElementById('footLate').textContent = s.totalLate + 'm';
+                    document.getElementById('footStatus').textContent = s.daysPresent + 'P / ' + s.daysAbsent + 'A / ' + s.daysLeave + 'L';
+                    foot.style.display = '';
+
+                    // Fill summary cards
+                    document.getElementById('sumRegular').textContent = s.totalRegular + 'h';
+                    document.getElementById('sumOT').textContent = s.totalOT + 'h';
+                    document.getElementById('sumLate').textContent = s.totalLate + 'm';
+                    document.getElementById('sumPresent').textContent = s.daysPresent + 'P / ' + s.daysAbsent + 'A / ' + s.daysLeave + 'L';
+                    document.getElementById('summaryCards').style.display = 'grid';
+                })
+                .withFailureHandler(function () {
+                    body.innerHTML = '<tr><td colspan="8" class="empty-msg" style="color:#dc2626;">Failed to generate report.</td></tr>';
+                })
+                .getSemiMonthlyReport(empId, period, month, year);
+        }
+
+        // Init — set default month
+        (function () {
+            var now = new Date();
+            var phOffset = now.getTime() + (8 * 60 * 60 * 1000) + (now.getTimezoneOffset() * 60 * 1000);
+            var phNow = new Date(phOffset);
+            var y = phNow.getFullYear();
+            var m = String(phNow.getMonth() + 1).padStart(2, '0');
+            document.getElementById('monthSelect').value = y + '-' + m;
+        })();
+
+        // Theme toggle
+        (function () {
+            var LOGO_LIGHT = 'https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png';
+            var LOGO_DARK = 'https://i.ibb.co/6crnBjPv/RDR-Logo-White.png';
+            var saved = 'light';
+            try { saved = localStorage.getItem('rdr-theme') || 'light'; } catch (e) { }
+            document.documentElement.setAttribute('data-theme', saved);
+            function updateIcon() {
+                var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                document.getElementById('themeIcon').innerHTML = isDark
+                    ? '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>'
+                    : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+                var logo = document.getElementById('headerLogo');
+                if (logo) logo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
+            }
+            updateIcon();
+            document.getElementById('themeToggle').addEventListener('click', function () {
+                var cur = document.documentElement.getAttribute('data-theme');
+                var next = cur === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                try { localStorage.setItem('rdr-theme', next); } catch (e) { }
+                updateIcon();
+            });
+        })();
+    </script>
+</body>
+
+</html>

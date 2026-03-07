@@ -1,0 +1,2198 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RDR Attendance — Admin Panel</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-card: #ffffff;
+            --bg-input: #ffffff;
+            --navy-900: #0a1628;
+            --navy-800: #0f2140;
+            --navy-700: #132d56;
+            --navy-600: #1a3a6c;
+
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-900: #0f172a;
+
+            --green-500: #22c55e;
+            --green-600: #16a34a;
+            --green-50: #f0fdf4;
+            --red-500: #ef4444;
+            --red-600: #dc2626;
+            --red-50: #fef2f2;
+            --amber-500: #f59e0b;
+            --amber-600: #d97706;
+            --amber-700: #b45309;
+            --amber-50: #fffbeb;
+            --amber-100: #fef3c7;
+
+            --shadow-amber: rgba(245, 158, 11, 0.25);
+            --shadow-dark: rgba(10, 22, 40, 0.4);
+
+            --sp-xs: 0.5rem;
+            --sp-sm: 0.75rem;
+            --sp-md: 1rem;
+            --sp-lg: 1.5rem;
+            --sp-xl: 2rem;
+            --sp-2xl: 3rem;
+
+            --r-sm: 8px;
+            --r-md: 14px;
+            --r-lg: 20px;
+            --r-xl: 28px;
+            --r-full: 9999px;
+        }
+
+        /* â”€â”€ DARK MODE â”€â”€ */
+        [data-theme="dark"] {
+            --bg-card: #162032;
+            --bg-input: #0d1b2a;
+            --navy-900: #0a1628;
+            --navy-800: #0f2140;
+            --navy-700: #132d56;
+            --gray-50: #0d1b2a;
+            --gray-100: #162032;
+            --gray-200: #1e3050;
+            --gray-300: #475569;
+            --gray-400: #64748b;
+            --gray-500: #94a3b8;
+            --gray-600: #94a3b8;
+            --gray-700: #cbd5e1;
+            --gray-800: #e2e8f0;
+            --gray-900: #e2e8f0;
+            --shadow-dark: rgba(0, 0, 0, 0.5);
+            --green-50: #0a2618;
+            --red-50: #2a0f0f;
+            --blue-50: #0f1a2e;
+            --amber-50: #2a1f0a;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background: var(--gray-50);
+        }
+
+        #app {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* HEADER */
+        .app-header {
+            background: linear-gradient(135deg, var(--navy-900), var(--navy-700));
+            color: #ffffff;
+            padding: var(--sp-sm) var(--sp-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-header::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.03) 75%, transparent 100%);
+            animation: headerShimmer 8s ease-in-out infinite;
+        }
+
+        @keyframes headerShimmer {
+
+            0%,
+            100% {
+                transform: translateX(-25%);
+            }
+
+            50% {
+                transform: translateX(25%);
+            }
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--r-md);
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+
+        .header-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #fde68a, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-datetime {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 3px;
+            font-weight: 400;
+        }
+
+        .admin-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(245, 158, 11, 0.3);
+            border: 1px solid rgba(253, 230, 138, 0.4);
+            padding: 6px 14px;
+            border-radius: var(--r-full);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            margin-left: auto;
+        }
+
+        /* APP BODY */
+        .app-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--sp-lg) var(--sp-xl);
+        }
+
+        .body-inner {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: var(--sp-lg);
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+        }
+
+        /* PANELS */
+        .panel {
+            background: var(--bg-card);
+            border-radius: var(--r-xl);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--gray-200);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: var(--sp-lg) var(--sp-xl);
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-header-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--amber-600), var(--amber-500));
+            border-radius: var(--r-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .panel-header h2 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .panel-body {
+            padding: var(--sp-lg) var(--sp-xl);
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* SEARCH ROW */
+        .search-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: var(--sp-lg);
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--r-md);
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-900);
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: #1a3a6c;
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.12);
+        }
+
+        .search-input::placeholder {
+            color: var(--gray-300);
+            font-weight: 400;
+        }
+
+        .date-input {
+            padding: 12px 14px;
+            background: var(--bg-card);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--r-md);
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-900);
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .date-input:focus {
+            border-color: #1a3a6c;
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.12);
+        }
+
+        .search-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--amber-600), var(--amber-500));
+            color: var(--white);
+            border: none;
+            border-radius: var(--r-md);
+            font-size: 0.85rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 16px var(--shadow-amber);
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--shadow-amber);
+        }
+
+        /* EMPLOYEE INFO BAR */
+        .emp-info {
+            display: none;
+            padding: var(--sp-md) var(--sp-lg);
+            background: var(--amber-50);
+            border-radius: var(--r-md);
+            margin-bottom: var(--sp-lg);
+            align-items: center;
+            gap: 14px;
+            border: 1.5px solid var(--amber-100);
+        }
+
+        .emp-info.active {
+            display: flex;
+        }
+
+        .emp-avatar {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--amber-600), var(--amber-500));
+            color: var(--white);
+            border-radius: var(--r-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .emp-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--gray-900);
+        }
+
+        .emp-meta {
+            font-size: 0.78rem;
+            color: var(--gray-500);
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        /* SLOTS FORM */
+        .slots-form {
+            display: none;
+        }
+
+        .slots-form.active {
+            display: block;
+        }
+
+        .slots-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: var(--sp-lg);
+        }
+
+        .slot-row {
+            display: grid;
+            grid-template-columns: 140px 1fr 140px;
+            gap: 10px;
+            align-items: center;
+            padding: 10px 14px;
+            background: var(--gray-50);
+            border-radius: var(--r-md);
+            border: 1.5px solid var(--gray-200);
+            transition: all 0.2s;
+        }
+
+        .slot-row:hover {
+            border-color: #1a3a6c;
+            background: var(--amber-50);
+        }
+
+        .slot-row.has-value {
+            border-color: #bbf7d0;
+            background: #f0fdf4;
+        }
+
+        .slot-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .slot-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .slot-icon svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+
+        .slot-icon.time-in {
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+        }
+
+        .slot-icon.lunch-in {
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+        }
+
+        .slot-icon.lunch-out {
+            background: linear-gradient(135deg, #0891b2, #22d3ee);
+        }
+
+        .slot-icon.time-out {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+        }
+
+        .slot-icon.pause-work {
+            background: linear-gradient(135deg, #7c3aed, #a78bfa);
+        }
+
+        .slot-icon.resume {
+            background: linear-gradient(135deg, #2563eb, #60a5fa);
+        }
+
+        .slot-time-input {
+            padding: 10px 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--r-sm);
+            font-size: 0.88rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-900);
+            outline: none;
+            transition: all 0.2s;
+            width: 100%;
+            background: var(--bg-card);
+        }
+
+        .slot-time-input:focus {
+            border-color: #1a3a6c;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        .slot-time-input.modified {
+            border-color: #1a3a6c;
+            background: var(--amber-50);
+        }
+
+        .slot-location {
+            padding: 10px 8px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--r-sm);
+            font-size: 0.78rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-600);
+            outline: none;
+            cursor: pointer;
+            background: var(--bg-card);
+            transition: all 0.2s;
+        }
+
+        .slot-location:focus {
+            border-color: #1a3a6c;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        /* REMARKS */
+        .remarks-section {
+            margin-bottom: var(--sp-lg);
+        }
+
+        .remarks-label {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .remarks-label .required {
+            color: var(--red-500);
+            font-size: 0.75rem;
+        }
+
+        .remarks-textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--r-md);
+            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-900);
+            outline: none;
+            resize: vertical;
+            min-height: 72px;
+            transition: all 0.2s;
+        }
+
+        .remarks-textarea:focus {
+            border-color: #1a3a6c;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        .remarks-textarea::placeholder {
+            color: var(--gray-300);
+        }
+
+        /* SAVE BUTTON */
+        .save-btn {
+            width: 100%;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--green-600), var(--green-500));
+            color: var(--white);
+            border: none;
+            border-radius: var(--r-md);
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 16px rgba(26, 58, 108, 0.4);
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(34, 197, 94, 0.35);
+        }
+
+        .save-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* AUDIT LOG */
+        .log-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--sp-md) var(--sp-xl);
+        }
+
+        .log-entry {
+            padding: var(--sp-sm) var(--sp-md);
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .log-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .log-admin {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--amber-700);
+        }
+
+        .log-emp {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 3px;
+        }
+
+        .log-detail {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            line-height: 1.5;
+        }
+
+        .log-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            margin-right: 6px;
+        }
+
+        .log-badge.add {
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .log-badge.replace {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .log-badge.batch {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .log-time {
+            font-size: 0.72rem;
+            color: var(--gray-400);
+            font-weight: 500;
+        }
+
+        .log-empty {
+            text-align: center;
+            padding: var(--sp-2xl);
+            color: var(--gray-400);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* NO RECORDS MSG */
+        .no-records {
+            text-align: center;
+            padding: var(--sp-xl);
+            color: var(--gray-400);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* OVERLAYS */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.92);
+            backdrop-filter: blur(12px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: var(--white);
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            border-top-color: #fbbf24;
+            border-radius: var(--r-full);
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto var(--sp-lg);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            font-size: 1rem;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .msg-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.5);
+            backdrop-filter: blur(6px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .msg-overlay.active {
+            display: flex;
+        }
+
+        .msg-box {
+            background: var(--bg-card);
+            padding: var(--sp-2xl);
+            border-radius: var(--r-xl);
+            box-shadow: 0 20px 60px var(--shadow-dark);
+            text-align: center;
+            max-width: 380px;
+            width: 90%;
+            animation: msgIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes msgIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .msg-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: var(--r-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--sp-lg);
+            font-size: 2rem;
+        }
+
+        .msg-icon.success {
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .msg-icon.error {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .msg-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--sp-xs);
+        }
+
+        .msg-text {
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            line-height: 1.5;
+        }
+
+        /* CONFIRM OVERLAY */
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.65);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+        }
+
+        .confirm-overlay.active {
+            display: flex;
+        }
+
+        .confirm-box {
+            background: var(--bg-card);
+            padding: var(--sp-2xl);
+            border-radius: var(--r-xl);
+            box-shadow: 0 20px 60px var(--shadow-dark);
+            text-align: center;
+            max-width: 480px;
+            width: 92%;
+            animation: msgIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .confirm-icon {
+            font-size: 3rem;
+            margin-bottom: var(--sp-md);
+        }
+
+        .confirm-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--sp-xs);
+        }
+
+        .confirm-text {
+            font-size: 0.88rem;
+            color: var(--gray-500);
+            margin-bottom: var(--sp-xl);
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .confirm-change-list {
+            text-align: left;
+            margin: var(--sp-md) 0 var(--sp-lg);
+            padding: var(--sp-md);
+            background: var(--gray-50);
+            border-radius: var(--r-sm);
+            border: 1px solid var(--gray-200);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .confirm-change-item {
+            font-size: 0.82rem;
+            color: var(--gray-700);
+            padding: 4px 0;
+            border-bottom: 1px solid var(--gray-100);
+            font-weight: 500;
+        }
+
+        .confirm-change-item:last-child {
+            border-bottom: none;
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .confirm-btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: var(--r-md);
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .confirm-btn.yes {
+            background: linear-gradient(135deg, var(--green-600), var(--green-500));
+            color: var(--white);
+            box-shadow: 0 4px 16px rgba(26, 58, 108, 0.4);
+        }
+
+        .confirm-btn.yes:hover {
+            transform: translateY(-2px);
+        }
+
+        .confirm-btn.no {
+            background: var(--gray-100);
+            color: var(--gray-600);
+            border: 1.5px solid var(--gray-200);
+        }
+
+        .confirm-btn.no:hover {
+            background: var(--gray-200);
+        }
+
+        /* FOOTER */
+        .app-footer {
+            text-align: center;
+            padding: 10px 16px;
+            font-size: 0.75rem;
+            color: var(--gray-400);
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.6);
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .app-footer span {
+            font-weight: 700;
+            color: var(--amber-600);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .body-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .app-body {
+                padding: var(--sp-md);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-header {
+                padding: var(--sp-sm) var(--sp-md);
+            }
+
+            .header-inner {
+                gap: 10px;
+            }
+
+            .header-logo {
+                width: 36px;
+                height: 36px;
+            }
+
+            .header-title {
+                font-size: 1.1rem;
+            }
+
+            .header-datetime {
+                font-size: 0.65rem;
+            }
+
+            .admin-badge {
+                font-size: 0.6rem;
+                padding: 4px 10px;
+            }
+
+            .search-row {
+                flex-direction: column;
+            }
+
+            .slot-row {
+                grid-template-columns: 1fr;
+                gap: 6px;
+            }
+
+            .panel-body {
+                padding: var(--sp-md);
+            }
+
+            .panel-header h2 {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .app-header {
+                padding: var(--sp-xs) var(--sp-sm);
+            }
+
+            .header-title {
+                font-size: 0.95rem;
+            }
+
+            .admin-badge {
+                display: none;
+            }
+
+            .app-body {
+                padding: var(--sp-sm);
+            }
+
+            .panel {
+                border-radius: 14px;
+            }
+
+            .panel-body {
+                padding: var(--sp-sm);
+            }
+
+            .search-btn {
+                width: 100%;
+            }
+
+            .emp-info {
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+            }
+        }
+
+        /* â”€â”€ THEME TOGGLE â”€â”€ */
+        .theme-toggle {
+            margin-left: auto;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            color: #fff;
+            padding: 0;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* â”€â”€ DARK MODE CONTENT OVERRIDES â”€â”€ */
+        [data-theme="dark"] .scan-card,
+        [data-theme="dark"] .profile-bar,
+        [data-theme="dark"] .records-panel,
+        [data-theme="dark"] .actions-panel,
+        [data-theme="dark"] .form-card,
+        [data-theme="dark"] .overlay-card,
+        [data-theme="dark"] .msg-box,
+        [data-theme="dark"] .filing-card,
+        [data-theme="dark"] .section-panel,
+        [data-theme="dark"] .confirm-card,
+        [data-theme="dark"] .table-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .scan-title,
+        [data-theme="dark"] .form-title,
+        [data-theme="dark"] .panel-title,
+        [data-theme="dark"] .section-title,
+        [data-theme="dark"] h2,
+        [data-theme="dark"] h3 {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .scan-subtitle,
+        [data-theme="dark"] .form-subtitle,
+        [data-theme="dark"] .input-label,
+        [data-theme="dark"] label {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .card-input,
+        [data-theme="dark"] .form-input,
+        [data-theme="dark"] .form-select,
+        [data-theme="dark"] select,
+        [data-theme="dark"] .form-textarea,
+        [data-theme="dark"] input[type="text"],
+        [data-theme="dark"] input[type="date"],
+        [data-theme="dark"] input[type="time"],
+        [data-theme="dark"] input[type="number"],
+        [data-theme="dark"] input[type="email"],
+        [data-theme="dark"] textarea {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .card-input::placeholder,
+        [data-theme="dark"] input::placeholder,
+        [data-theme="dark"] textarea::placeholder {
+            color: #475569 !important;
+        }
+
+        [data-theme="dark"] .submit-btn,
+        [data-theme="dark"] .form-btn {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .credits-label,
+        [data-theme="dark"] .credits-sub,
+        [data-theme="dark"] .rtable td,
+        [data-theme="dark"] td,
+        [data-theme="dark"] th {
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="dark"] .status-pill,
+        [data-theme="dark"] .badge {
+            opacity: 0.9;
+        }
+
+        [data-theme="dark"] .loading-overlay {
+            background: rgba(0, 0, 0, 0.92) !important;
+        }
+
+        [data-theme="dark"] .msg-overlay {
+            background: rgba(0, 0, 0, 0.7) !important;
+        }
+
+        [data-theme="dark"] .msg-text {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .msg-icon.success {
+            background: rgba(34, 197, 94, 0.15) !important;
+            color: #4ade80 !important;
+        }
+
+        [data-theme="dark"] .msg-icon.error {
+            background: rgba(239, 68, 68, 0.15) !important;
+            color: #f87171 !important;
+        }
+
+        [data-theme="dark"] .overlay-bg {
+            background: rgba(0, 0, 0, 0.7) !important;
+        }
+
+        [data-theme="dark"] .action-btn,
+        [data-theme="dark"] .att-btn {
+            background: #1e3050 !important;
+            border-color: #2a4060 !important;
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="dark"] .action-btn.active,
+        [data-theme="dark"] .att-btn.active {
+            border-color: #3b82f6 !important;
+        }
+
+        [data-theme="dark"] .action-btn .btn-label,
+        [data-theme="dark"] .att-btn .btn-label {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .profile-name {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .profile-meta,
+        [data-theme="dark"] .profile-id {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .stat-value,
+        [data-theme="dark"] .stat-label,
+        [data-theme="dark"] .last-action {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .stat-value {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .footer-bar,
+        [data-theme="dark"] [class*="footer"] {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .p-arrow {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .rtable {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .rtable th {
+            background: #0f2140 !important;
+            border-color: #1e3050 !important;
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .rtable td {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .rtable tr:hover td {
+            background: rgba(26, 58, 108, 0.15) !important;
+        }
+
+        [data-theme="dark"] .date-row td {
+            background: #0f2140 !important;
+            color: #93c5fd !important;
+        }
+
+        [data-theme="dark"] .empty-state,
+        [data-theme="dark"] .no-data {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .no-account-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .data-table th {
+            background: #0f2140 !important;
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .data-table td {
+            color: #cbd5e1 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .section-header {
+            background: #162032 !important;
+        }
+
+        [data-theme="dark"] .filter-group select,
+        [data-theme="dark"] .filter-select {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .action-bar {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .filing-summary-card,
+        [data-theme="dark"] .summary-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .info-row,
+        [data-theme="dark"] .detail-row {
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="dark"] .workspace-timer,
+        [data-theme="dark"] .timer-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .history-row,
+        [data-theme="dark"] .filing-row {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .history-row:hover,
+        [data-theme="dark"] .filing-row:hover {
+            background: rgba(26, 58, 108, 0.1) !important;
+        }
+
+        /* â”€â”€ HEADER RESPONSIVE (mobile fix) â”€â”€ */
+        @media (max-width: 480px) {
+            .header-inner {
+                gap: 8px !important;
+                padding: 0 !important;
+                flex-wrap: nowrap;
+            }
+
+            .header-logo {
+                width: 32px !important;
+                height: 32px !important;
+                min-width: 32px !important;
+                border-radius: 8px !important;
+            }
+
+            .header-logo img {
+                width: 100% !important;
+                height: 100% !important;
+            }
+
+            .header-titles h1,
+            .header-title {
+                font-size: 0.82rem !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 140px;
+            }
+
+            .header-sub,
+            .header-datetime {
+                font-size: 0.6rem !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 140px;
+            }
+
+            .theme-toggle {
+                width: 30px !important;
+                height: 30px !important;
+                min-width: 30px !important;
+                border-radius: 8px !important;
+            }
+
+            .theme-toggle svg {
+                width: 14px !important;
+                height: 14px !important;
+            }
+        }
+
+        /* â”€â”€ ENHANCED DARK MODE (v3) â”€â”€ */
+        [data-theme="dark"] #app {
+            background: #0d1b2a !important;
+        }
+
+        [data-theme="dark"] body {
+            background: #0d1b2a !important;
+        }
+
+        [data-theme="dark"] .app-body {
+            background: #0d1b2a !important;
+        }
+
+        [data-theme="dark"] .app-body::before {
+            opacity: 0.08 !important;
+        }
+
+        [data-theme="dark"] .header-title,
+        [data-theme="dark"] .header-titles h1,
+        [data-theme="dark"] .app-header h1 {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .header-sub,
+        [data-theme="dark"] .header-datetime,
+        [data-theme="dark"] .header-titles p {
+            color: #93c5fd !important;
+        }
+
+        [data-theme="dark"] .profile-card,
+        [data-theme="dark"] .info-card,
+        [data-theme="dark"] .workspace-card,
+        [data-theme="dark"] .timer-display,
+        [data-theme="dark"] .auto-reset-card,
+        [data-theme="dark"] .att-panel,
+        [data-theme="dark"] .filing-item,
+        [data-theme="dark"] .activity-log,
+        [data-theme="dark"] .filter-bar,
+        [data-theme="dark"] .admin-card,
+        [data-theme="dark"] .record-card,
+        [data-theme="dark"] .filing-section {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .stat-card,
+        [data-theme="dark"] .quick-stat,
+        [data-theme="dark"] .overview-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .stat-value,
+        [data-theme="dark"] .stat-number,
+        [data-theme="dark"] .count-value {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .stat-label,
+        [data-theme="dark"] .stat-title {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .date-nav,
+        [data-theme="dark"] .week-nav {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .date-nav button,
+        [data-theme="dark"] .week-nav button {
+            color: #93c5fd !important;
+            border-color: #1e3050 !important;
+            background: #162032 !important;
+        }
+
+        [data-theme="dark"] .profile-bar {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .profile-name,
+        [data-theme="dark"] .emp-name {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .profile-id,
+        [data-theme="dark"] .emp-id,
+        [data-theme="dark"] .profile-meta {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .time-display,
+        [data-theme="dark"] .date-display {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .time-label,
+        [data-theme="dark"] .date-label {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .last-action {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] p,
+        [data-theme="dark"] span {
+            color: inherit;
+        }
+
+        [data-theme="dark"] .section-title,
+        [data-theme="dark"] .panel-header,
+        [data-theme="dark"] .card-header {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .no-records,
+        [data-theme="dark"] .empty-msg {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .filing-count,
+        [data-theme="dark"] .pending-count {
+            color: #93c5fd !important;
+        }
+
+        [data-theme="dark"] .att-grid .att-btn {
+            background: #1e3050 !important;
+            border-color: #2a4060 !important;
+        }
+
+        [data-theme="dark"] .att-btn .btn-icon {
+            opacity: 0.9;
+        }
+
+        [data-theme="dark"] .att-btn .btn-label {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .att-btn .btn-time {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .portal-footer,
+        [data-theme="dark"] .footer-bar {
+            background: #0a1628 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .footer-bar *,
+        [data-theme="dark"] .portal-footer * {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .att-log-row {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .att-log-row td {
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="dark"] .refresh-btn {
+            background: #1e3050 !important;
+            border-color: #2a4060 !important;
+            color: #93c5fd !important;
+        }
+
+        [data-theme="dark"] .header-logo,
+        [data-theme="dark"] .logo-circle {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* ── ADMIN-SPECIFIC DARK MODE ── */
+        [data-theme="dark"] .panel {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .panel-header {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .panel-header h2 {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .slot-row {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .slot-row:hover {
+            background: #132d56 !important;
+            border-color: #2a4060 !important;
+        }
+
+        [data-theme="dark"] .slot-row.has-value {
+            background: rgba(22, 163, 74, 0.1) !important;
+            border-color: rgba(34, 197, 94, 0.3) !important;
+        }
+
+        [data-theme="dark"] .slot-label {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .slot-time-input {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .slot-location {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .search-input,
+        [data-theme="dark"] .date-input {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .emp-pill {
+            background: #1e3050 !important;
+            border-color: #2a4060 !important;
+        }
+
+        [data-theme="dark"] .emp-name-text {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .emp-meta {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .remarks-label {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .remarks-textarea {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .log-entry {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .log-admin {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .log-date {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .log-emp {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .log-detail {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .log-badge.add {
+            background: rgba(22, 163, 74, 0.15) !important;
+            color: #4ade80 !important;
+        }
+
+        [data-theme="dark"] .log-badge.replace {
+            background: rgba(245, 158, 11, 0.15) !important;
+            color: #fbbf24 !important;
+        }
+
+        [data-theme="dark"] .log-badge.batch {
+            background: rgba(37, 99, 235, 0.15) !important;
+            color: #60a5fa !important;
+        }
+
+        [data-theme="dark"] .log-badge.delete {
+            background: rgba(239, 68, 68, 0.15) !important;
+            color: #f87171 !important;
+        }
+
+        [data-theme="dark"] .log-remark {
+            color: #64748b !important;
+        }
+    </style>
+    <script src="../js/rdr-auth.js"></script>
+    <script src="../js/rdr-api.js"></script>
+    <script>
+        // Provide template-compatible variables from session
+        var USER_EMAIL = RDR_AUTH.getEmail();
+        var SESSION_TOKEN = RDR_AUTH.getSession();
+        var BASE_URL = RDR_AUTH.getGasUrl();
+        var userEmail = USER_EMAIL;
+        var sessionToken = SESSION_TOKEN;
+        var baseUrl = BASE_URL;
+    </script>
+</head>
+
+<body>
+    <div id="app">
+
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="header-inner">
+                <a id="backToPortal" onclick="window.location.href=this.getAttribute('data-url');return false;"
+                    data-url="#"
+                    style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:10px;color:#fff;text-decoration:none;cursor:pointer;flex-shrink:0;"
+                    href="javascript:void(0)">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                    </svg>
+                </a>
+                <div class="header-logo">
+                    <img id="headerLogo" src="https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png"
+                        alt="RDR" />
+                </div>
+                <div class="header-text">
+                    <h1 class="header-title">RDR Attendance System</h1>
+                    <p class="header-datetime" id="headerDateTime">Loading...</p>
+                </div>
+                <div class="admin-badge">🛡️ ADMIN PANEL</div>
+            </div>
+            <div style="position:absolute;top:50%;right:16px;transform:translateY(-50%);z-index:10;"><button
+                    class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIcon"
+                        viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg></button></div>
+        </header>
+
+        <!-- BODY -->
+        <div class="app-body">
+            <div class="body-inner">
+
+                <!-- LEFT: MANAGE ATTENDANCE -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-header-icon">📝</div>
+                        <h2>Manage Attendance</h2>
+                    </div>
+                    <div class="panel-body">
+
+                        <!-- Search -->
+                        <div class="search-row">
+                            <select id="searchCardId" class="search-input" style="appearance:auto;cursor:pointer;">
+                                <option value="">Loading employees...</option>
+                            </select>
+                            <input type="date" id="searchDate" class="date-input" />
+                            <button class="search-btn" onclick="searchEmployee()">Search</button>
+                        </div>
+
+                        <!-- Employee Info -->
+                        <div class="emp-info" id="empInfo">
+                            <div class="emp-avatar" id="empAvatar">--</div>
+                            <div class="emp-details">
+                                <div class="emp-name" id="empName">—</div>
+                                <div class="emp-meta" id="empMeta">—</div>
+                            </div>
+                        </div>
+
+                        <!-- Slot-based Attendance Form -->
+                        <div class="slots-form" id="slotsForm">
+                            <div class="slots-grid" id="slotsGrid">
+                                <!-- Slots rendered by JS -->
+                            </div>
+
+
+
+                            <!-- Remarks -->
+                            <div class="remarks-section">
+                                <label class="remarks-label">
+                                    📋 Reason / Remarks <span class="required">* Required</span>
+                                </label>
+                                <textarea class="remarks-textarea" id="remarksInput"
+                                    placeholder="e.g. Employee forgot RFID card, verified presence in office by HR..."></textarea>
+                            </div>
+
+                            <!-- Save Button -->
+                            <button class="save-btn" id="saveBtn" onclick="saveAllChanges()">
+                                💾 Save All Changes
+                            </button>
+                        </div>
+
+                        <div class="no-records" id="noSearchMsg" style="display:none;">Search for an employee to manage
+                            their attendance.</div>
+                    </div>
+                </div>
+
+                <!-- RIGHT PANEL -->
+                <div class="panel" style="display:flex;flex-direction:column;gap:0;">
+
+                    <!-- ===== ADMIN ACTIVITY LOG ===== -->
+                    <div style="padding:16px 22px 20px;flex:1;display:flex;flex-direction:column;min-height:0;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div
+                                    style="width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#3b82f6,#2563eb);display:flex;align-items:center;justify-content:center;font-size:1rem;">
+                                    📋</div>
+                                <div>
+                                    <h2 style="margin:0;font-size:0.9rem;">Admin Activity Log</h2>
+                                    <div style="font-size:0.65rem;color:var(--gray-400);margin-top:1px;">All times in
+                                        Philippine Standard Time (GMT+8)</div>
+                                </div>
+                            </div>
+                            <button class="search-btn" style="margin-left:auto;padding:6px 14px;font-size:0.7rem;"
+                                onclick="loadAuditLog()">Refresh</button>
+                        </div>
+                        <div class="log-scroll" id="logScroll" style="flex:1;min-height:0;">
+                            <div class="log-empty" id="logEmpty">Loading audit log...</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- LOADING -->
+        <div id="loadingOverlay" class="loading-overlay">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <div class="loading-text" id="loadingText">Processing...</div>
+            </div>
+        </div>
+
+        <!-- MSG -->
+        <div id="msgOverlay" class="msg-overlay" onclick="hideMsgOverlay()">
+            <div class="msg-box">
+                <div class="msg-icon success" id="msgIcon">✓</div>
+                <h3 class="msg-title" id="msgTitle">Success</h3>
+                <p class="msg-text" id="msgText">Action completed.</p>
+            </div>
+        </div>
+
+        <!-- CONFIRM -->
+        <div id="confirmOverlay" class="confirm-overlay">
+            <div class="confirm-box">
+                <div class="confirm-icon">⚠️</div>
+                <h3 class="confirm-title">Confirm Changes</h3>
+                <p class="confirm-text">The following changes will be applied:</p>
+                <div class="confirm-change-list" id="confirmChangeList">
+                    <!-- Populated by JS -->
+                </div>
+                <div class="confirm-buttons">
+                    <button class="confirm-btn yes" onclick="confirmSave()">Yes, Save</button>
+                    <button class="confirm-btn no" onclick="cancelSave()">No, Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // ============================================================================
+            // TEMPLATE VARIABLES
+            // ============================================================================
+            var SESSION_TOKEN = '' + RDR_AUTH.getSession() + '';
+            var BASE_URL = '' + RDR_AUTH.getGasUrl() + '';
+
+            // ============================================================================
+            // STATE
+            // ============================================================================
+            var currentEmployee = null;
+            var currentDate = null;
+            var currentRecords = [];
+            var originalSlotData = {}; // original values for change detection
+            var employeeList = []; // populated on load for dropdown
+
+
+            var SLOT_TYPES = [
+                {
+                    type: 'Time In', iconClass: 'time-in',
+                    svg: '<svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>',
+                    label: 'Time In'
+                },
+                {
+                    type: 'Lunch In', iconClass: 'lunch-in',
+                    svg: '<svg viewBox="0 0 24 24"><path d="M8.1 13.34l2.83-2.83L3.91 3.5a4.008 4.008 0 000 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/></svg>',
+                    label: 'Lunch In'
+                },
+                {
+                    type: 'Lunch Out', iconClass: 'lunch-out',
+                    svg: '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>',
+                    label: 'Lunch Out'
+                },
+                {
+                    type: 'Time Out', iconClass: 'time-out',
+                    svg: '<svg viewBox="0 0 24 24"><path d="M14 6l1.41 1.41L10.83 12l4.58 4.59L14 18l-6-6z"/></svg>',
+                    label: 'Time Out'
+                },
+                {
+                    type: 'Pause Work', iconClass: 'pause-work',
+                    svg: '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>',
+                    label: 'Pause Work'
+                },
+                {
+                    type: 'Resume', iconClass: 'resume',
+                    svg: '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>',
+                    label: 'Resume'
+                }
+            ];
+
+            // ============================================================================
+            // CLOCK
+            // ============================================================================
+            function updateClock() {
+                var now = new Date();
+                var opts = {
+                    timeZone: 'Asia/Manila', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour:
+                        '2-digit', minute: '2-digit', second: '2-digit'
+                };
+                document.getElementById('headerDateTime').textContent = now.toLocaleString('en-PH', opts);
+            }
+
+            // ============================================================================
+            // SEARCH
+            // ============================================================================
+            function searchEmployee() {
+                var cardId = document.getElementById('searchCardId').value.trim();
+                if (!cardId) return;
+
+                var dateStr = document.getElementById('searchDate').value; // yyyy-MM-dd
+                if (!dateStr) { showMessage('error', 'Missing Date', 'Please select a date.'); return; }
+
+                showLoading('Looking up employee...');
+                callGAS('adminSearchEmployee', [cardId, dateStr]).then(function (result) {
+                        hideLoading();
+                        if (!result.success) {
+                            showMessage('error', 'Not Found', result.error);
+                            return;
+                        }
+                        currentEmployee = result.employee;
+                        currentDate = result.date;
+                        currentRecords = result.records;
+                        displayEmployee();
+                        buildSlotForm();
+                    }).catch(function (err) {
+                        hideLoading();
+                        showMessage('error', 'Error', err.message || 'Server error.');
+                    });
+            }
+
+            function displayEmployee() {
+                var emp = currentEmployee;
+                var names = emp.empName.split(',');
+                var initials = (names.length >= 2)
+                    ? names[1].trim().charAt(0) + names[0].trim().charAt(0)
+                    : emp.empName.substring(0, 2);
+                document.getElementById('empAvatar').textContent = initials.toUpperCase();
+                document.getElementById('empName').textContent = emp.empName;
+                document.getElementById('empMeta').textContent = 'Card: ' + emp.cardId + ' · ID: ' + emp.empId + ' · Date: ' +
+                    currentDate;
+                document.getElementById('empInfo').classList.add('active');
+            }
+
+            // ============================================================================
+            // SLOT FORM
+            // ============================================================================
+            function buildSlotForm() {
+                var grid = document.getElementById('slotsGrid');
+                grid.innerHTML = '';
+                originalSlotData = {};
+
+                // Build lookup: type → existing record
+                var recordsByType = {};
+                for (var i = 0; i < currentRecords.length; i++) {
+                    recordsByType[currentRecords[i].type] = currentRecords[i];
+                }
+
+                for (var s = 0; s < SLOT_TYPES.length; s++) {
+                    var st = SLOT_TYPES[s];
+                    var existing = recordsByType[st.type];
+                    var existingTime = '';
+                    var existingLocation = 'In Office';
+
+                    if (existing) {
+                        var ts = new Date(existing.timestamp);
+                        if (!isNaN(ts.getTime())) {
+                            var formatted = existing.formattedTime;
+                            existingTime = parseTo24h(formatted);
+                        }
+                        existingLocation = existing.location || 'In Office';
+                    }
+
+                    // Save original values for change detection
+                    originalSlotData[st.type] = { time: existingTime, location: existingLocation };
+
+                    var hasValue = existingTime ? ' has-value' : '';
+                    var row = document.createElement('div');
+                    row.className = 'slot-row' + hasValue;
+                    row.id = 'slotRow_' + s;
+                    row.innerHTML =
+                        '<div class="slot-label"><span class="slot-icon ' + st.iconClass + '">' + st.svg + '</span>' + st.label + '</div>' +
+                        '<input type="time" class="slot-time-input" id="slotTime_' + s + '" value="' + existingTime + '" data-type="' + st.type + '" onchange="onSlotChange(' + s + ')" />' +
+                        '<select class="slot-location" id="slotLoc_' + s + '">' +
+                        '<option value="In Office"' + (existingLocation === 'In Office' ? ' selected' : '') + '>In Office</option>' +
+                        '<option value="Work From Home"' + (existingLocation === 'Work From Home' ? ' selected' : '') + '>Work From Home</option>' +
+                        '<option value="Fieldwork"' + (existingLocation === 'Fieldwork' ? ' selected' : '') + '>Fieldwork</option>' +
+                        '</select>';
+                    grid.appendChild(row);
+                }
+
+                document.getElementById('slotsForm').classList.add('active');
+                document.getElementById('noSearchMsg').style.display = 'none';
+                document.getElementById('remarksInput').value = '';
+
+
+            }
+
+            function parseTo24h(formatted) {
+                // Parse "9:15:00 AM" or "9:15 AM" → "09:15"
+                var parts = formatted.match(/(\d+):(\d+)(?::(\d+))?\s*(AM|PM)/i);
+                if (!parts) return '';
+                var h = parseInt(parts[1]);
+                var m = parts[2];
+                var ampm = parts[4].toUpperCase();
+                if (ampm === 'PM' && h < 12) h += 12;
+                if (ampm === 'AM' && h === 12) h = 0;
+                return String(h).padStart(2, '0') + ':' + m;
+            }
+
+            function onSlotChange(index) {
+                var timeInput = document.getElementById('slotTime_' + index);
+                var row = document.getElementById('slotRow_' + index);
+                var type = timeInput.getAttribute('data-type');
+                var orig = originalSlotData[type];
+
+                if (timeInput.value !== orig.time) {
+                    timeInput.classList.add('modified');
+                } else {
+                    timeInput.classList.remove('modified');
+                }
+
+                if (timeInput.value) {
+                    row.classList.add('has-value');
+                } else {
+                    row.classList.remove('has-value');
+                }
+            }
+
+            // ============================================================================
+            // SAVE ALL
+            // ============================================================================
+            function saveAllChanges() {
+                if (!currentEmployee) {
+                    showMessage('error', 'Error', 'Search for an employee first.');
+                    return;
+                }
+
+                var remarks = document.getElementById('remarksInput').value.trim();
+                if (!remarks) {
+                    showMessage('error', 'Remarks Required', 'Please provide a reason or remarks before saving.');
+                    return;
+                }
+
+                // Collect all slots that have changes
+                var changes = [];
+                var slots = [];
+
+                for (var s = 0; s < SLOT_TYPES.length; s++) {
+                    var timeVal = document.getElementById('slotTime_' + s).value;
+                    var locVal = document.getElementById('slotLoc_' + s).value;
+                    var type = SLOT_TYPES[s].type;
+                    var orig = originalSlotData[type];
+
+                    // Only include slots that have a value AND are different from original
+                    if (!timeVal) continue;
+
+                    if (timeVal !== orig.time || locVal !== orig.location) {
+                        var changeDesc = '';
+                        if (!orig.time) {
+                            // New record
+                            changeDesc = '➕ Add ' + type + ' at ' + formatTimeDisplay(timeVal) + ' [' + locVal + ']';
+                        } else {
+                            // Replace
+                            changeDesc = '🔄 Replace ' + type + ': ' + formatTimeDisplay(orig.time) + ' → ' + formatTimeDisplay(timeVal) + ' [' + locVal + ']';
+                        }
+                        changes.push(changeDesc);
+                        slots.push({ type: type, time: timeVal, location: locVal });
+                    }
+                }
+
+                if (changes.length === 0) {
+                    showMessage('error', 'No Changes', 'No modifications detected. Change a time or fill an empty slot to save.');
+                    return;
+                }
+
+                // Show confirmation dialog with change list
+                var listHtml = '';
+                for (var i = 0; i < changes.length; i++) {
+                    listHtml += '<div class="confirm-change-item">' + changes[i] + '</div>';
+                }
+                listHtml += '<div class="confirm-change-item" style="color:var(--gray-500);font-style:italic;">📋 ' + remarks + '</div>';
+
+                document.getElementById('confirmChangeList').innerHTML = listHtml;
+
+                // Store pending data
+                window._pendingSlots = slots;
+                window._pendingRemarks = remarks;
+                document.getElementById('confirmOverlay').classList.add('active');
+            }
+
+            function formatTimeDisplay(time24) {
+                if
+                    (!time24) return '—'; var parts = time24.split(':'); var h = parseInt(parts[0]); var m = parts[1]; var ampm = h >= 12 ?
+                        'PM' : 'AM';
+                if (h > 12) h -= 12;
+                if (h === 0) h = 12;
+                return h + ':' + m + ' ' + ampm;
+            }
+
+            function confirmSave() {
+                document.getElementById('confirmOverlay').classList.remove('active');
+
+                var slots = window._pendingSlots;
+                var remarks = window._pendingRemarks;
+                if (!slots || slots.length === 0) return;
+
+                showLoading('Saving changes...');
+                callGAS('adminSaveAll', [
+                        currentEmployee.cardId,
+                        currentEmployee.empId,
+                        currentEmployee.empName,
+                        currentDate,
+                        slots,
+                        remarks
+                    ]).then(function (result) {
+                        hideLoading();
+                        if (result.success) {
+                            showMessage('success', 'Saved!', result.message);
+                            setTimeout(function () { searchEmployee(); loadAuditLog(); }, 1500);
+                        } else {
+                            showMessage('error', 'Failed', result.error);
+                        }
+                    }).catch(function (err) {
+                        hideLoading();
+                        showMessage('error', 'Error', err.message || 'Server error.');
+                    });
+
+                window._pendingSlots = null;
+                window._pendingRemarks = null;
+            }
+
+            function cancelSave() {
+                document.getElementById('confirmOverlay').classList.remove('active');
+                window._pendingSlots = null;
+                window._pendingRemarks = null;
+            }
+
+            // ============================================================================
+            // AUDIT LOG
+            // ============================================================================
+            function loadAuditLog() {
+                callGAS('getElementById', ['logScroll']).then(function (result) {
+                        var el = document.getElementById('logScroll'););
+                        if (!result.success || !result.logs || result.logs.length === 0) {
+                            el.innerHTML = '<div class="log-empty">No admin actions recorded yet.</div>';
+                            return;
+                        }
+                        var html = '';
+                        for (var i = 0; i < result.logs.length; i++) {
+                            var log = result.logs[i]; var badgeClass = 'add'; if
+                                (log.actionType === 'Replace') badgeClass = 'replace'; else if (log.actionType === 'Batch') badgeClass = 'batch'
+                                    ; html += '<div class="log-entry">' + '<div class="log-top">' + '<span class="log-admin">' + log.admin
+                                        + '</span>' + '<span class="log-time">' + log.timestamp + '</span>' + '</div>'
+                                        + '<div class="log-emp"><span class="log-badge ' + badgeClass + '">' + log.actionType.toUpperCase()
+                                        + '</span>' + log.empName + ' (Card ' + log.cardId + ')</div>' + '<div class="log-detail">' +
+                                        log.details.replace(/\n/g, '<br>') + '</div>' + (log.remarks
+                                            ? '<div class="log-detail" style="font-style:italic;color:var(--amber-700);">📋 ' + log.remarks + '</div>'
+                                            : '') + '</div>';
+                        } el.innerHTML = html;
+                    }).withFailureHandler(function () {
+                        document.getElementById('logScroll').innerHTML = '<div class="log-empty">Failed to load audit log.</div>';
+                    })
+                    .adminGetAuditLog();
+            }
+
+            // ============================================================================
+            // OVERLAYS
+            // ============================================================================
+            function showLoading(text) {
+                document.getElementById('loadingText').textContent = text || 'Processing...';
+                document.getElementById('loadingOverlay').classList.add('active');
+            }
+
+            function hideLoading() {
+                document.getElementById('loadingOverlay').classList.remove('active');
+            }
+
+            function showMessage(type, title, text) {
+                var icon = document.getElementById('msgIcon');
+                icon.className = 'msg-icon ' + type;
+                icon.textContent = (type === 'success') ? '✓' : '✕';
+                document.getElementById('msgTitle').textContent = title;
+                document.getElementById('msgText').textContent = text;
+                document.getElementById('msgOverlay').classList.add('active');
+                setTimeout(hideMsgOverlay, 3000);
+            }
+
+            function hideMsgOverlay() {
+                document.getElementById('msgOverlay').classList.remove('active');
+            }
+
+
+
+            // ============================================================================
+            // INIT
+            // ============================================================================
+            function init() {
+                updateClock();
+                setInterval(updateClock, 1000);
+
+                // Set Back to Portal link
+                document.getElementById('backToPortal').setAttribute('data-url', './');
+
+                // Set default date to today GMT+8
+                var now = new Date();
+                var phOffset = now.getTime() + (8 * 60 * 60 * 1000) + (now.getTimezoneOffset() * 60 * 1000);
+                var phNow = new Date(phOffset);
+                var y = phNow.getFullYear();
+                var m = String(phNow.getMonth() + 1).padStart(2, '0');
+                var d = String(phNow.getDate()).padStart(2, '0');
+                document.getElementById('searchDate').value = y + '-' + m + '-' + d;
+
+                // Load audit log
+                loadAuditLog();
+
+                // Load employee list for dropdown
+                loadEmployeeDropdown();
+
+                // Auto-search on dropdown selection change
+                document.getElementById('searchCardId').addEventListener('change', function () {
+                    if (this.value) searchEmployee();
+                });
+            }
+
+            function loadEmployeeDropdown() {
+                callGAS('getElementById', ['searchCardId']).then(function (list) {
+                        employeeList = list || [];
+                        var sel = document.getElementById('searchCardId'););
+                        sel.innerHTML = '<option value="">— Select Employee —</option>';
+                        for (var i = 0; i < employeeList.length; i++) {
+                            var opt = document.createElement('option');
+                            opt.value = employeeList[i].cardId;
+                            opt.textContent = employeeList[i].empName + ' (' + employeeList[i].empId + ')';
+                            sel.appendChild(opt);
+                        }
+                    })
+                    .withFailureHandler(function () {
+                        var sel = document.getElementById('searchCardId');
+                        sel.innerHTML = '<option value="">Failed to load employees</option>';
+                    })
+                    .getActiveEmployeeList();
+            }
+
+            init();
+            // â”€â”€ THEME TOGGLE â”€â”€
+            (function () {
+                var LOGO_LIGHT = 'https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png';
+                var LOGO_DARK = 'https://i.ibb.co/6crnBjPv/RDR-Logo-White.png';
+                var saved = 'light';
+                try { saved = localStorage.getItem('rdr-theme') || 'light'; } catch (e) { }
+                document.documentElement.setAttribute('data-theme', saved);
+                function updateIcon() {
+                    var el = document.getElementById('themeIcon');
+                    if (!el) return;
+                    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                    el.innerHTML = isDark
+                        ? '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>'
+                        : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+                    var logo = document.getElementById('headerLogo');
+                    if (logo) logo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
+                }
+                updateIcon();
+                var btn = document.getElementById('themeToggle');
+                if (btn) btn.addEventListener('click', function () {
+                    var current = document.documentElement.getAttribute('data-theme');
+                    var next = current === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', next);
+                    try { localStorage.setItem('rdr-theme', next); } catch (e) { }
+                    updateIcon();
+                });
+            })();
+        </script>
+        <div
+            style="text-align:center;padding:16px 24px 24px;font-family:'Inter',sans-serif;font-size:11px;color:#94a3b8;line-height:1.8;">
+            Created by: <strong>Joeross Delos Reyes</strong><br>
+            Need help? Contact <a href="https://t.me/moverings" target="_blank"
+                style="color:#f59e0b;text-decoration:none;font-weight:600;">@moverings</a> on Telegram or reach out to
+            IT
+            Operations
+        </div>
+
+</body>
+
+</html>

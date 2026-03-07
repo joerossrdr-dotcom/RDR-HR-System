@@ -1,0 +1,1798 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RDR Attendance — My Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-card: #ffffff;
+            --bg-input: #ffffff;
+            --navy-900: #0a1628;
+            --navy-800: #0f2140;
+
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+
+            --teal-50: #eef2ff;
+            --teal-100: #dbeafe;
+            --teal-200: #bfdbfe;
+            --teal-400: #3b82f6;
+            --teal-500: #1a3a6c;
+            --teal-600: #0f2140;
+            --teal-700: #0a1628;
+            --teal-800: #091222;
+
+            --red-500: #ef4444;
+
+            --shadow-teal: rgba(26, 58, 108, 0.25);
+            --shadow-dark: rgba(10, 22, 40, 0.4);
+
+            --r-sm: 8px;
+            --r-md: 14px;
+            --r-lg: 20px;
+            --r-xl: 28px;
+            --r-full: 9999px;
+        }
+
+        /* â”€â”€ DARK MODE â”€â”€ */
+        [data-theme="dark"] {
+            --bg-card: #162032;
+            --bg-input: #0d1b2a;
+            --navy-900: #0a1628;
+            --navy-800: #0f2140;
+            --navy-700: #132d56;
+            --gray-50: #0d1b2a;
+            --gray-100: #162032;
+            --gray-200: #1e3050;
+            --gray-300: #475569;
+            --gray-400: #64748b;
+            --gray-500: #94a3b8;
+            --gray-600: #94a3b8;
+            --gray-700: #cbd5e1;
+            --gray-800: #e2e8f0;
+            --gray-900: #e2e8f0;
+            --shadow-dark: rgba(0, 0, 0, 0.5);
+            --green-50: #0a2618;
+            --red-50: #2a0f0f;
+            --blue-50: #0f1a2e;
+            --amber-50: #2a1f0a;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        #app {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: var(--gray-50);
+        }
+
+        /* ======================== HEADER ======================== */
+        .app-header {
+            background: linear-gradient(135deg, #0a1628 0%, #0f2140 60%, #1a3a6c 100%);
+            color: #ffffff;
+            padding: 14px 24px;
+            box-shadow: 0 4px 20px var(--shadow-dark);
+            position: relative;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .app-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.03) 75%, transparent 100%);
+            animation: shimmer 8s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+
+            0%,
+            100% {
+                transform: translateX(-25%);
+            }
+
+            50% {
+                transform: translateX(25%);
+            }
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-logo {
+            width: 44px;
+            height: 44px;
+            background: #ffffff;
+            border-radius: var(--r-md);
+            padding: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            flex-shrink: 0;
+        }
+
+        .header-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-text {
+            flex: 1;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: #ffffff;
+        }
+
+        .header-sub {
+            font-size: 0.72rem;
+            opacity: 0.65;
+            margin-top: 2px;
+        }
+
+        .dash-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(26, 58, 108, 0.4);
+            border: 1px solid rgba(147, 197, 253, 0.3);
+            padding: 5px 12px;
+            border-radius: var(--r-full);
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #99f6e4;
+            letter-spacing: 0.05em;
+        }
+
+        /* ======================== BODY ======================== */
+        .app-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px;
+        }
+
+        .body-inner {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        /* ======================== NO ACCOUNT SCREEN ======================== */
+        .no-account {
+            display: none;
+            text-align: center;
+            padding: 60px 24px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .no-account.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .no-account-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, var(--gray-200), var(--gray-100));
+            border-radius: var(--r-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+        }
+
+        .no-account h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--gray-800);
+            margin-bottom: 8px;
+        }
+
+        .no-account p {
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            line-height: 1.6;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .no-account-email {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 8px 20px;
+            background: var(--gray-100);
+            border-radius: var(--r-sm);
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            font-family: 'Inter', monospace;
+            border: 1px solid var(--gray-200);
+        }
+
+        /* ======================== MAIN CONTENT ======================== */
+        .main-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .main-content.active {
+            display: block;
+        }
+
+        /* Profile Bar */
+        .profile-bar {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--r-xl);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+            padding: 24px 28px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .avatar {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--teal-600), var(--teal-400));
+            border-radius: var(--r-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 800;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 16px var(--shadow-teal);
+            flex-shrink: 0;
+        }
+
+        .profile-text {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .profile-name {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--gray-900);
+        }
+
+        .profile-meta {
+            font-size: 0.78rem;
+            color: var(--gray-500);
+            margin-top: 3px;
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            margin-left: 8px;
+        }
+
+        .status-pill.active {
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .status-pill.inactive {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .stats {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 10px 18px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--r-sm);
+            min-width: 80px;
+        }
+
+        .stat-val {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--teal-600);
+            line-height: 1;
+        }
+
+        .stat-lbl {
+            font-size: 0.62rem;
+            color: var(--gray-400);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-top: 4px;
+        }
+
+        /* Records Panel */
+        .records-panel {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--r-xl);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .records-header {
+            padding: 18px 28px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .records-header h2 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            flex: 1;
+        }
+
+        .period-nav-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .p-arrow {
+            width: 32px;
+            height: 32px;
+            border: 1.5px solid var(--gray-200);
+            background: var(--bg-card);
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            transition: all 0.15s;
+        }
+
+        .p-arrow:hover {
+            border-color: var(--teal-500);
+            color: var(--teal-600);
+            background: var(--teal-50);
+        }
+
+        .p-label {
+            padding: 7px 16px;
+            background: linear-gradient(135deg, var(--teal-700), var(--teal-500));
+            color: var(--white);
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            min-width: 180px;
+            text-align: center;
+            box-shadow: 0 3px 10px var(--shadow-teal);
+        }
+
+        /* Scrollable Table */
+        .records-scroll {
+            max-height: 480px;
+            overflow-y: auto;
+        }
+
+        .rtable {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        .rtable th {
+            background: var(--gray-100);
+            padding: 10px 20px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.68rem;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .rtable td {
+            padding: 10px 20px;
+            border-top: 1px solid var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .rtable tr:hover td {
+            background: rgba(20, 184, 166, 0.03);
+        }
+
+        .date-row td {
+            background: var(--teal-50) !important;
+            font-weight: 700;
+            color: var(--teal-700);
+            padding: 9px 20px;
+            font-size: 0.75rem;
+            letter-spacing: 0.02em;
+        }
+
+        .tbadge {
+            display: inline-block;
+            padding: 3px 9px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .tbadge.ti {
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .tbadge.to {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .tbadge.li {
+            background: #fffbeb;
+            color: #b45309;
+        }
+
+        .tbadge.lo {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .tbadge.pw {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .tbadge.re {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            color: var(--gray-400);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .empty-state-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        /* ======================== FILING SUMMARY ======================== */
+        .filing-summary {
+            margin-bottom: 20px;
+        }
+
+        .filing-summary h2 {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 12px;
+        }
+
+        .filing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .filing-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            border-radius: var(--r-lg);
+            padding: 16px;
+            border-left: 4px solid;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .filing-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .filing-card.fc-ot {
+            border-left-color: #f59e0b;
+        }
+
+        .filing-card.fc-lv {
+            border-left-color: #14b8a6;
+        }
+
+        .filing-card.fc-hw {
+            border-left-color: #f43f5e;
+        }
+
+        .filing-card.fc-of {
+            border-left-color: #0ea5e9;
+        }
+
+        .fc-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 8px;
+        }
+
+        .fc-total {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .fc-breakdown {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .fc-tag {
+            font-size: 0.62rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: var(--r-full);
+        }
+
+        .fc-tag.pending {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .fc-tag.approved {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+
+        .fc-tag.disapproved {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        /* ======================== LOADING ======================== */
+        .load-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.92);
+            backdrop-filter: blur(12px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .load-overlay.active {
+            display: flex;
+        }
+
+        .load-inner {
+            text-align: center;
+            color: var(--white);
+        }
+
+        .load-spin {
+            width: 44px;
+            height: 44px;
+            border: 3px solid rgba(255, 255, 255, 0.12);
+            border-top-color: #2dd4bf;
+            border-radius: var(--r-full);
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .load-txt {
+            font-size: 0.95rem;
+            font-weight: 500;
+            opacity: 0.85;
+        }
+
+        /* ======================== FOOTER ======================== */
+        .app-footer {
+            text-align: center;
+            padding: 10px 16px;
+            font-size: 0.72rem;
+            color: var(--gray-400);
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.6);
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .app-footer span {
+            font-weight: 700;
+            color: var(--teal-600);
+        }
+
+        /* ======================== RESPONSIVE ======================== */
+        @media (max-width: 768px) {
+            .app-body {
+                padding: 14px;
+            }
+
+            .profile-bar {
+                padding: 18px;
+                gap: 14px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .records-header {
+                padding: 14px 18px;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .records-card {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .rtable {
+                min-width: 600px;
+            }
+
+            .rtable th,
+            .rtable td {
+                padding: 9px 12px;
+                font-size: 0.7rem;
+            }
+
+            .stats {
+                width: 100%;
+            }
+
+            .stat {
+                flex: 1;
+            }
+
+            .app-header {
+                padding: 10px 14px;
+            }
+
+            .header-inner {
+                gap: 10px;
+            }
+
+            .header-logo {
+                width: 36px;
+                height: 36px;
+            }
+
+            .header-title {
+                font-size: 1.1rem;
+            }
+
+            .header-datetime {
+                font-size: 0.65rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .app-body {
+                padding: 10px;
+            }
+
+            .app-header {
+                padding: 8px 10px;
+            }
+
+            .header-title {
+                font-size: 0.95rem;
+            }
+
+            .profile-bar {
+                padding: 14px;
+            }
+
+            .records-header {
+                padding: 12px 14px;
+            }
+
+            .stat-value {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* â”€â”€ THEME TOGGLE â”€â”€ */
+        .theme-toggle {
+            margin-left: auto;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            color: #fff;
+            padding: 0;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* â”€â”€ DARK MODE CONTENT OVERRIDES â”€â”€ */
+        [data-theme="dark"] .scan-card,
+        [data-theme="dark"] .profile-bar,
+        [data-theme="dark"] .records-panel,
+        [data-theme="dark"] .actions-panel,
+        [data-theme="dark"] .form-card,
+        [data-theme="dark"] .overlay-card,
+        [data-theme="dark"] .msg-box,
+        [data-theme="dark"] .filing-card,
+        [data-theme="dark"] .section-panel,
+        [data-theme="dark"] .confirm-card,
+        [data-theme="dark"] .table-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .scan-title,
+        [data-theme="dark"] .form-title,
+        [data-theme="dark"] .panel-title,
+        [data-theme="dark"] .section-title,
+        [data-theme="dark"] h2,
+        [data-theme="dark"] h3 {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .scan-subtitle,
+        [data-theme="dark"] .form-subtitle,
+        [data-theme="dark"] .input-label,
+        [data-theme="dark"] label {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .card-input,
+        [data-theme="dark"] .form-input,
+        [data-theme="dark"] .form-select,
+        [data-theme="dark"] select,
+        [data-theme="dark"] .form-textarea,
+        [data-theme="dark"] input[type="text"],
+        [data-theme="dark"] input[type="date"],
+        [data-theme="dark"] input[type="time"],
+        [data-theme="dark"] input[type="number"],
+        [data-theme="dark"] input[type="email"],
+        [data-theme="dark"] textarea {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .card-input::placeholder,
+        [data-theme="dark"] input::placeholder,
+        [data-theme="dark"] textarea::placeholder {
+            color: #475569 !important;
+        }
+
+        [data-theme="dark"] .submit-btn,
+        [data-theme="dark"] .form-btn {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .credits-label,
+        [data-theme="dark"] .credits-sub,
+        [data-theme="dark"] .rtable td,
+        [data-theme="dark"] td,
+        [data-theme="dark"] th {
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="dark"] .status-pill,
+        [data-theme="dark"] .badge {
+            opacity: 0.9;
+        }
+
+        [data-theme="dark"] .loading-overlay {
+            background: rgba(0, 0, 0, 0.92) !important;
+        }
+
+        [data-theme="dark"] .msg-overlay {
+            background: rgba(0, 0, 0, 0.7) !important;
+        }
+
+        [data-theme="dark"] .overlay-bg {
+            background: rgba(0, 0, 0, 0.7) !important;
+        }
+
+        [data-theme="dark"] .action-btn,
+        [data-theme="dark"] .att-btn {
+            background: #1e3050 !important;
+            border-color: #2a4060 !important;
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="dark"] .action-btn.active,
+        [data-theme="dark"] .att-btn.active {
+            border-color: #3b82f6 !important;
+        }
+
+        [data-theme="dark"] .action-btn .btn-label,
+        [data-theme="dark"] .att-btn .btn-label {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .profile-name {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .profile-meta,
+        [data-theme="dark"] .profile-id {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .stat-value,
+        [data-theme="dark"] .stat-label,
+        [data-theme="dark"] .last-action {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .stat-value {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .footer-bar,
+        [data-theme="dark"] [class*="footer"] {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .p-arrow {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .rtable {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .rtable th {
+            background: #0f2140 !important;
+            border-color: #1e3050 !important;
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .rtable td {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .rtable tr:hover td {
+            background: rgba(26, 58, 108, 0.15) !important;
+        }
+
+        [data-theme="dark"] .date-row td {
+            background: #0f2140 !important;
+            color: #93c5fd !important;
+        }
+
+        [data-theme="dark"] .empty-state,
+        [data-theme="dark"] .no-data {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .no-account-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .data-table th {
+            background: #0f2140 !important;
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .data-table td {
+            color: #cbd5e1 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .section-header {
+            background: #162032 !important;
+        }
+
+        [data-theme="dark"] .filter-group select,
+        [data-theme="dark"] .filter-select {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .action-bar {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .filing-summary-card,
+        [data-theme="dark"] .summary-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .info-row,
+        [data-theme="dark"] .detail-row {
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="dark"] .workspace-timer,
+        [data-theme="dark"] .timer-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .history-row,
+        [data-theme="dark"] .filing-row {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .history-row:hover,
+        [data-theme="dark"] .filing-row:hover {
+            background: rgba(26, 58, 108, 0.1) !important;
+        }
+
+        /* â”€â”€ HEADER RESPONSIVE (mobile fix) â”€â”€ */
+        @media (max-width: 480px) {
+            .header-inner {
+                gap: 8px !important;
+                padding: 0 !important;
+                flex-wrap: nowrap;
+            }
+
+            .header-logo {
+                width: 32px !important;
+                height: 32px !important;
+                min-width: 32px !important;
+                border-radius: 8px !important;
+            }
+
+            .header-logo img {
+                width: 100% !important;
+                height: 100% !important;
+            }
+
+            .header-titles h1,
+            .header-title {
+                font-size: 0.82rem !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 140px;
+            }
+
+            .header-sub,
+            .header-datetime {
+                font-size: 0.6rem !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 140px;
+            }
+
+            .theme-toggle {
+                width: 30px !important;
+                height: 30px !important;
+                min-width: 30px !important;
+                border-radius: 8px !important;
+            }
+
+            .theme-toggle svg {
+                width: 14px !important;
+                height: 14px !important;
+            }
+        }
+
+        /* â”€â”€ ENHANCED DARK MODE (v3) â”€â”€ */
+        [data-theme="dark"] #app {
+            background: #0d1b2a !important;
+        }
+
+        [data-theme="dark"] body {
+            background: #0d1b2a !important;
+        }
+
+        [data-theme="dark"] .app-body {
+            background: #0d1b2a !important;
+        }
+
+        [data-theme="dark"] .app-body::before {
+            opacity: 0.08 !important;
+        }
+
+        [data-theme="dark"] .header-title,
+        [data-theme="dark"] .header-titles h1,
+        [data-theme="dark"] .app-header h1 {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .header-sub,
+        [data-theme="dark"] .header-datetime,
+        [data-theme="dark"] .header-titles p {
+            color: #93c5fd !important;
+        }
+
+        [data-theme="dark"] .profile-card,
+        [data-theme="dark"] .info-card,
+        [data-theme="dark"] .workspace-card,
+        [data-theme="dark"] .timer-display,
+        [data-theme="dark"] .auto-reset-card,
+        [data-theme="dark"] .att-panel,
+        [data-theme="dark"] .filing-item,
+        [data-theme="dark"] .activity-log,
+        [data-theme="dark"] .filter-bar,
+        [data-theme="dark"] .admin-card,
+        [data-theme="dark"] .record-card,
+        [data-theme="dark"] .filing-section {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .stat-card,
+        [data-theme="dark"] .quick-stat,
+        [data-theme="dark"] .overview-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .stat-value,
+        [data-theme="dark"] .stat-number,
+        [data-theme="dark"] .count-value {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .stat-label,
+        [data-theme="dark"] .stat-title {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .date-nav,
+        [data-theme="dark"] .week-nav {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .date-nav button,
+        [data-theme="dark"] .week-nav button {
+            color: #93c5fd !important;
+            border-color: #1e3050 !important;
+            background: #162032 !important;
+        }
+
+        [data-theme="dark"] .profile-bar {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .profile-name,
+        [data-theme="dark"] .emp-name {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .profile-id,
+        [data-theme="dark"] .emp-id,
+        [data-theme="dark"] .profile-meta {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .time-display,
+        [data-theme="dark"] .date-display {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .time-label,
+        [data-theme="dark"] .date-label {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .last-action {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] p,
+        [data-theme="dark"] span {
+            color: inherit;
+        }
+
+        [data-theme="dark"] .section-title,
+        [data-theme="dark"] .panel-header,
+        [data-theme="dark"] .card-header {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .no-records,
+        [data-theme="dark"] .empty-msg {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .filing-count,
+        [data-theme="dark"] .pending-count {
+            color: #93c5fd !important;
+        }
+
+        [data-theme="dark"] .att-grid .att-btn {
+            background: #1e3050 !important;
+            border-color: #2a4060 !important;
+        }
+
+        [data-theme="dark"] .att-btn .btn-icon {
+            opacity: 0.9;
+        }
+
+        [data-theme="dark"] .att-btn .btn-label {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .att-btn .btn-time {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .portal-footer,
+        [data-theme="dark"] .footer-bar {
+            background: #0a1628 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .footer-bar *,
+        [data-theme="dark"] .portal-footer * {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .att-log-row {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .att-log-row td {
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="dark"] .refresh-btn {
+            background: #1e3050 !important;
+            border-color: #2a4060 !important;
+            color: #93c5fd !important;
+        }
+
+        [data-theme="dark"] .header-logo,
+        [data-theme="dark"] .logo-circle {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+    </style>
+    <script src="js/rdr-auth.js"></script>
+    <script src="js/rdr-api.js"></script>
+    <script>
+        // Provide template-compatible variables from session
+        var USER_EMAIL = RDR_AUTH.getEmail();
+        var SESSION_TOKEN = RDR_AUTH.getSession();
+        var BASE_URL = RDR_AUTH.getGasUrl();
+        var userEmail = USER_EMAIL;
+        var sessionToken = SESSION_TOKEN;
+        var baseUrl = BASE_URL;
+    </script>
+</head>
+
+<body>
+    <div id="app">
+
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="header-inner">
+                <a id="backToPortal" onclick="window.location.href=this.getAttribute('data-url');return false;"
+                    data-url="#"
+                    style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:10px;color:#fff;text-decoration:none;cursor:pointer;flex-shrink:0;"
+                    href="javascript:void(0)">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                    </svg>
+                </a>
+                <div class="header-logo">
+                    <img id="headerLogo" src="https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png"
+                        alt="RDR" />
+                </div>
+                <div class="header-text">
+                    <h1 class="header-title">RDR Attendance System</h1>
+                    <p class="header-sub" id="headerDateTime">Loading...</p>
+                </div>
+                <div class="dash-badge">📊 MY DASHBOARD</div>
+            </div>
+            <div style="position:absolute;top:50%;right:16px;transform:translateY(-50%);z-index:10;"><button
+                    class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIcon"
+                        viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg></button></div>
+        </header>
+
+        <!-- BODY -->
+        <div class="app-body">
+            <div class="body-inner">
+
+                <!-- NO ACCOUNT SCREEN -->
+                <div class="no-account" id="noAccount">
+                    <div class="no-account-icon">🔒</div>
+                    <h2>Account Not Found</h2>
+                    <p>Your email is not linked to any employee profile in the system. Please contact your HR
+                        administrator to have your RDR Email added.</p>
+                    <div class="no-account-email" id="noAccountEmail">—</div>
+                </div>
+
+                <!-- MAIN CONTENT (shown after profile loads) -->
+                <div class="main-content" id="mainContent">
+
+                    <!-- Profile Bar -->
+                    <div class="profile-bar">
+                        <div class="avatar" id="avatar">--</div>
+                        <div class="profile-text">
+                            <div class="profile-name" id="pName">—</div>
+                            <div class="profile-meta" id="pMeta">—</div>
+                        </div>
+                        <div class="stats">
+                            <div class="stat">
+                                <div class="stat-val" id="sDays">—</div>
+                                <div class="stat-lbl">Days</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-val" id="sIn">—</div>
+                                <div class="stat-lbl">Time In</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-val" id="sOut">—</div>
+                                <div class="stat-lbl">Time Out</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ====== EMPLOYEE SUMMARY ====== -->
+                    <div id="empSummarySection" style="display:none;margin-bottom:20px;">
+
+                        <!-- Schedule -->
+                        <h2 style="font-size:0.95rem;font-weight:800;color:var(--gray-800);margin-bottom:12px;">🕐 My
+                            Schedule</h2>
+                        <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;margin-bottom:16px;">
+                            <div
+                                style="background:rgba(255,255,255,0.88);backdrop-filter:blur(12px);border-radius:14px;padding:14px;text-align:center;border:1px solid var(--gray-200);">
+                                <div
+                                    style="font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--gray-400);margin-bottom:4px;">
+                                    Start Shift</div>
+                                <div id="sumStartShift"
+                                    style="font-size:0.88rem;font-weight:700;color:var(--gray-800);">—</div>
+                            </div>
+                            <div
+                                style="background:rgba(255,255,255,0.88);backdrop-filter:blur(12px);border-radius:14px;padding:14px;text-align:center;border:1px solid var(--gray-200);">
+                                <div
+                                    style="font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--gray-400);margin-bottom:4px;">
+                                    End Shift</div>
+                                <div id="sumEndShift" style="font-size:0.88rem;font-weight:700;color:var(--gray-800);">—
+                                </div>
+                            </div>
+                            <div
+                                style="background:rgba(255,255,255,0.88);backdrop-filter:blur(12px);border-radius:14px;padding:14px;text-align:center;border:1px solid var(--gray-200);">
+                                <div
+                                    style="font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--gray-400);margin-bottom:4px;">
+                                    Half Day</div>
+                                <div id="sumHalfDay" style="font-size:0.88rem;font-weight:700;color:var(--gray-800);">—
+                                </div>
+                            </div>
+                            <div
+                                style="background:rgba(255,255,255,0.88);backdrop-filter:blur(12px);border-radius:14px;padding:14px;text-align:center;border:1px solid var(--gray-200);">
+                                <div
+                                    style="font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--gray-400);margin-bottom:4px;">
+                                    Day Off</div>
+                                <div id="sumDayOff" style="font-size:0.88rem;font-weight:700;color:var(--gray-800);">—
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cutoff Status + OT + Attendance -->
+                        <h2 style="font-size:0.95rem;font-weight:800;color:var(--gray-800);margin-bottom:12px;">📊 My
+                            Summary</h2>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));gap:10px;">
+                            <!-- Cutoff Hours -->
+                            <div
+                                style="background:linear-gradient(135deg,rgba(16,185,129,0.08),rgba(16,185,129,0.02));border:1px solid rgba(16,185,129,0.15);border-radius:14px;padding:16px;text-align:center;">
+                                <div style="font-size:1.4rem;">⏱️</div>
+                                <div id="sumCutoffHours"
+                                    style="font-size:1.5rem;font-weight:800;color:#10b981;margin:4px 0;">—</div>
+                                <div style="font-size:0.65rem;color:var(--gray-500);font-weight:600;">Cutoff Hours</div>
+                                <div id="sumCutoffDetail"
+                                    style="font-size:0.6rem;color:var(--gray-400);margin-top:2px;">— / — required</div>
+                                <div
+                                    style="height:4px;border-radius:3px;background:var(--gray-200);overflow:hidden;margin-top:8px;">
+                                    <div id="sumCutoffBar"
+                                        style="height:100%;border-radius:3px;background:#10b981;width:0%;transition:width 0.6s ease;">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- OT Hours -->
+                            <div
+                                style="background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(245,158,11,0.02));border:1px solid rgba(245,158,11,0.15);border-radius:14px;padding:16px;text-align:center;">
+                                <div style="font-size:1.4rem;">⏰</div>
+                                <div id="sumOTHours"
+                                    style="font-size:1.5rem;font-weight:800;color:#f59e0b;margin:4px 0;">—</div>
+                                <div style="font-size:0.65rem;color:var(--gray-500);font-weight:600;">OT Hours</div>
+                                <div style="font-size:0.6rem;color:var(--gray-400);margin-top:2px;">This month
+                                    (approved)</div>
+                            </div>
+                            <!-- Offset Hours -->
+                            <div
+                                style="background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(139,92,246,0.02));border:1px solid rgba(139,92,246,0.15);border-radius:14px;padding:16px;text-align:center;">
+                                <div style="font-size:1.4rem;">🔄</div>
+                                <div id="sumOffsetHours"
+                                    style="font-size:1.5rem;font-weight:800;color:#8b5cf6;margin:4px 0;">—</div>
+                                <div style="font-size:0.65rem;color:var(--gray-500);font-weight:600;">Offset Hours</div>
+                                <div style="font-size:0.6rem;color:var(--gray-400);margin-top:2px;">Total approved</div>
+                            </div>
+                            <!-- Days Present -->
+                            <div
+                                style="background:linear-gradient(135deg,rgba(34,197,94,0.08),rgba(34,197,94,0.02));border:1px solid rgba(34,197,94,0.15);border-radius:14px;padding:16px;text-align:center;">
+                                <div style="font-size:1.4rem;">📅</div>
+                                <div id="sumDaysPresent"
+                                    style="font-size:1.5rem;font-weight:800;color:#22c55e;margin:4px 0;">—</div>
+                                <div style="font-size:0.65rem;color:var(--gray-500);font-weight:600;">Days Present</div>
+                                <div id="sumLateCount" style="font-size:0.6rem;color:var(--gray-400);margin-top:2px;">—
+                                    late this month</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filing-summary" id="filingSummary" style="display:none;">
+                        <h2>📝 My Filing Requests</h2>
+                        <div class="filing-grid">
+                            <div class="filing-card fc-ot">
+                                <div class="fc-title">⏰ Overtime</div>
+                                <div class="fc-total" id="fcOtTotal">0</div>
+                                <div class="fc-breakdown">
+                                    <span class="fc-tag pending" id="fcOtP">0 pending</span>
+                                    <span class="fc-tag approved" id="fcOtA">0 approved</span>
+                                    <span class="fc-tag disapproved" id="fcOtD">0 disapproved</span>
+                                </div>
+                            </div>
+                            <div class="filing-card fc-lv">
+                                <div class="fc-title">🏖️ Leave</div>
+                                <div class="fc-total" id="fcLvTotal">0</div>
+                                <div class="fc-breakdown">
+                                    <span class="fc-tag pending" id="fcLvP">0 pending</span>
+                                    <span class="fc-tag approved" id="fcLvA">0 approved</span>
+                                    <span class="fc-tag disapproved" id="fcLvD">0 disapproved</span>
+                                </div>
+                            </div>
+                            <div class="filing-card fc-hw">
+                                <div class="fc-title">🎄 Holiday Work</div>
+                                <div class="fc-total" id="fcHwTotal">0</div>
+                                <div class="fc-breakdown">
+                                    <span class="fc-tag pending" id="fcHwP">0 pending</span>
+                                    <span class="fc-tag approved" id="fcHwA">0 approved</span>
+                                    <span class="fc-tag disapproved" id="fcHwD">0 disapproved</span>
+                                </div>
+                            </div>
+                            <div class="filing-card fc-of">
+                                <div class="fc-title">🔄 Offset</div>
+                                <div class="fc-total" id="fcOfTotal">0</div>
+                                <div class="fc-breakdown">
+                                    <span class="fc-tag pending" id="fcOfP">0 pending</span>
+                                    <span class="fc-tag approved" id="fcOfA">0 approved</span>
+                                    <span class="fc-tag disapproved" id="fcOfD">0 disapproved</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Records Panel -->
+                    <div class="records-panel">
+                        <div class="records-header">
+                            <h2>📋 Attendance Records</h2>
+                            <div class="period-nav-row">
+                                <button class="p-arrow" onclick="shiftPeriod(-1)">◀</button>
+                                <div class="p-label" id="pLabel">—</div>
+                                <button class="p-arrow" onclick="shiftPeriod(1)">▶</button>
+                            </div>
+                        </div>
+                        <div class="records-scroll" id="rScroll">
+                            <table class="rtable">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                        <th>Time</th>
+                                        <th>Location</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="empty-state" id="emptyState" style="display:none;">
+                            <div class="empty-state-icon">📭</div>
+                            No attendance records for this period.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="app-footer">
+            If you have any questions, contact me on Telegram <strong>@moverings</strong> or seek support from IT
+            Operations.
+        </div>
+    </div>
+
+    <!-- LOADING -->
+    <div id="loadOverlay" class="load-overlay">
+        <div class="load-inner">
+            <div class="load-spin"></div>
+            <div class="load-txt" id="loadTxt">Loading...</div>
+        </div>
+    </div>
+
+    <script>
+        // ===== STATE =====
+        var employee = null;
+        var userEmail = '' + RDR_AUTH.getEmail() + '';
+        var sessionToken = '' + RDR_AUTH.getSession() + '';
+        var baseUrl = '' + RDR_AUTH.getGasUrl() + '';
+        var periods = [];
+        var pIdx = 0;
+
+        // ===== CLOCK =====
+        function tick() {
+            var opts = { timeZone: 'Asia/Manila', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById('headerDateTime').textContent = new Date().toLocaleString('en-PH', opts);
+        }
+
+        // ===== PAYROLL PERIODS =====
+        // 1st half: 11th-25th  |  2nd half: 26th - 10th (next month)
+        function buildPeriods() {
+            var now = new Date();
+            var ph = new Date(now.getTime() + (8 * 3600000) + (now.getTimezoneOffset() * 60000));
+            var yr = ph.getFullYear(), mo = ph.getMonth(), dy = ph.getDate();
+            periods = [];
+            var sy = yr - 1, sm = mo;
+            for (var m = 0; m < 14; m++) {
+                var y = sy + Math.floor((sm + m) / 12);
+                var mn = (sm + m) % 12;
+                periods.push(mkP(y, mn, 11, y, mn, 25));
+                var ny = y + Math.floor((mn + 1) / 12), nm = (mn + 1) % 12;
+                periods.push(mkP(y, mn, 26, ny, nm, 10));
+            }
+            var today = ds(yr, mo, dy);
+            for (var i = periods.length - 1; i >= 0; i--) {
+                if (today >= periods[i].s && today <= periods[i].e) { pIdx = i; break; }
+            }
+        }
+
+        function mkP(sy, sm, sd, ey, em, ed) {
+            var ld = new Date(ey, em + 1, 0).getDate();
+            if (ed > ld) ed = ld;
+            var MO = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var lbl = (sy === ey && sm === em)
+                ? MO[sm] + ' ' + sd + '–' + ed + ', ' + sy
+                : MO[sm] + ' ' + sd + ' – ' + MO[em] + ' ' + ed + ', ' + ey;
+            return { s: ds(sy, sm, sd), e: ds(ey, em, ed), label: lbl };
+        }
+
+        function ds(y, m, d) { return y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0'); }
+
+        function shiftPeriod(dir) {
+            var n = pIdx + dir;
+            if (n < 0 || n >= periods.length) return;
+            pIdx = n;
+            document.getElementById('pLabel').textContent = periods[pIdx].label;
+            loadHistory();
+        }
+
+        // ===== INIT =====
+        function init() {
+            tick(); setInterval(tick, 1000);
+            buildPeriods();
+            document.getElementById('pLabel').textContent = periods[pIdx].label;
+
+            // Set Back to Portal link
+            document.getElementById('backToPortal').setAttribute('data-url', './');
+
+            showLoad('Loading your profile...');
+            callGAS('getElementById', ['noAccount').classList.add('active']).then(function (r) {
+                    hideLoad();
+                    if (!r.success) {
+                        // Show no-account screen
+                        document.getElementById('noAccountEmail').textContent = userEmail;
+                        document.getElementById('noAccount').classList.add('active'););
+                        return;
+                    }
+                    employee = r.employee;
+                    showProfile();
+                    loadHistory();
+                    loadFilingSummary();
+                    loadEmployeeSummary();
+                })
+                .withFailureHandler(function (err) {
+                    hideLoad();
+                    document.getElementById('noAccountEmail').textContent = userEmail + ' — ' + (err.message || 'Server error');
+                    document.getElementById('noAccount').classList.add('active');
+                })
+                .dashboardGetEmployee(userEmail);
+        }
+
+        // ===== PROFILE =====
+        function showProfile() {
+            var e = employee;
+            var parts = e.empName.split(',');
+            var ini = parts.length >= 2
+                ? parts[1].trim().charAt(0) + parts[0].trim().charAt(0)
+                : e.empName.substring(0, 2);
+            document.getElementById('avatar').textContent = ini.toUpperCase();
+            document.getElementById('pName').innerHTML = e.empName +
+                '<span class="status-pill ' + (e.status === 'Active' ? 'active' : 'inactive') + '">' + e.status + '</span>';
+            document.getElementById('pMeta').textContent = 'ID: ' + e.empId + '  ·  Card: ' + e.cardId;
+            document.getElementById('mainContent').classList.add('active');
+        }
+
+        // ===== HISTORY =====
+        function loadHistory() {
+            if (!employee) return;
+            var tbody = document.getElementById('rBody');
+            tbody.innerHTML = '';
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('rScroll').style.display = 'block';
+
+            showLoad('Loading attendance...');
+            callGAS('dashboardGetHistory', [employee.empName, periods[pIdx].s, periods[pIdx].e]).then(function (r) {
+                    hideLoad();
+                    if (!r.success || !r.records || r.records.length === 0) {
+                        document.getElementById('rScroll').style.display = 'none';
+                        document.getElementById('emptyState').style.display = 'block';
+                        document.getElementById('sDays').textContent = '0';
+                        document.getElementById('sIn').textContent = '0';
+                        document.getElementById('sOut').textContent = '0';
+                        return;
+                    }
+                    renderRecords(r.records);
+                }).catch(function () {
+                    hideLoad();
+                    document.getElementById('rScroll').style.display = 'none';
+                    document.getElementById('emptyState').style.display = 'block';
+                });
+        }
+
+        function renderRecords(recs) {
+            var tbody = document.getElementById('rBody');
+            tbody.innerHTML = '';
+            document.getElementById('rScroll').style.display = 'block';
+            document.getElementById('emptyState').style.display = 'none';
+
+            var lastDate = '', days = {}, cIn = 0, cOut = 0;
+            for (var i = 0; i < recs.length; i++) {
+                var r = recs[i];
+                if (r.type === 'Time In') { cIn++; days[r.date] = true; }
+                if (r.type === 'Time Out') cOut++;
+
+                if (r.date !== lastDate) {
+                    var gr = document.createElement('tr');
+                    gr.className = 'date-row';
+                    gr.innerHTML = '<td colspan="4">📅 ' + fmtDay(r.date) + '</td>';
+                    tbody.appendChild(gr);
+                    lastDate = r.date;
+                }
+                var tr = document.createElement('tr');
+                tr.innerHTML =
+                    '<td></td>' +
+                    '<td><span class="tbadge ' + bc(r.type) + '">' + r.type + '</span></td>' +
+                    '<td><strong>' + r.time + '</strong></td>' +
+                    '<td>' + (r.location || '—') + '</td>';
+                tbody.appendChild(tr);
+            }
+            document.getElementById('sDays').textContent = Object.keys(days).length;
+            document.getElementById('sIn').textContent = cIn;
+            document.getElementById('sOut').textContent = cOut;
+        }
+
+        function bc(t) {
+            switch (t) {
+                case 'Time In': return 'ti';
+                case 'Time Out': return 'to';
+                case 'Lunch In': return 'li';
+                case 'Lunch Out': return 'lo';
+                case 'Pause Work': return 'pw';
+                case 'Resume': return 're';
+                default: return '';
+            }
+        }
+
+        function fmtDay(d) {
+            var p = d.split('/');
+            var dt = new Date(parseInt(p[2]), parseInt(p[0]) - 1, parseInt(p[1]));
+            var D = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            var M = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            return D[dt.getDay()] + ', ' + M[dt.getMonth()] + ' ' + dt.getDate() + ', ' + dt.getFullYear();
+        }
+
+        // ===== LOADING =====
+        function showLoad(t) { document.getElementById('loadTxt').textContent = t; document.getElementById('loadOverlay').classList.add('active'); }
+        function hideLoad() { document.getElementById('loadOverlay').classList.remove('active'); }
+
+        // ===== FILING SUMMARY =====
+        function loadFilingSummary() {
+            callGAS('getDashboardFilingSummary', [userEmail]).then(function (r) {
+                    if (!r || !r.success || !r.summary) return;
+                    var s = r.summary;
+                    renderFilingCard('Ot', s.overtime);
+                    renderFilingCard('Lv', s.leave);
+                    renderFilingCard('Hw', s.holiday);
+                    renderFilingCard('Of', s.offset);
+                    document.getElementById('filingSummary').style.display = 'block';
+                }).catch(function () { });
+        }
+
+        function renderFilingCard(prefix, data) {
+            if (!data) return;
+            document.getElementById('fc' + prefix + 'Total').textContent = data.total || 0;
+            document.getElementById('fc' + prefix + 'P').textContent = (data.p || 0) + ' pending';
+            document.getElementById('fc' + prefix + 'A').textContent = (data.a || 0) + ' approved';
+            document.getElementById('fc' + prefix + 'D').textContent = (data.d || 0) + ' disapproved';
+        }
+
+        // ===== EMPLOYEE SUMMARY =====
+        function loadEmployeeSummary() {
+            callGAS('getEmployeeSummary', [userEmail]).then(function (s) {
+                    if (!s || s.error) return;
+                    document.getElementById('empSummarySection').style.display = 'block';
+
+                    // Schedule
+                    if (s.schedule) {
+                        document.getElementById('sumStartShift').textContent = s.schedule.startShift || '—';
+                        document.getElementById('sumEndShift').textContent = s.schedule.endShift || '—';
+                        document.getElementById('sumHalfDay').textContent = s.schedule.halfDay || '—';
+                        document.getElementById('sumDayOff').textContent = s.schedule.dayOff || '—';
+                    }
+
+                    // Cutoff
+                    document.getElementById('sumCutoffHours').textContent = s.cutoffHours + 'h';
+                    document.getElementById('sumCutoffDetail').textContent = s.cutoffHours + 'h / ' + s.cutoffRequired + 'h required';
+                    document.getElementById('sumCutoffBar').style.width = s.cutoffRequired > 0 ? Math.min(100, (s.cutoffHours / s.cutoffRequired) * 100) + '%' : '0%';
+
+                    // OT, Offset, Days Present
+                    document.getElementById('sumOTHours').textContent = s.otHoursThisMonth + 'h';
+                    document.getElementById('sumOffsetHours').textContent = s.offsetHours + 'h';
+                    document.getElementById('sumDaysPresent').textContent = s.daysPresent;
+                    document.getElementById('sumLateCount').textContent = s.lateCount + ' late this month';
+                }).catch(function () { });
+        }
+
+
+        init();
+        // â”€â”€ THEME TOGGLE â”€â”€
+        (function () {
+            var LOGO_LIGHT = 'https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png';
+            var LOGO_DARK = 'https://i.ibb.co/6crnBjPv/RDR-Logo-White.png';
+            var saved = 'light';
+            try { saved = localStorage.getItem('rdr-theme') || 'light'; } catch (e) { }
+            document.documentElement.setAttribute('data-theme', saved);
+            function updateIcon() {
+                var el = document.getElementById('themeIcon');
+                if (!el) return;
+                var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                el.innerHTML = isDark
+                    ? '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>'
+                    : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+                var logo = document.getElementById('headerLogo');
+                if (logo) logo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
+            }
+            updateIcon();
+            var btn = document.getElementById('themeToggle');
+            if (btn) btn.addEventListener('click', function () {
+                var current = document.documentElement.getAttribute('data-theme');
+                var next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                try { localStorage.setItem('rdr-theme', next); } catch (e) { }
+                updateIcon();
+            });
+        })();
+    </script>
+    <div
+        style="text-align:center;padding:12px 24px 20px;font-family:'Inter',sans-serif;font-size:11px;color:#94a3b8;line-height:1.5;">
+        Created by: <strong>Joeross Delos Reyes</strong>
+    </div>
+
+</body>
+
+</html>

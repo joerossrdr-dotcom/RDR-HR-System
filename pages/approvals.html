@@ -1,0 +1,1877 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RDR HR — Filing Approvals</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-card: #ffffff;
+            --bg-input: #ffffff;
+            --navy-900: #0a1628;
+            --navy-700: #1a2744;
+            --indigo-50: #eef2ff;
+            --indigo-100: #dbeafe;
+            --indigo-200: #bfdbfe;
+            --indigo-400: #3b82f6;
+            --indigo-500: #1a3a6c;
+            --indigo-600: #132d56;
+            --indigo-700: #0f2140;
+            --indigo-800: #0a1628;
+            --violet-400: #2563eb;
+            --green-50: #f0fdf4;
+            --green-500: #22c55e;
+            --green-600: #16a34a;
+            --amber-50: #fffbeb;
+            --amber-100: #fef3c7;
+            --amber-500: #f59e0b;
+            --amber-600: #d97706;
+            --amber-700: #b45309;
+            --red-50: #fef2f2;
+            --red-500: #ef4444;
+            --red-600: #dc2626;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --white: #ffffff;
+            --r-sm: 8px;
+            --r-md: 12px;
+            --r-lg: 16px;
+            --r-xl: 20px;
+            --r-full: 9999px;
+            --sp-xs: 4px;
+            --sp-sm: 8px;
+            --sp-md: 12px;
+            --sp-lg: 16px;
+            --sp-xl: 24px;
+        }
+
+        /* â”€â”€ DARK MODE â”€â”€ */
+        [data-theme="dark"] {
+            --bg-card: #162032;
+            --bg-input: #0d1b2a;
+            --navy-900: #0a1628;
+            --navy-800: #0f2140;
+            --navy-700: #132d56;
+            --gray-50: #0d1b2a;
+            --gray-100: #162032;
+            --gray-200: #1e3050;
+            --gray-300: #475569;
+            --gray-400: #64748b;
+            --gray-500: #94a3b8;
+            --gray-600: #94a3b8;
+            --gray-700: #cbd5e1;
+            --gray-800: #e2e8f0;
+            --gray-900: #e2e8f0;
+            --shadow-dark: rgba(0, 0, 0, 0.5);
+            --green-50: #0a2618;
+            --red-50: #2a0f0f;
+            --blue-50: #0f1a2e;
+            --amber-50: #2a1f0a;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-50);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        #app {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: var(--gray-50);
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, var(--indigo-800) 0%, var(--indigo-600) 60%, var(--indigo-400) 100%);
+            color: #ffffff;
+            padding: var(--sp-lg) var(--sp-xl);
+            box-shadow: 0 4px 20px rgba(10, 22, 40, 0.3);
+            position: relative;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: var(--sp-lg);
+        }
+
+        .header-logo {
+            width: 48px;
+            height: 48px;
+            background: #ffffff;
+            border-radius: var(--r-md);
+            padding: 6px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            flex-shrink: 0;
+        }
+
+        .header-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .header-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .header-datetime {
+            font-size: 0.72rem;
+            opacity: 0.75;
+            margin-top: 2px;
+        }
+
+        /* NOTIFICATION BELL */
+        .bell-btn {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--r-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .bell-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .bell-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: var(--white);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .bell-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            min-width: 20px;
+            height: 20px;
+            background: var(--red-500);
+            color: var(--white);
+            border-radius: var(--r-full);
+            font-size: 0.62rem;
+            font-weight: 800;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+            border: 2px solid var(--indigo-800);
+            animation: bellPulse 2s infinite;
+        }
+
+        .bell-badge.visible {
+            display: flex;
+        }
+
+        @keyframes bellPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.15);
+            }
+        }
+
+        /* AUTO-REFRESH INDICATOR */
+        .refresh-indicator {
+            font-size: 0.6rem;
+            color: var(--gray-400);
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .app-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--sp-xl);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .body-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* FILTERS */
+        .filters {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--gray-500);
+            margin-right: 4px;
+        }
+
+        .filter-pill {
+            padding: 6px 14px;
+            border: 1.5px solid var(--gray-200);
+            border-radius: var(--r-full);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--bg-card);
+            color: var(--gray-500);
+        }
+
+        .filter-pill:hover {
+            border-color: var(--indigo-400);
+            color: var(--indigo-600);
+        }
+
+        .filter-pill.active {
+            background: var(--indigo-50);
+            border-color: var(--indigo-500);
+            color: var(--indigo-700);
+        }
+
+        /* SECTION CARD */
+        .section-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-radius: var(--r-xl);
+            border: 1px solid var(--gray-200);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.08);
+            overflow: hidden;
+            margin-bottom: 16px;
+            transition: box-shadow 0.2s;
+        }
+
+        .section-card:hover {
+            box-shadow: 0 12px 40px rgba(99, 102, 241, 0.14);
+        }
+
+        .section-header {
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+            gap: 10px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .section-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            font-size: 1.1rem;
+        }
+
+        .section-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .section-counts {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .section-count-pill {
+            font-size: 0.66rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: var(--r-full);
+            display: inline-block;
+            line-height: 1.2;
+        }
+
+        .section-count-pill.total {
+            background: var(--gray-100);
+            color: var(--gray-500);
+        }
+
+        .section-count-pill.pending-count {
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .section-toggle {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-400);
+            transition: transform 0.2s;
+        }
+
+        .section-toggle.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .section-body {
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .section-body.collapsed {
+            max-height: 0 !important;
+        }
+
+        /* TABLE */
+        .table-wrap {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 550px;
+        }
+
+        .data-table th {
+            background: var(--gray-50);
+            text-align: left;
+            padding: 9px 12px;
+            font-size: 0.66rem;
+            font-weight: 700;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+        }
+
+        .data-table td {
+            padding: 10px 12px;
+            font-size: 0.76rem;
+            color: var(--gray-700);
+            border-top: 1px solid var(--gray-100);
+        }
+
+        .data-table tr:hover td {
+            background: var(--indigo-50);
+        }
+
+        .data-table input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--indigo-600);
+            cursor: pointer;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: var(--r-full);
+            font-size: 0.66rem;
+            font-weight: 700;
+        }
+
+        .status-badge.pending {
+            background: var(--amber-100);
+            color: var(--amber-700);
+        }
+
+        .status-badge.approved {
+            background: var(--green-50);
+            color: var(--green-600);
+        }
+
+        .status-badge.disapproved {
+            background: var(--red-50);
+            color: var(--red-600);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 28px 16px;
+            color: var(--gray-400);
+            font-size: 0.8rem;
+        }
+
+        .empty-state-icon {
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+            opacity: 0.5;
+        }
+
+        /* ACTION BAR */
+        .action-bar {
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border-top: 2px solid var(--gray-200);
+            padding: 12px 20px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+            z-index: 50;
+        }
+
+        .action-bar.visible {
+            display: flex;
+        }
+
+        .action-bar-count {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: var(--r-md);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn.approve {
+            background: linear-gradient(135deg, var(--green-500), var(--green-600));
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(26, 58, 108, 0.4);
+        }
+
+        .action-btn.disapprove {
+            background: linear-gradient(135deg, var(--red-500), var(--red-600));
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        /* OVERLAYS */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.92);
+            backdrop-filter: blur(12px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: var(--white);
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            border-top-color: var(--indigo-400);
+            border-radius: var(--r-full);
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto var(--sp-lg);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            font-size: 0.95rem;
+            font-weight: 500;
+            opacity: 0.85;
+        }
+
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.65);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .confirm-overlay.active {
+            display: flex;
+        }
+
+        .confirm-card {
+            background: var(--bg-card);
+            border-radius: var(--r-xl);
+            padding: 28px;
+            text-align: center;
+            max-width: 380px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .confirm-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .confirm-text {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .confirm-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .confirm-btns button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: var(--r-md);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .confirm-btns .cancel-btn {
+            background: var(--gray-100);
+            color: var(--gray-600);
+            border: 1.5px solid var(--gray-200);
+        }
+
+        .confirm-btns .proceed-btn {
+            background: var(--indigo-600);
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .msg-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.65);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+            cursor: pointer;
+        }
+
+        .msg-overlay.active {
+            display: flex;
+        }
+
+        .msg-card {
+            background: var(--bg-card);
+            border-radius: var(--r-xl);
+            padding: 32px;
+            text-align: center;
+            max-width: 340px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .msg-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--r-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            font-size: 1.5rem;
+        }
+
+        .msg-icon.success {
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .msg-icon.error {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .msg-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+
+        .msg-text {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .app-header {
+                padding: var(--sp-sm) var(--sp-md);
+            }
+
+            .header-inner {
+                gap: 10px;
+            }
+
+            .header-logo {
+                width: 36px;
+                height: 36px;
+            }
+
+            .header-title {
+                font-size: 1.1rem;
+            }
+
+            .app-body {
+                padding: var(--sp-md);
+            }
+
+            .section-header {
+                padding: 12px 14px;
+            }
+
+            .action-bar {
+                padding: 10px 14px;
+                flex-direction: column;
+            }
+
+            .bell-btn {
+                width: 38px;
+                height: 38px;
+            }
+
+            .bell-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .app-header {
+                padding: var(--sp-xs) var(--sp-sm);
+            }
+
+            .header-title {
+                font-size: 0.95rem;
+            }
+
+            .app-body {
+                padding: var(--sp-sm);
+            }
+
+            .section-title {
+                font-size: 0.78rem;
+            }
+
+            .section-count-pill {
+                font-size: 0.58rem;
+                padding: 2px 6px;
+            }
+        }
+
+        /* â”€â”€ THEME TOGGLE â”€â”€ */
+        .theme-toggle {
+            margin-left: auto;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            color: #fff;
+            padding: 0;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* â”€â”€ DARK MODE CONTENT OVERRIDES â”€â”€ */
+        [data-theme="dark"] .scan-card,
+        [data-theme="dark"] .profile-bar,
+        [data-theme="dark"] .records-panel,
+        [data-theme="dark"] .actions-panel,
+        [data-theme="dark"] .form-card,
+        [data-theme="dark"] .overlay-card,
+        [data-theme="dark"] .msg-box,
+        [data-theme="dark"] .filing-card,
+        [data-theme="dark"] .section-panel,
+        [data-theme="dark"] .confirm-card,
+        [data-theme="dark"] .table-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .scan-title,
+        [data-theme="dark"] .form-title,
+        [data-theme="dark"] .panel-title,
+        [data-theme="dark"] .section-title,
+        [data-theme="dark"] h2,
+        [data-theme="dark"] h3 {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .scan-subtitle,
+        [data-theme="dark"] .form-subtitle,
+        [data-theme="dark"] .input-label,
+        [data-theme="dark"] label {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .card-input,
+        [data-theme="dark"] .form-input,
+        [data-theme="dark"] .form-select,
+        [data-theme="dark"] select,
+        [data-theme="dark"] .form-textarea,
+        [data-theme="dark"] input[type="text"],
+        [data-theme="dark"] input[type="date"],
+        [data-theme="dark"] input[type="time"],
+        [data-theme="dark"] input[type="number"],
+        [data-theme="dark"] input[type="email"],
+        [data-theme="dark"] textarea {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .card-input::placeholder,
+        [data-theme="dark"] input::placeholder,
+        [data-theme="dark"] textarea::placeholder {
+            color: #475569 !important;
+        }
+
+        [data-theme="dark"] .submit-btn,
+        [data-theme="dark"] .form-btn {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .credits-label,
+        [data-theme="dark"] .credits-sub,
+        [data-theme="dark"] .rtable td,
+        [data-theme="dark"] td,
+        [data-theme="dark"] th {
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="dark"] .status-pill,
+        [data-theme="dark"] .badge {
+            opacity: 0.9;
+        }
+
+        [data-theme="dark"] .loading-overlay {
+            background: rgba(0, 0, 0, 0.92) !important;
+        }
+
+        [data-theme="dark"] .msg-overlay {
+            background: rgba(0, 0, 0, 0.7) !important;
+        }
+
+        [data-theme="dark"] .overlay-bg {
+            background: rgba(0, 0, 0, 0.7) !important;
+        }
+
+        [data-theme="dark"] .action-btn,
+        [data-theme="dark"] .att-btn {
+            background: #1e3050 !important;
+            border-color: #2a4060 !important;
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="dark"] .action-btn.active,
+        [data-theme="dark"] .att-btn.active {
+            border-color: #3b82f6 !important;
+        }
+
+        [data-theme="dark"] .action-btn .btn-label,
+        [data-theme="dark"] .att-btn .btn-label {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .profile-name {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .profile-meta,
+        [data-theme="dark"] .profile-id {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .stat-value,
+        [data-theme="dark"] .stat-label,
+        [data-theme="dark"] .last-action {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .stat-value {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .footer-bar,
+        [data-theme="dark"] [class*="footer"] {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .p-arrow {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .rtable {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .rtable th {
+            background: #0f2140 !important;
+            border-color: #1e3050 !important;
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .rtable td {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .rtable tr:hover td {
+            background: rgba(26, 58, 108, 0.15) !important;
+        }
+
+        [data-theme="dark"] .date-row td {
+            background: #0f2140 !important;
+            color: #93c5fd !important;
+        }
+
+        [data-theme="dark"] .empty-state,
+        [data-theme="dark"] .no-data {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .no-account-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .data-table th {
+            background: #0f2140 !important;
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .data-table td {
+            color: #cbd5e1 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .section-header {
+            background: #162032 !important;
+        }
+
+        [data-theme="dark"] .filter-group select,
+        [data-theme="dark"] .filter-select {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .action-bar {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .filing-summary-card,
+        [data-theme="dark"] .summary-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .info-row,
+        [data-theme="dark"] .detail-row {
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="dark"] .workspace-timer,
+        [data-theme="dark"] .timer-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .history-row,
+        [data-theme="dark"] .filing-row {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .history-row:hover,
+        [data-theme="dark"] .filing-row:hover {
+            background: rgba(26, 58, 108, 0.1) !important;
+        }
+
+        /* ── APPROVALS-SPECIFIC DARK MODE ── */
+        [data-theme="dark"] .section-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        [data-theme="dark"] .filter-label {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .refresh-indicator {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .filter-pill {
+            background: #1e3050 !important;
+            border-color: #2a4060 !important;
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .filter-pill.active {
+            background: #132d56 !important;
+            border-color: #3b82f6 !important;
+            color: #93c5fd !important;
+        }
+
+        [data-theme="dark"] .section-title {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .pending-count {
+            opacity: 0.9;
+        }
+
+        [data-theme="dark"] .collapse-toggle {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .appr-table th {
+            background: #0d1b2a !important;
+            color: #94a3b8 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .appr-table td {
+            color: #cbd5e1 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .appr-table tr:hover,
+        [data-theme="dark"] .data-table tr:hover td {
+            background: rgba(26, 58, 108, 0.15) !important;
+        }
+
+        [data-theme="dark"] .emp-cell .emp-name {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .emp-cell .emp-id {
+            color: #64748b !important;
+        }
+
+        /* â”€â”€ HEADER RESPONSIVE (mobile fix) â”€â”€ */
+        @media (max-width: 480px) {
+            .header-inner {
+                gap: 8px !important;
+                padding: 0 !important;
+                flex-wrap: nowrap;
+            }
+
+            .header-logo {
+                width: 32px !important;
+                height: 32px !important;
+                min-width: 32px !important;
+                border-radius: 8px !important;
+            }
+
+            .header-logo img {
+                width: 100% !important;
+                height: 100% !important;
+            }
+
+            .header-titles h1,
+            .header-title {
+                font-size: 0.82rem !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 140px;
+            }
+
+            .header-sub,
+            .header-datetime {
+                font-size: 0.6rem !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 140px;
+            }
+
+            .theme-toggle {
+                width: 30px !important;
+                height: 30px !important;
+                min-width: 30px !important;
+                border-radius: 8px !important;
+            }
+
+            .theme-toggle svg {
+                width: 14px !important;
+                height: 14px !important;
+            }
+        }
+
+        /* â”€â”€ ENHANCED DARK MODE (v3) â”€â”€ */
+        [data-theme="dark"] #app {
+            background: #0d1b2a !important;
+        }
+
+        [data-theme="dark"] body {
+            background: #0d1b2a !important;
+        }
+
+        [data-theme="dark"] .app-body {
+            background: #0d1b2a !important;
+        }
+
+        [data-theme="dark"] .app-body::before {
+            opacity: 0.08 !important;
+        }
+
+        [data-theme="dark"] .header-title,
+        [data-theme="dark"] .header-titles h1,
+        [data-theme="dark"] .app-header h1 {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .header-sub,
+        [data-theme="dark"] .header-datetime,
+        [data-theme="dark"] .header-titles p {
+            color: #93c5fd !important;
+        }
+
+        [data-theme="dark"] .profile-card,
+        [data-theme="dark"] .info-card,
+        [data-theme="dark"] .workspace-card,
+        [data-theme="dark"] .timer-display,
+        [data-theme="dark"] .auto-reset-card,
+        [data-theme="dark"] .att-panel,
+        [data-theme="dark"] .filing-item,
+        [data-theme="dark"] .activity-log,
+        [data-theme="dark"] .filter-bar,
+        [data-theme="dark"] .admin-card,
+        [data-theme="dark"] .record-card,
+        [data-theme="dark"] .filing-section {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .stat-card,
+        [data-theme="dark"] .quick-stat,
+        [data-theme="dark"] .overview-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .stat-value,
+        [data-theme="dark"] .stat-number,
+        [data-theme="dark"] .count-value {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .stat-label,
+        [data-theme="dark"] .stat-title {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .date-nav,
+        [data-theme="dark"] .week-nav {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .date-nav button,
+        [data-theme="dark"] .week-nav button {
+            color: #93c5fd !important;
+            border-color: #1e3050 !important;
+            background: #162032 !important;
+        }
+
+        [data-theme="dark"] .profile-bar {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .profile-name,
+        [data-theme="dark"] .emp-name {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .profile-id,
+        [data-theme="dark"] .emp-id,
+        [data-theme="dark"] .profile-meta {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .time-display,
+        [data-theme="dark"] .date-display {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .time-label,
+        [data-theme="dark"] .date-label {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .last-action {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] p,
+        [data-theme="dark"] span {
+            color: inherit;
+        }
+
+        [data-theme="dark"] .section-title,
+        [data-theme="dark"] .panel-header,
+        [data-theme="dark"] .card-header {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .no-records,
+        [data-theme="dark"] .empty-msg {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .filing-count {
+            color: #93c5fd !important;
+        }
+
+        [data-theme="dark"] .pending-count {
+            background: rgba(245, 158, 11, 0.15) !important;
+            color: #fbbf24 !important;
+            border-color: rgba(245, 158, 11, 0.3) !important;
+        }
+
+        [data-theme="dark"] .att-grid .att-btn {
+            background: #1e3050 !important;
+            border-color: #2a4060 !important;
+        }
+
+        [data-theme="dark"] .att-btn .btn-icon {
+            opacity: 0.9;
+        }
+
+        [data-theme="dark"] .att-btn .btn-label {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .att-btn .btn-time {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .portal-footer,
+        [data-theme="dark"] .footer-bar {
+            background: #0a1628 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .footer-bar *,
+        [data-theme="dark"] .portal-footer * {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .att-log-row {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .att-log-row td {
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="dark"] .refresh-btn {
+            background: #1e3050 !important;
+            border-color: #2a4060 !important;
+            color: #93c5fd !important;
+        }
+
+        [data-theme="dark"] .header-logo,
+        [data-theme="dark"] .logo-circle {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+    </style>
+    <script src="../js/rdr-auth.js"></script>
+    <script src="../js/rdr-api.js"></script>
+    <script>
+        // Provide template-compatible variables from session
+        var USER_EMAIL = RDR_AUTH.getEmail();
+        var SESSION_TOKEN = RDR_AUTH.getSession();
+        var BASE_URL = RDR_AUTH.getGasUrl();
+        var userEmail = USER_EMAIL;
+        var sessionToken = SESSION_TOKEN;
+        var baseUrl = BASE_URL;
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <header class="app-header">
+            <div class="header-inner">
+                <a id="backToPortal" onclick="window.location.href=this.getAttribute('data-url');return false;"
+                    data-url="#"
+                    style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:10px;color:#fff;text-decoration:none;cursor:pointer;flex-shrink:0;"
+                    href="javascript:void(0)">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                    </svg>
+                </a>
+                <div class="header-logo"><img id="headerLogo"
+                        src="https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png" alt="RDR" /></div>
+                <div class="header-text">
+                    <h1 class="header-title">Filing Approvals</h1>
+                    <p class="header-datetime" id="headerDateTime">Loading...</p>
+                </div>
+                <!-- NOTIFICATION BELL -->
+                <div class="bell-btn" onclick="refreshAll()" title="Pending filings — click to refresh">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                    </svg>
+                    <span class="bell-badge" id="bellBadge">0</span>
+                </div>
+            </div>
+            <div style="position:absolute;top:50%;right:16px;transform:translateY(-50%);z-index:10;"><button
+                    class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIcon"
+                        viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg></button></div>
+        </header>
+
+        <div class="app-body">
+            <div class="body-inner">
+                <!-- FILTERS -->
+                <div class="filters" id="filters">
+                    <span class="filter-label">Filter:</span>
+                    <button class="filter-pill" data-status="All" onclick="switchFilter('All')">All</button>
+                    <button class="filter-pill active" data-status="Pending"
+                        onclick="switchFilter('Pending')">Pending</button>
+                    <button class="filter-pill" data-status="Approved"
+                        onclick="switchFilter('Approved')">Approved</button>
+                    <button class="filter-pill" data-status="Disapproved"
+                        onclick="switchFilter('Disapproved')">Disapproved</button>
+                    <span class="refresh-indicator" id="refreshIndicator"></span>
+                </div>
+
+                <!-- OVERTIME SECTION -->
+                <div class="section-card" id="section-overtime">
+                    <div class="section-header" onclick="toggleSection('overtime')">
+                        <div class="section-header-left">
+                            <span class="section-icon">⏰</span>
+                            <span class="section-title">Overtime</span>
+                            <div class="section-counts">
+                                <span class="section-count-pill total" id="count-overtime-total">0</span>
+                                <span class="section-count-pill pending-count" id="count-overtime-pending">0
+                                    pending</span>
+                            </div>
+                        </div>
+                        <div class="section-toggle" id="toggle-overtime">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body" id="body-overtime">
+                        <div class="table-wrap">
+                            <table class="data-table" id="table-overtime" style="display:none;
+                var logo = document.getElementById('headerLogo');
+                if (logo) logo.src = isDark ? LOGO_DARK : LOGO_LIGHT;">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" onchange="toggleSelectAll('overtime',this)"></th>
+                                        <th>Employee</th>
+                                        <th>Date</th>
+                                        <th>Time In</th>
+                                        <th>Time Out</th>
+                                        <th>Remarks</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-overtime"></tbody>
+                            </table>
+                        </div>
+                        <div class="empty-state" id="empty-overtime">
+                            <div class="empty-state-icon">📋</div>
+                            <p>No overtime filings</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LEAVE SECTION -->
+                <div class="section-card" id="section-leave">
+                    <div class="section-header" onclick="toggleSection('leave')">
+                        <div class="section-header-left">
+                            <span class="section-icon">🏖️</span>
+                            <span class="section-title">Leave</span>
+                            <div class="section-counts">
+                                <span class="section-count-pill total" id="count-leave-total">0</span>
+                                <span class="section-count-pill pending-count" id="count-leave-pending">0 pending</span>
+                            </div>
+                        </div>
+                        <div class="section-toggle" id="toggle-leave">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body" id="body-leave">
+                        <div class="table-wrap">
+                            <table class="data-table" id="table-leave" style="display:none;">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" onchange="toggleSelectAll('leave',this)"></th>
+                                        <th>Employee</th>
+                                        <th>Type</th>
+                                        <th>Start</th>
+                                        <th>End</th>
+                                        <th>Reason</th>
+                                        <th>Cert</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-leave"></tbody>
+                            </table>
+                        </div>
+                        <div class="empty-state" id="empty-leave">
+                            <div class="empty-state-icon">📋</div>
+                            <p>No leave filings</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HOLIDAY SECTION -->
+                <div class="section-card" id="section-holiday">
+                    <div class="section-header" onclick="toggleSection('holiday')">
+                        <div class="section-header-left">
+                            <span class="section-icon">🎄</span>
+                            <span class="section-title">Holiday Work</span>
+                            <div class="section-counts">
+                                <span class="section-count-pill total" id="count-holiday-total">0</span>
+                                <span class="section-count-pill pending-count" id="count-holiday-pending">0
+                                    pending</span>
+                            </div>
+                        </div>
+                        <div class="section-toggle" id="toggle-holiday">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body" id="body-holiday">
+                        <div class="table-wrap">
+                            <table class="data-table" id="table-holiday" style="display:none;">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" onchange="toggleSelectAll('holiday',this)"></th>
+                                        <th>Employee</th>
+                                        <th>Date</th>
+                                        <th>Time In</th>
+                                        <th>Time Out</th>
+                                        <th>Remarks</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-holiday"></tbody>
+                            </table>
+                        </div>
+                        <div class="empty-state" id="empty-holiday">
+                            <div class="empty-state-icon">📋</div>
+                            <p>No holiday work filings</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OFFSET SECTION -->
+                <div class="section-card" id="section-offset">
+                    <div class="section-header" onclick="toggleSection('offset')">
+                        <div class="section-header-left">
+                            <span class="section-icon">🔄</span>
+                            <span class="section-title">Offset</span>
+                            <div class="section-counts">
+                                <span class="section-count-pill total" id="count-offset-total">0</span>
+                                <span class="section-count-pill pending-count" id="count-offset-pending">0
+                                    pending</span>
+                            </div>
+                        </div>
+                        <div class="section-toggle" id="toggle-offset">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body" id="body-offset">
+                        <div class="table-wrap">
+                            <table class="data-table" id="table-offset" style="display:none;">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" onchange="toggleSelectAll('offset',this)"></th>
+                                        <th>Employee</th>
+                                        <th>Absent Date</th>
+                                        <th>Offset Date</th>
+                                        <th>Reason</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-offset"></tbody>
+                            </table>
+                        </div>
+                        <div class="empty-state" id="empty-offset">
+                            <div class="empty-state-icon">📋</div>
+                            <p>No offset filings</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTION BAR -->
+        <div class="action-bar" id="actionBar">
+            <span class="action-bar-count" id="selectedCount">0 selected</span>
+            <div class="action-btns">
+                <button class="action-btn approve" onclick="confirmAction('Approved')">✓ Approve</button>
+                <button class="action-btn disapprove" onclick="confirmAction('Disapproved')">✕ Disapprove</button>
+            </div>
+        </div>
+
+        <div style="text-align:center;padding:16px 24px 24px;font-size:11px;color:var(--gray-400);line-height:1.8;">
+            Created by: <strong>Joeross Delos Reyes</strong><br>
+            Need help? Contact <a href="https://t.me/moverings" target="_blank"
+                style="color:var(--indigo-400);text-decoration:none;font-weight:600;">@moverings</a> on Telegram or
+            reach out to IT Operations
+        </div>
+    </div>
+
+    <!-- OVERLAYS -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p class="loading-text" id="loadingText">Processing...</p>
+        </div>
+    </div>
+
+    <div class="confirm-overlay" id="confirmOverlay">
+        <div class="confirm-card">
+            <div class="confirm-title" id="confirmTitle"></div>
+            <div class="confirm-text" id="confirmText"></div>
+            <div class="confirm-btns">
+                <button class="cancel-btn" onclick="closeConfirm()">Cancel</button>
+                <button class="proceed-btn" id="confirmProceedBtn" onclick="proceedAction()">Proceed</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="msg-overlay" id="msgOverlay">
+        <div class="msg-card">
+            <div class="msg-icon" id="msgIcon">✓</div>
+            <div class="msg-title" id="msgTitle"></div>
+            <div class="msg-text" id="msgText"></div>
+        </div>
+    </div>
+
+    <script>
+        var USER_EMAIL = '' + RDR_AUTH.getEmail() + ''; var SESSION_TOKEN = '' + RDR_AUTH.getSession() + ''; var BASE_URL = '' + RDR_AUTH.getGasUrl() + '';
+
+        var currentFilter = 'Pending';
+        var allData = { overtime: [], leave: [], holiday: [], offset: [] };
+        var selectedRows = {}; // { type: [rowNumbers] }
+        var pendingAction = '';
+        var pendingActionType = '';
+        var TYPES = ['overtime', 'leave', 'holiday', 'offset'];
+        var refreshTimer = null;
+        var REFRESH_INTERVAL = 30000; // 30 seconds
+
+        function updateClock() { var now = new Date(); var opts = { timeZone: 'Asia/Manila', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }; document.getElementById('headerDateTime').textContent = now.toLocaleString('en-PH', opts); }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            updateClock(); setInterval(updateClock, 1000);
+            document.getElementById('backToPortal').setAttribute('data-url', './');
+            document.getElementById('msgOverlay').addEventListener('click', hideMsgOverlay);
+            TYPES.forEach(function (t) { selectedRows[t] = []; });
+            loadAllFilings(true);
+            // Auto-refresh every 30 seconds
+            refreshTimer = setInterval(function () { loadAllFilings(false); }, REFRESH_INTERVAL);
+        });
+
+        function switchFilter(status) {
+            currentFilter = status;
+            document.querySelectorAll('.filter-pill').forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-status') === status); });
+            TYPES.forEach(function (t) { selectedRows[t] = []; });
+            updateActionBar();
+            loadAllFilings(true);
+        }
+
+        function refreshAll() {
+            loadAllFilings(true);
+        }
+
+        var loadingCount = 0;
+        function loadAllFilings(showSpinner) {
+            if (showSpinner) showLoading('Loading filings...');
+            loadingCount = 0;
+            TYPES.forEach(function (type) {
+                callGAS('getFilingsForApproval', [type, currentFilter]).then(function (result) {
+                        loadingCount++;
+                        if (result && result.success) {
+                            allData[type] = result.filings || [];
+                        }
+                        renderSection(type);
+                        if (loadingCount >= 4) {
+                            hideLoading();
+                            updateBellBadge();
+                            updateRefreshIndicator();
+                        }
+                    }).catch(function () {
+                        loadingCount++;
+                        if (loadingCount >= 4) { hideLoading(); updateBellBadge(); }
+                    });
+            });
+        }
+
+        function updateRefreshIndicator() {
+            var now = new Date();
+            var h = now.getHours(); var m = now.getMinutes();
+            var ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            var mStr = m < 10 ? '0' + m : m;
+            document.getElementById('refreshIndicator').textContent = 'Last refresh: ' + h + ':' + mStr + ' ' + ampm + ' · Auto 30s';
+        }
+
+        function updateBellBadge() {
+            var totalPending = 0;
+            TYPES.forEach(function (type) {
+                var filings = allData[type] || [];
+                for (var i = 0; i < filings.length; i++) {
+                    if (String(filings[i].status).toLowerCase() === 'pending') totalPending++;
+                }
+            });
+            // If filter is not "All" or "Pending", count across raw pending data
+            if (currentFilter !== 'Pending' && currentFilter !== 'All') {
+                // We need to count pending from the full dataset; but since we query filtered, we estimate from cached
+                // For accuracy, we do a separate silent count — for now show what we have
+            }
+            var badge = document.getElementById('bellBadge');
+            if (totalPending > 0) {
+                badge.textContent = totalPending > 99 ? '99+' : totalPending;
+                badge.classList.add('visible');
+            } else {
+                badge.classList.remove('visible');
+            }
+            // Also update per-section pending counts
+            TYPES.forEach(function (type) {
+                var filings = allData[type] || [];
+                var pending = 0;
+                for (var i = 0; i < filings.length; i++) {
+                    if (String(filings[i].status).toLowerCase() === 'pending') pending++;
+                }
+                document.getElementById('count-' + type + '-pending').textContent = pending + ' pending';
+                document.getElementById('count-' + type + '-pending').style.display = pending > 0 ? 'inline' : 'none';
+            });
+        }
+
+        function toggleSection(type) {
+            var body = document.getElementById('body-' + type);
+            var toggle = document.getElementById('toggle-' + type);
+            if (body.classList.contains('collapsed')) {
+                body.classList.remove('collapsed');
+                body.style.maxHeight = body.scrollHeight + 'px';
+                toggle.classList.remove('collapsed');
+            } else {
+                body.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+            }
+        }
+
+        function renderSection(type) {
+            var filings = allData[type];
+            var table = document.getElementById('table-' + type);
+            var empty = document.getElementById('empty-' + type);
+            var tbody = document.getElementById('tbody-' + type);
+
+            document.getElementById('count-' + type + '-total').textContent = filings.length;
+
+            if (filings.length === 0) {
+                table.style.display = 'none';
+                empty.style.display = 'block';
+                return;
+            }
+            table.style.display = 'table';
+            empty.style.display = 'none';
+            tbody.innerHTML = '';
+
+            for (var i = 0; i < filings.length; i++) {
+                var f = filings[i];
+                var statusClass = String(f.status).toLowerCase() === 'approved' ? 'approved' : (String(f.status).toLowerCase() === 'disapproved' ? 'disapproved' : 'pending');
+                var checked = selectedRows[type].indexOf(f.row) >= 0 ? ' checked' : '';
+                var tr = document.createElement('tr');
+
+                var cells = '<td><input type="checkbox" data-row="' + f.row + '" data-type="' + type + '" onchange="onRowCheck(this)"' + checked + '></td>';
+                cells += '<td><strong>' + (f.empName || '') + '</strong><br><span style="font-size:0.65rem;color:var(--gray-400);">' + (f.empId || '') + '</span></td>';
+
+                if (type === 'overtime') {
+                    cells += '<td>' + (f.date || '') + '</td><td>' + (f.timeIn || '') + '</td><td>' + (f.timeOut || '') + '</td>';
+                    var remarksShortOT = String(f.remarks || '').substring(0, 20) + (String(f.remarks || '').length > 20 ? '...' : '');
+                    cells += '<td>' + remarksShortOT + '</td>';
+                } else if (type === 'leave') {
+                    cells += '<td>' + (f.leaveType || '') + '</td><td>' + (f.startDate || '') + '</td><td>' + (f.endDate || '') + '</td>';
+                    var reasonShort = String(f.reason || '').substring(0, 20) + (String(f.reason || '').length > 20 ? '...' : '');
+                    cells += '<td>' + reasonShort + '</td>';
+                    if (f.attachment && String(f.attachment).trim()) {
+                        cells += '<td><a href="' + f.attachment + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:var(--indigo-50);border:1px solid var(--indigo-200);border-radius:6px;color:var(--indigo-600);font-size:0.68rem;font-weight:600;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background=\'var(--indigo-100)\'" onmouseout="this.style.background=\'var(--indigo-50)\'">📎 View</a></td>';
+                    } else {
+                        cells += '<td style="color:var(--gray-300);">—</td>';
+                    }
+                } else if (type === 'holiday') {
+                    cells += '<td>' + (f.date || '') + '</td><td>' + (f.timeIn || '') + '</td><td>' + (f.timeOut || '') + '</td>';
+                    var remarksShort = String(f.remarks || '').substring(0, 20) + (String(f.remarks || '').length > 20 ? '...' : '');
+                    cells += '<td>' + remarksShort + '</td>';
+                } else if (type === 'offset') {
+                    cells += '<td>' + (f.dateAbsent || '') + '</td><td>' + (f.dateOffset || '') + '</td>';
+                    var reasonShort2 = String(f.reason || '').substring(0, 20) + (String(f.reason || '').length > 20 ? '...' : '');
+                    cells += '<td>' + reasonShort2 + '</td>';
+                }
+                cells += '<td><span class="status-badge ' + statusClass + '">' + f.status + '</span></td>';
+                tr.innerHTML = cells;
+                tbody.appendChild(tr);
+            }
+
+            // Auto-expand section body
+            var body = document.getElementById('body-' + type);
+            if (!body.classList.contains('collapsed')) {
+                body.style.maxHeight = body.scrollHeight + 'px';
+            }
+        }
+
+        function onRowCheck(cb) {
+            var row = parseInt(cb.getAttribute('data-row'));
+            var type = cb.getAttribute('data-type');
+            if (cb.checked) { if (selectedRows[type].indexOf(row) < 0) selectedRows[type].push(row); }
+            else { selectedRows[type] = selectedRows[type].filter(function (r) { return r !== row; }); }
+            updateActionBar();
+        }
+
+        function toggleSelectAll(type, cb) {
+            var checked = cb.checked;
+            selectedRows[type] = [];
+            document.querySelectorAll('#tbody-' + type + ' input[type="checkbox"]').forEach(function (el) {
+                el.checked = checked;
+                if (checked) selectedRows[type].push(parseInt(el.getAttribute('data-row')));
+            });
+            updateActionBar();
+        }
+
+        function getTotalSelected() {
+            var total = 0;
+            TYPES.forEach(function (t) { total += selectedRows[t].length; });
+            return total;
+        }
+
+        function updateActionBar() {
+            var total = getTotalSelected();
+            var bar = document.getElementById('actionBar');
+            if (total > 0) {
+                bar.classList.add('visible');
+                document.getElementById('selectedCount').textContent = total + ' selected';
+            } else {
+                bar.classList.remove('visible');
+            }
+        }
+
+        function confirmAction(action) {
+            var total = getTotalSelected();
+            if (total === 0) return;
+            pendingAction = action;
+            document.getElementById('confirmTitle').textContent = action === 'Approved' ? 'Approve Filings' : 'Disapprove Filings';
+            document.getElementById('confirmText').textContent = 'You are about to ' + action.toLowerCase() + ' ' + total + ' filing(s) across selected categories. This action cannot be undone.';
+            document.getElementById('confirmOverlay').classList.add('active');
+        }
+
+        function closeConfirm() { document.getElementById('confirmOverlay').classList.remove('active'); }
+
+        function proceedAction() {
+            var action = pendingAction;
+            pendingAction = '';
+            closeConfirm();
+            if (!action) return;
+
+            // Process each type that has selections
+            var typesToProcess = [];
+            TYPES.forEach(function (t) {
+                if (selectedRows[t].length > 0) typesToProcess.push(t);
+            });
+            if (typesToProcess.length === 0) return;
+
+            showLoading('Updating filings...');
+            var doneCount = 0;
+            var errors = [];
+
+            typesToProcess.forEach(function (type) {
+                callGAS('updateFilingStatus', [type, selectedRows[type], action, USER_EMAIL]).then(function (result) {
+                        doneCount++;
+                        if (!result || !result.success) { errors.push(type + ': ' + ((result && result.error) || 'Unknown error')); }
+                        selectedRows[type] = [];
+                        if (doneCount >= typesToProcess.length) {
+                            hideLoading();
+                            if (errors.length > 0) {
+                                showMessage('error', 'Partial Error', errors.join('; '));
+                            } else {
+                                showMessage('success', 'Done!', action + ' applied to ' + getTotalSelected() + ' filing(s).');
+                            }
+                            updateActionBar();
+                            loadAllFilings(false);
+                        }
+                    }).catch(function (err) {
+                        doneCount++;
+                        errors.push(type + ': ' + (err.message || 'Server error'));
+                        if (doneCount >= typesToProcess.length) {
+                            hideLoading();
+                            showMessage('error', 'Error', errors.join('; '));
+                            updateActionBar();
+                            loadAllFilings(false);
+                        }
+                    });
+            });
+        }
+
+        function showLoading(text) { document.getElementById('loadingText').textContent = text || 'Processing...'; document.getElementById('loadingOverlay').classList.add('active'); }
+        function hideLoading() { document.getElementById('loadingOverlay').classList.remove('active'); }
+        function showMessage(type, title, text) { var icon = document.getElementById('msgIcon'); icon.className = 'msg-icon ' + type; icon.textContent = type === 'success' ? '✓' : '✕'; document.getElementById('msgTitle').textContent = title; document.getElementById('msgText').textContent = text; document.getElementById('msgOverlay').classList.add('active'); }
+        function hideMsgOverlay() { document.getElementById('msgOverlay').classList.remove('active'); }
+        // â”€â”€ THEME TOGGLE â”€â”€
+        (function () {
+            var LOGO_LIGHT = 'https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png';
+            var LOGO_DARK = 'https://i.ibb.co/6crnBjPv/RDR-Logo-White.png';
+            var saved = 'light';
+            try { saved = localStorage.getItem('rdr-theme') || 'light'; } catch (e) { }
+            document.documentElement.setAttribute('data-theme', saved);
+            function updateIcon() {
+                var el = document.getElementById('themeIcon');
+                if (!el) return;
+                var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                el.innerHTML = isDark
+                    ? '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>'
+                    : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+                var logo = document.getElementById('headerLogo');
+                if (logo) logo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
+            }
+            updateIcon();
+            var btn = document.getElementById('themeToggle');
+            if (btn) btn.addEventListener('click', function () {
+                var current = document.documentElement.getAttribute('data-theme');
+                var next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                try { localStorage.setItem('rdr-theme', next); } catch (e) { }
+                updateIcon();
+            });
+        })();
+    </script>
+</body>
+
+</html>

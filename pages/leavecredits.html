@@ -1,0 +1,920 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RDR HR — Leave Credits</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-app: #f5f7fa;
+            --bg-card: #fff;
+            --bg-input: #fff;
+            --border: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --green: #22c55e;
+            --amber: #f59e0b;
+            --red: #ef4444;
+            --blue: #3b82f6;
+            --r-sm: 8px;
+            --r-md: 14px;
+            --r-xl: 28px;
+        }
+
+        [data-theme="dark"] {
+            --bg-app: #0d1b2a;
+            --bg-card: #162032;
+            --bg-input: #0d1b2a;
+            --border: #1e3050;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-app);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* HEADER */
+        .app-header {
+            background: linear-gradient(135deg, #0a1628 0%, #0f2140 60%, #1a3a6c 100%);
+            color: #fff;
+            padding: 12px 20px;
+            box-shadow: 0 4px 20px rgba(10, 22, 40, .4);
+            flex-shrink: 0;
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .home-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, .12);
+            border: 1.5px solid rgba(255, 255, 255, .18);
+            border-radius: var(--r-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #fff;
+            flex-shrink: 0;
+            transition: all .2s;
+            text-decoration: none;
+        }
+
+        .home-btn:hover {
+            background: rgba(255, 255, 255, .22);
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border-radius: var(--r-sm);
+            padding: 5px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+            transition: background .2s;
+        }
+
+        .header-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .header-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: -.02em;
+        }
+
+        .header-sub {
+            font-size: .68rem;
+            opacity: .65;
+            margin-top: 1px;
+        }
+
+        .theme-btn {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, .1);
+            border: 1.5px solid rgba(255, 255, 255, .15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #fff;
+            flex-shrink: 0;
+            transition: all .2s;
+        }
+
+        .theme-btn:hover {
+            background: rgba(255, 255, 255, .2);
+        }
+
+        /* BODY */
+        .app-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* PANEL */
+        .panel {
+            background: var(--bg-card);
+            border-radius: var(--r-xl);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, .05);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 16px 22px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .panel-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #059669, #10b981);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .panel-title {
+            font-size: .95rem;
+            font-weight: 800;
+        }
+
+        .panel-sub {
+            font-size: .62rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .refresh-btn {
+            padding: 7px 16px;
+            border-radius: var(--r-sm);
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #fff;
+            font-family: inherit;
+            font-size: .72rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, .4);
+        }
+
+        /* SEARCH */
+        .search-bar {
+            padding: 12px 22px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-wrap {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: .85rem;
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 9px 12px 9px 34px;
+            border-radius: var(--r-sm);
+            border: 1.5px solid var(--border);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: .78rem;
+            transition: border-color .2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #10b981;
+        }
+
+        [data-theme="dark"] .search-input {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        /* TABLE */
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .74rem;
+        }
+
+        thead th {
+            padding: 9px 12px;
+            text-align: center;
+            font-weight: 700;
+            color: var(--text-muted);
+            background: var(--bg-app);
+            border-bottom: 2px solid var(--border);
+            font-size: .58rem;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            white-space: nowrap;
+        }
+
+        thead th.emp-head {
+            text-align: left;
+            padding-left: 22px;
+        }
+
+        .th-grp {
+            font-size: .6rem !important;
+            letter-spacing: .08em !important;
+        }
+
+        .th-sl {
+            color: #059669 !important;
+            background: rgba(5, 150, 105, .07) !important;
+        }
+
+        .th-el {
+            color: #dc2626 !important;
+            background: rgba(220, 38, 38, .06) !important;
+        }
+
+        .th-vl {
+            color: #2563eb !important;
+            background: rgba(37, 99, 235, .07) !important;
+        }
+
+        [data-theme="dark"] .th-sl {
+            background: rgba(5, 150, 105, .12) !important;
+        }
+
+        [data-theme="dark"] .th-el {
+            background: rgba(220, 38, 38, .1) !important;
+        }
+
+        [data-theme="dark"] .th-vl {
+            background: rgba(37, 99, 235, .12) !important;
+        }
+
+        [data-theme="dark"] thead th {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+        }
+
+        tbody td {
+            padding: 9px 12px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            vertical-align: middle;
+        }
+
+        tbody td.emp-cell {
+            text-align: left;
+            padding-left: 22px;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover td {
+            background: rgba(16, 185, 129, .03);
+        }
+
+        [data-theme="dark"] tbody td {
+            border-color: #1e3050 !important;
+        }
+
+        /* EMPLOYEE NAME */
+        .emp-name {
+            font-size: .82rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .emp-id {
+            font-size: .6rem;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+
+        /* LEAVE VALUE DISPLAY */
+        .leave-val {
+            font-size: .88rem;
+            font-weight: 800;
+        }
+
+        .lv-high {
+            color: #16a34a;
+        }
+
+        .lv-mid {
+            color: #d97706;
+        }
+
+        .lv-low {
+            color: #dc2626;
+        }
+
+        .leave-bar {
+            height: 4px;
+            border-radius: 3px;
+            background: var(--border);
+            overflow: hidden;
+            margin-top: 4px;
+            min-width: 32px;
+        }
+
+        .leave-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width .4s ease;
+        }
+
+        .used-val {
+            font-size: .75rem;
+            color: var(--text-muted);
+        }
+
+        /* INLINE EDIT */
+        .total-cell {
+            position: relative;
+        }
+
+        .total-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 6px;
+            transition: background .15s;
+        }
+
+        .total-display:hover {
+            background: rgba(16, 185, 129, .1);
+        }
+
+        .total-display:hover .edit-hint {
+            opacity: 1;
+        }
+
+        .edit-hint {
+            font-size: .55rem;
+            color: #10b981;
+            opacity: 0;
+            transition: opacity .15s;
+        }
+
+        .total-num {
+            font-size: .88rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .total-edit-wrap {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .total-input {
+            width: 52px;
+            padding: 4px 6px;
+            border-radius: 6px;
+            border: 1.5px solid #10b981;
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: .82rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .total-input:focus {
+            outline: none;
+        }
+
+        .save-mini {
+            padding: 3px 8px;
+            border-radius: 5px;
+            border: none;
+            background: #10b981;
+            color: #fff;
+            font-family: inherit;
+            font-size: .65rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .save-mini:hover {
+            background: #059669;
+        }
+
+        .cancel-mini {
+            padding: 3px 6px;
+            border-radius: 5px;
+            border: none;
+            background: var(--border);
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: .65rem;
+            cursor: pointer;
+        }
+
+        [data-theme="dark"] .total-input {
+            background: #0d1b2a !important;
+            border-color: #10b981 !important;
+            color: #e2e8f0 !important;
+        }
+
+        /* EMPTY */
+        .empty-row td {
+            text-align: center;
+            padding: 48px 20px;
+            color: var(--text-muted);
+            font-size: .82rem;
+            border: none !important;
+        }
+
+        .empty-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            opacity: .4;
+        }
+
+        /* LEGEND */
+        .legend {
+            display: flex;
+            gap: 20px;
+            padding: 12px 22px;
+            background: var(--bg-app);
+            border-top: 1px solid var(--border);
+            font-size: .68rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .legend-tip {
+            margin-left: auto;
+            font-size: .62rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        [data-theme="dark"] .legend {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            padding: 10px 20px;
+            border-radius: var(--r-md);
+            font-size: .78rem;
+            font-weight: 600;
+            color: #fff;
+            z-index: 9999;
+            transition: transform .3s;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .2);
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.success {
+            background: #16a34a;
+        }
+
+        .toast.error {
+            background: #dc2626;
+        }
+
+        .toast.info {
+            background: #0891b2;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 14px 20px;
+            font-size: .65rem;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        @media(max-width:640px) {
+            .app-body {
+                padding: 12px;
+            }
+
+            .header-title {
+                font-size: .92rem;
+            }
+        }
+    </style>
+    <script src="../js/rdr-auth.js"></script>
+    <script src="../js/rdr-api.js"></script>
+    <script>
+        // Provide template-compatible variables from session
+        var USER_EMAIL = RDR_AUTH.getEmail();
+        var SESSION_TOKEN = RDR_AUTH.getSession();
+        var BASE_URL = RDR_AUTH.getGasUrl();
+        var userEmail = USER_EMAIL;
+        var sessionToken = SESSION_TOKEN;
+        var baseUrl = BASE_URL;
+    </script>
+</head>
+
+<body>
+
+    <header class="app-header">
+        <div class="header-inner">
+            <a class="home-btn" href="#" onclick="goHome();return false;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                </svg>
+            </a>
+            <div class="header-logo" id="logoBox">
+                <img id="headerLogo" src="https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png" alt="RDR">
+            </div>
+            <div class="header-text">
+                <div class="header-title">🏖️ Leave Credits</div>
+                <div class="header-sub">Employee leave balance — Sick, Emergency, Vacation</div>
+            </div>
+            <button class="theme-btn" id="themeBtn">
+                <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="app-body">
+        <div class="inner">
+            <div class="panel">
+
+                <div class="panel-header">
+                    <div class="panel-left">
+                        <div class="panel-icon">🏖️</div>
+                        <div>
+                            <div class="panel-title">Leave Credit Balances</div>
+                            <div class="panel-sub">Employees pulled from <strong>👨🏻‍💼 Employee Management</strong> ·
+                                Totals saved to <strong>⛁ LeaveCredits_DB</strong></div>
+                        </div>
+                    </div>
+                    <button class="refresh-btn" onclick="loadCredits()">↻ Refresh</button>
+                </div>
+
+                <div class="search-bar">
+                    <div class="search-wrap">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" class="search-input"
+                            placeholder="Search employee name or ID..." oninput="filterTable()">
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="emp-head" rowspan="2" style="vertical-align:middle;">Employee</th>
+                                <th colspan="3" class="th-grp th-sl">🤒 Sick Leave (SL)</th>
+                                <th colspan="3" class="th-grp th-el">🚨 Emergency Leave (EL)</th>
+                                <th colspan="3" class="th-grp th-vl">✈️ Vacation Leave (VL)</th>
+                            </tr>
+                            <tr>
+                                <th class="th-sl">Total</th>
+                                <th class="th-sl">Used</th>
+                                <th class="th-sl">Remaining</th>
+                                <th class="th-el">Total</th>
+                                <th class="th-el">Used</th>
+                                <th class="th-el">Remaining</th>
+                                <th class="th-vl">Total</th>
+                                <th class="th-vl">Used</th>
+                                <th class="th-vl">Remaining</th>
+                            </tr>
+                        </thead>
+                        <tbody id="creditsBody">
+                            <tr class="empty-row">
+                                <td colspan="10">
+                                    <div class="empty-icon">⏳</div>Loading employees...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#16a34a;"></div> Sufficient (&gt;50%)
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#d97706;"></div> Low (1–50%)
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#dc2626;"></div> Exhausted (0)
+                    </div>
+                    <div class="legend-tip">💡 Click any <strong>Total</strong> number to edit it inline</div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        Created by: <strong>Joeross Delos Reyes</strong> &nbsp;·&nbsp; Need help? <a
+            href="https://t.me/moverings">@moverings</a> on Telegram
+    </footer>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        var BASE_URL = '' + RDR_AUTH.getGasUrl() + '';
+        var SESSION_TOKEN = '' + RDR_AUTH.getSession() + '';
+        var ALL_DATA = [];
+
+        function goHome() { window.location.href = BASE_URL + '?session=' + SESSION_TOKEN; }
+
+        function toast(msg, type) {
+            var t = document.getElementById('toast');
+            t.textContent = msg; t.className = 'toast ' + type;
+            setTimeout(function () { t.classList.add('show'); }, 10);
+            setTimeout(function () { t.classList.remove('show'); }, 3200);
+        }
+
+        // ── HELPERS ──────────────────────────────────────────────────────────────
+        function barColor(left, total) {
+            if (!total) return '#94a3b8';
+            var p = left / total;
+            if (p > 0.5) return '#22c55e';
+            if (p > 0) return '#d97706';
+            return '#ef4444';
+        }
+        function leftClass(left, total) {
+            if (!total || left <= 0) return 'leave-val lv-low';
+            if (left / total > 0.5) return 'leave-val lv-high';
+            return 'leave-val lv-mid';
+        }
+        function remainingCell(left, total) {
+            var pct = total > 0 ? Math.max(0, Math.min(100, (left / total) * 100)) : 0;
+            var col = barColor(left, total);
+            var cls = leftClass(left, total);
+            return '<td><div class="' + cls + '">' + left + '</div>' +
+                '<div class="leave-bar"><div class="leave-bar-fill" style="width:' + pct + '%;background:' + col + ';"></div></div></td>';
+        }
+
+        // ── INLINE EDIT: make a total cell clickable ──────────────────────────────
+        function makeTotalCell(empId, empName, field, value, r) {
+            // field: 'sl','el','vl'   r: the full row data object
+            var id = 'tc_' + empId + '_' + field;
+            return '<td class="total-cell" id="' + id + '">' +
+                '<div class="total-display" onclick="openEdit(\'' + empId + '\',\'' + encodeURIComponent(empName) + '\',\'' + field + '\')">' +
+                '<span class="total-num">' + value + '</span>' +
+                '<span class="edit-hint">✏️</span>' +
+                '</div>' +
+                '<div class="total-edit-wrap" id="ew_' + empId + '_' + field + '">' +
+                '<input type="number" min="0" step="1" class="total-input" id="ei_' + empId + '_' + field + '" value="' + value + '">' +
+                '<button class="save-mini" onclick="saveTotal(\'' + empId + '\',\'' + encodeURIComponent(empName) + '\',\'' + field + '\')">✓</button>' +
+                '<button class="cancel-mini" onclick="cancelEdit(\'' + empId + '\',\'' + field + '\')">✕</button>' +
+                '</div>' +
+                '</td>';
+        }
+
+        function openEdit(empId, empName, field) {
+            // close any other open edits first
+            document.querySelectorAll('.total-edit-wrap').forEach(function (el) { el.style.display = 'none'; });
+            document.querySelectorAll('.total-display').forEach(function (el) { el.style.display = 'flex'; });
+            // open this one
+            var display = document.querySelector('#tc_' + empId + '_' + field + ' .total-display');
+            var editWrap = document.getElementById('ew_' + empId + '_' + field);
+            if (display) display.style.display = 'none';
+            if (editWrap) { editWrap.style.display = 'flex'; document.getElementById('ei_' + empId + '_' + field).focus(); }
+        }
+
+        function cancelEdit(empId, field) {
+            var display = document.querySelector('#tc_' + empId + '_' + field + ' .total-display');
+            var editWrap = document.getElementById('ew_' + empId + '_' + field);
+            if (display) display.style.display = 'flex';
+            if (editWrap) editWrap.style.display = 'none';
+        }
+
+        function saveTotal(empId, empNameEnc, field) {
+            var empName = decodeURIComponent(empNameEnc);
+            var input = document.getElementById('ei_' + empId + '_' + field);
+            var newVal = parseFloat(input.value);
+            if (isNaN(newVal) || newVal < 0) { toast('Enter a valid number (0 or more).', 'error'); return; }
+
+            // Find current sl/el/vl totals in ALL_DATA
+            var row = ALL_DATA.filter(function (r) { return r.empId === empId; })[0];
+            if (!row) { toast('Employee not found.', 'error'); return; }
+            var sl = row.slTotal, el = row.elTotal, vl = row.vlTotal;
+            if (field === 'sl') sl = newVal;
+            if (field === 'el') el = newVal;
+            if (field === 'vl') vl = newVal;
+
+            input.disabled = true;
+            callGAS('toUpperCase', [) + ' Total updated to ' + newVal + '!', 'success']).then(function (res) {
+                    input.disabled = false;
+                    if (res && res.success) {
+                        toast(empName + ' — ' + field.toUpperCase() + ' Total updated to ' + newVal + '!', 'success'););
+                        cancelEdit(empId, field);
+                        loadCredits();
+                    } else {
+                        toast((res && res.error) || 'Save failed.', 'error');
+                    }
+                })
+                .withFailureHandler(function () { input.disabled = false; toast('Server error.', 'error'); })
+                .updateLeaveTotals(empId, empName, sl, el, vl);
+        }
+
+        // ── RENDER ────────────────────────────────────────────────────────────────
+        function renderRows(data) {
+            var body = document.getElementById('creditsBody');
+            if (!data || data.length === 0) {
+                body.innerHTML = '<tr class="empty-row"><td colspan="10">' +
+                    '<div class="empty-icon">📭</div>' +
+                    'No active employees found in <strong>👨🏻‍💼 Employee Management</strong>.<br>' +
+                    '<span style="font-size:.7rem;opacity:.75;">Make sure employees are listed with Status = Active from Row ' + '6' + '.</span></td></tr>';
+                return;
+            }
+            if (data.error) {
+                body.innerHTML = '<tr class="empty-row"><td colspan="10" style="color:#dc2626;"><div class="empty-icon">⚠️</div>Error: ' + data.error + '</td></tr>';
+                return;
+            }
+            var html = '';
+            data.forEach(function (r) {
+                html += '<tr data-name="' + (r.empName || '').toLowerCase() + '" data-id="' + (r.empId || '').toLowerCase() + '">' +
+                    '<td class="emp-cell"><div class="emp-name">' + (r.empName || '—') + '</div><div class="emp-id">' + (r.empId || '') + '</div></td>' +
+                    makeTotalCell(r.empId, r.empName, 'sl', r.slTotal, r) +
+                    '<td class="used-val">' + r.slUsed + '</td>' +
+                    remainingCell(r.slLeft, r.slTotal) +
+                    makeTotalCell(r.empId, r.empName, 'el', r.elTotal, r) +
+                    '<td class="used-val">' + r.elUsed + '</td>' +
+                    remainingCell(r.elLeft, r.elTotal) +
+                    makeTotalCell(r.empId, r.empName, 'vl', r.vlTotal, r) +
+                    '<td class="used-val">' + r.vlUsed + '</td>' +
+                    remainingCell(r.vlLeft, r.vlTotal) +
+                    '</tr>';
+            });
+            body.innerHTML = html;
+        }
+
+        function filterTable() {
+            var q = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('#creditsBody tr[data-name]').forEach(function (row) {
+                var n = row.getAttribute('data-name') || '';
+                var i = row.getAttribute('data-id') || '';
+                row.style.display = (n.includes(q) || i.includes(q)) ? '' : 'none';
+            });
+        }
+
+        function loadCredits() {
+            document.getElementById('creditsBody').innerHTML =
+                '<tr class="empty-row"><td colspan="10"><div class="empty-icon">⏳</div>Loading employees...</td></tr>';
+            callGAS('getLeaveCredits', []).then(function (data) {
+                    if (data && data.error) { toast('Backend error: ' + data.error, 'error'); }
+                    ALL_DATA = Array.isArray(data) ? data : [];
+                    renderRows(ALL_DATA);
+                }).catch(function (err) {
+                    document.getElementById('creditsBody').innerHTML =
+                        '<tr class="empty-row"><td colspan="10" style="color:#dc2626;"><div class="empty-icon">⚠️</div>Failed to load.<br><span style="font-size:.7rem;">' +
+                        (err && err.message ? err.message : '') + '</span></td></tr>';
+                });
+        }
+
+        // ── THEME ─────────────────────────────────────────────────────────────────
+        (function () {
+            var LL = 'https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png';
+            var LD = 'https://i.ibb.co/6crnBjPv/RDR-Logo-White.png';
+            var saved = 'light'; try { saved = localStorage.getItem('rdr-theme') || 'light'; } catch (e) { }
+            document.documentElement.setAttribute('data-theme', saved);
+            function upd() {
+                var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+                document.getElementById('themeIcon').innerHTML = dark
+                    ? '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>'
+                    : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+                var logoBox = document.getElementById('logoBox');
+                if (dark) { document.getElementById('headerLogo').src = LD; logoBox.style.background = 'rgba(255,255,255,0.08)'; }
+                else { document.getElementById('headerLogo').src = LL; logoBox.style.background = '#ffffff'; }
+            }
+            upd();
+            document.getElementById('themeBtn').addEventListener('click', function () {
+                var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                try { localStorage.setItem('rdr-theme', next); } catch (e) { }
+                upd();
+            });
+        })();
+
+        // ── INIT ─────────────────────────────────────────────────────────────────
+        loadCredits();
+    </script>
+</body>
+
+</html>

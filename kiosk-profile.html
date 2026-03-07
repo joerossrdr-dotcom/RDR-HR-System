@@ -1,0 +1,972 @@
+﻿<!-- ============================================================================
+     RDR ATTENDANCE SYSTEM v2 — PROFILE PARTIAL
+     This file is included inside RDR_v2_Menu.html via <?!= include() ?>
+     Do NOT add DOCTYPE, html, head, or body tags here.
+     ============================================================================ -->
+
+<style>
+    /* ============================================================================
+       PROFILE VIEW STYLES
+       ============================================================================ */
+
+    /* Layout: Profile left + Actions right */
+    #profileView .profile-layout {
+        display: flex;
+        gap: 36px;
+        align-items: flex-start;
+        justify-content: center;
+        width: 100%;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* LEFT — PROFILE CARD */
+    .left-panel {
+        flex: 0 0 360px;
+        animation: pfSlideIn 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes pfSlideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.82);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 0 16px 48px rgba(37, 99, 235, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
+    }
+
+    .profile-card-header {
+        background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 60%, var(--blue-500) 100%);
+        color: var(--white);
+        padding: 32px 28px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .profile-card-header::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image:
+            radial-gradient(circle at 20% 80%, rgba(34, 211, 238, 0.1), transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(96, 165, 250, 0.1), transparent 50%);
+    }
+
+    .avatar {
+        width: 90px;
+        height: 90px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 12px;
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+    }
+
+    .avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .profile-name {
+        font-size: 1.35rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        position: relative;
+        z-index: 1;
+        margin-bottom: 4px;
+    }
+
+    .profile-id {
+        font-size: 0.9rem;
+        opacity: 0.8;
+        font-weight: 500;
+        position: relative;
+        z-index: 1;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        margin-top: 12px;
+        padding: 6px 16px;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        position: relative;
+        z-index: 1;
+    }
+
+    .status-badge.working {
+        background: rgba(34, 197, 94, 0.2);
+        color: #bbf7d0;
+        border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .status-badge.on-lunch {
+        background: rgba(245, 158, 11, 0.2);
+        color: #fde68a;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .status-badge.paused {
+        background: rgba(139, 92, 246, 0.2);
+        color: #ddd6fe;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+
+    .status-badge.not-started {
+        background: rgba(255, 255, 255, 0.15);
+        color: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .status-badge.ended {
+        background: rgba(239, 68, 68, 0.2);
+        color: #fecaca;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .pf-status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .status-badge.working .pf-status-dot {
+        background: #22c55e;
+    }
+
+    .status-badge.on-lunch .pf-status-dot {
+        background: #f59e0b;
+    }
+
+    .status-badge.paused .pf-status-dot {
+        background: #8b5cf6;
+    }
+
+    .status-badge.not-started .pf-status-dot {
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .status-badge.ended .pf-status-dot {
+        background: #ef4444;
+    }
+
+    .profile-card-body {
+        padding: 24px 28px;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-around;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+    .info-item {
+        text-align: center;
+    }
+
+    .info-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--gray-400);
+        font-weight: 700;
+        margin-bottom: 3px;
+    }
+
+    .info-value {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--navy-800);
+    }
+
+    /* Workspace Timer */
+    .workspace-timer {
+        margin-top: 14px;
+        text-align: center;
+        padding: 14px 16px;
+        background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+        border-radius: 12px;
+        border: 1px solid rgba(34, 197, 94, 0.12);
+    }
+
+    .workspace-label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--green-600);
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .workspace-value {
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: var(--green-600);
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.02em;
+    }
+
+    /* Idle/Auto-reset timer */
+    .idle-timer {
+        margin-top: 10px;
+        text-align: center;
+        padding: 10px 16px;
+        background: linear-gradient(135deg, #eff6ff, #e0e7ff);
+        border-radius: 12px;
+        border: 1px solid rgba(37, 99, 235, 0.08);
+    }
+
+    .idle-label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--gray-500);
+        font-weight: 700;
+        margin-bottom: 3px;
+    }
+
+    .idle-value {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: var(--blue-500);
+    }
+
+    /* RIGHT — ACTIONS CARD */
+    .right-panel {
+        flex: 1;
+        max-width: 740px;
+        position: relative;
+        z-index: 1;
+        animation: pfSlideIn2 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes pfSlideIn2 {
+        from {
+            opacity: 0;
+            transform: translateY(16px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .actions-card {
+        background: rgba(255, 255, 255, 0.82);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 0 16px 48px rgba(37, 99, 235, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
+        padding: 28px;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--navy-800);
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .section-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+        background: linear-gradient(135deg, var(--navy-800), var(--blue-500));
+        color: var(--white);
+    }
+
+    /* ACTION BUTTONS */
+    .actions-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+    }
+
+    .action-card {
+        border: none;
+        border-radius: 16px;
+        padding: 0;
+        cursor: pointer;
+        transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        overflow: hidden;
+        background: var(--bg-card);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 0 0 1.5px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .action-card:hover:not(.disabled) {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08), 0 0 0 2px var(--card-accent);
+    }
+
+    .action-card:active:not(.disabled) {
+        transform: translateY(-1px);
+    }
+
+    .action-top {
+        padding: 24px 14px 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+    }
+
+    .action-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.25s ease;
+    }
+
+    .action-icon svg {
+        width: 26px;
+        height: 26px;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+    }
+
+    .action-card:hover:not(.disabled) .action-icon {
+        transform: scale(1.12);
+    }
+
+    .action-name {
+        font-size: 0.82rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+    }
+
+    .action-time-bar {
+        padding: 10px 14px;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        font-size: 0.8rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        color: var(--gray-400);
+        background: rgba(0, 0, 0, 0.015);
+    }
+
+    .action-time-bar.recorded {
+        font-weight: 800;
+    }
+
+    /* Color themes */
+    .action-card.time-in {
+        --card-accent: var(--green-500);
+    }
+
+    .action-card.time-in .action-icon {
+        background: linear-gradient(135deg, var(--green-500), var(--green-600));
+        color: var(--white);
+    }
+
+    .action-card.time-in .action-icon svg {
+        stroke: var(--white);
+    }
+
+    .action-card.time-in .action-name {
+        color: var(--green-600);
+    }
+
+    .action-card.time-in .action-time-bar.recorded {
+        color: var(--green-600);
+        background: var(--green-50);
+    }
+
+    .action-card.time-out {
+        --card-accent: var(--red-500);
+    }
+
+    .action-card.time-out .action-icon {
+        background: linear-gradient(135deg, var(--red-500), var(--red-600));
+        color: var(--white);
+    }
+
+    .action-card.time-out .action-icon svg {
+        stroke: var(--white);
+    }
+
+    .action-card.time-out .action-name {
+        color: var(--red-600);
+    }
+
+    .action-card.time-out .action-time-bar.recorded {
+        color: var(--red-600);
+        background: var(--red-50);
+    }
+
+    .action-card.lunch-in {
+        --card-accent: var(--amber-500);
+    }
+
+    .action-card.lunch-in .action-icon {
+        background: linear-gradient(135deg, var(--amber-500), var(--amber-600));
+        color: var(--white);
+    }
+
+    .action-card.lunch-in .action-icon svg {
+        stroke: var(--white);
+    }
+
+    .action-card.lunch-in .action-name {
+        color: var(--amber-600);
+    }
+
+    .action-card.lunch-in .action-time-bar.recorded {
+        color: var(--amber-600);
+        background: var(--amber-50);
+    }
+
+    .action-card.lunch-out {
+        --card-accent: var(--amber-500);
+    }
+
+    .action-card.lunch-out .action-icon {
+        background: linear-gradient(135deg, var(--amber-500), var(--amber-600));
+        color: var(--white);
+    }
+
+    .action-card.lunch-out .action-icon svg {
+        stroke: var(--white);
+    }
+
+    .action-card.lunch-out .action-name {
+        color: var(--amber-600);
+    }
+
+    .action-card.lunch-out .action-time-bar.recorded {
+        color: var(--amber-600);
+        background: var(--amber-50);
+    }
+
+    .action-card.pause-work {
+        --card-accent: var(--violet-500);
+        grid-column: span 2;
+    }
+
+    .action-card.pause-work .action-icon {
+        background: linear-gradient(135deg, var(--violet-500), var(--violet-600));
+        color: var(--white);
+    }
+
+    .action-card.pause-work .action-icon svg {
+        stroke: var(--white);
+    }
+
+    .action-card.pause-work .action-name {
+        color: var(--violet-600);
+    }
+
+    .action-card.pause-work .action-time-bar.recorded {
+        color: var(--violet-600);
+        background: var(--violet-50);
+    }
+
+    .action-card.resume {
+        --card-accent: var(--violet-500);
+        grid-column: span 2;
+    }
+
+    .action-card.resume .action-icon {
+        background: linear-gradient(135deg, var(--violet-500), var(--violet-600));
+        color: var(--white);
+    }
+
+    .action-card.resume .action-icon svg {
+        stroke: var(--white);
+    }
+
+    .action-card.resume .action-name {
+        color: var(--violet-600);
+    }
+
+    .action-card.resume .action-time-bar.recorded {
+        color: var(--violet-600);
+        background: var(--violet-50);
+    }
+
+    /* Disabled state */
+    .action-card.disabled {
+        opacity: 1;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    .action-card.disabled .action-top {
+        opacity: 0.3;
+        filter: saturate(0.25);
+    }
+
+    .action-card.disabled .action-icon {
+        background: var(--gray-300) !important;
+    }
+
+    .action-card.disabled .action-name {
+        color: var(--gray-400) !important;
+    }
+
+    .action-card.disabled .action-time-bar {
+        opacity: 0.85;
+    }
+
+    /* Last action */
+    .last-action {
+        margin-top: 8px;
+        font-size: 0.72rem;
+        color: var(--gray-400);
+        font-weight: 500;
+        display: none;
+    }
+
+    .last-action span {
+        font-weight: 700;
+        color: var(--gray-600);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+        #profileView .profile-layout {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .left-panel {
+            flex: none;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .right-panel {
+            width: 100%;
+            max-width: 740px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .actions-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .action-card.pause-work,
+        .action-card.resume {
+            grid-column: span 1;
+        }
+
+        .actions-card {
+            padding: 20px;
+        }
+
+        .profile-card-header {
+            padding: 22px 18px;
+        }
+
+        .profile-avatar {
+            width: 64px;
+            height: 64px;
+            font-size: 1.3rem;
+        }
+
+        .profile-name {
+            font-size: 1rem;
+        }
+
+        .info-row {
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .workspace-value {
+            font-size: 1.3rem;
+        }
+
+        .section-title {
+            font-size: 0.85rem;
+        }
+
+        .action-name {
+            font-size: 0.7rem;
+        }
+
+        .action-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .action-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .left-panel {
+            max-width: 100%;
+        }
+
+        .right-panel {
+            max-width: 100%;
+        }
+
+        .glass-card {
+            border-radius: 16px;
+        }
+
+        .profile-card-header {
+            padding: 18px 14px;
+        }
+
+        .profile-card-body {
+            padding: 14px 16px;
+        }
+
+        .profile-avatar {
+            width: 56px;
+            height: 56px;
+            font-size: 1.1rem;
+        }
+
+        .actions-card {
+            padding: 16px;
+            border-radius: 16px;
+        }
+
+        .actions-grid {
+            gap: 8px;
+        }
+
+        .action-top {
+            padding: 14px 8px 10px;
+        }
+
+        .action-time-bar {
+            font-size: 0.65rem;
+            padding: 6px 8px;
+        }
+
+        .info-label {
+            font-size: 0.6rem;
+        }
+
+        .info-value {
+            font-size: 0.85rem;
+        }
+
+        .idle-timer {
+            padding: 8px 12px;
+        }
+    }
+
+    /* ── DARK MODE for Profile Partial ── */
+    [data-theme="dark"] .glass-card,
+    [data-theme="dark"] .actions-card {
+        background: #162032 !important;
+        border-color: #1e3050 !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    [data-theme="dark"] .section-title {
+        color: #e2e8f0 !important;
+    }
+
+    [data-theme="dark"] .info-label {
+        color: #64748b !important;
+    }
+
+    [data-theme="dark"] .info-value {
+        color: #e2e8f0 !important;
+    }
+
+    [data-theme="dark"] .info-row {
+        border-color: #1e3050 !important;
+    }
+
+    [data-theme="dark"] .workspace-timer {
+        background: linear-gradient(135deg, #0a2618, #0d3320) !important;
+        border-color: rgba(34, 197, 94, 0.2) !important;
+    }
+
+    [data-theme="dark"] .workspace-label {
+        color: #4ade80 !important;
+    }
+
+    [data-theme="dark"] .workspace-value {
+        color: #86efac !important;
+    }
+
+    [data-theme="dark"] .idle-timer {
+        background: linear-gradient(135deg, #0f1a2e, #132d56) !important;
+        border-color: rgba(37, 99, 235, 0.2) !important;
+    }
+
+    [data-theme="dark"] .idle-label {
+        color: #64748b !important;
+    }
+
+    [data-theme="dark"] .idle-value {
+        color: #93c5fd !important;
+    }
+
+    [data-theme="dark"] .last-action {
+        color: #94a3b8 !important;
+    }
+
+    [data-theme="dark"] .last-action span {
+        color: #cbd5e1 !important;
+    }
+
+    [data-theme="dark"] .action-card {
+        background: #1e3050 !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 1px #2a4060 !important;
+    }
+
+    [data-theme="dark"] .action-name {
+        color: #94a3b8 !important;
+    }
+
+    [data-theme="dark"] .action-card.time-in .action-name {
+        color: #86efac !important;
+    }
+
+    [data-theme="dark"] .action-card.time-out .action-name {
+        color: #fca5a5 !important;
+    }
+
+    [data-theme="dark"] .action-card.lunch-in .action-name,
+    [data-theme="dark"] .action-card.lunch-out .action-name {
+        color: #fcd34d !important;
+    }
+
+    [data-theme="dark"] .action-card.pause-work .action-name,
+    [data-theme="dark"] .action-card.resume .action-name {
+        color: #c4b5fd !important;
+    }
+
+    [data-theme="dark"] .action-time-bar {
+        color: #64748b !important;
+        background: rgba(0, 0, 0, 0.15) !important;
+        border-color: #1e3050 !important;
+    }
+
+    [data-theme="dark"] .action-time-bar.recorded {
+        color: #e2e8f0 !important;
+    }
+
+    [data-theme="dark"] .action-card.time-in .action-time-bar.recorded {
+        background: rgba(34, 197, 94, 0.15) !important;
+        color: #86efac !important;
+    }
+
+    [data-theme="dark"] .action-card.time-out .action-time-bar.recorded {
+        background: rgba(239, 68, 68, 0.15) !important;
+        color: #fca5a5 !important;
+    }
+
+    [data-theme="dark"] .action-card.lunch-in .action-time-bar.recorded,
+    [data-theme="dark"] .action-card.lunch-out .action-time-bar.recorded {
+        background: rgba(245, 158, 11, 0.15) !important;
+        color: #fcd34d !important;
+    }
+
+    [data-theme="dark"] .action-card.pause-work .action-time-bar.recorded,
+    [data-theme="dark"] .action-card.resume .action-time-bar.recorded {
+        background: rgba(139, 92, 246, 0.15) !important;
+        color: #c4b5fd !important;
+    }
+
+    [data-theme="dark"] .profile-card-body {
+        color: #e2e8f0 !important;
+    }
+</style>
+
+<!-- ==================== PROFILE HTML CONTENT ==================== -->
+
+<div class="profile-layout">
+
+    <!-- ========== LEFT: Profile ========== -->
+    <div class="left-panel">
+        <div class="glass-card">
+            <div class="profile-card-header">
+                <div class="avatar" id="profileAvatar">RD</div>
+                <h2 class="profile-name" id="profileName">EMPLOYEE NAME</h2>
+                <p class="profile-id" id="profileId">Employee ID: —</p>
+                <div class="status-badge not-started" id="statusBadge">
+                    <span class="pf-status-dot"></span>
+                    Not Started
+                </div>
+                <div class="last-action" id="lastAction">Last action: <span id="lastActionText">—</span></div>
+            </div>
+            <div class="profile-card-body">
+                <div class="info-row">
+                    <div class="info-item">
+                        <div class="info-label">Time</div>
+                        <div class="info-value" id="currentTime">—</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Date</div>
+                        <div class="info-value" id="currentDate">—</div>
+                    </div>
+                </div>
+                <div class="workspace-timer">
+                    <div class="workspace-label">Time in Workspace</div>
+                    <div class="workspace-value" id="workspaceTimer">0h 00m</div>
+                </div>
+                <div class="idle-timer">
+                    <div class="idle-label">Auto-Reset In</div>
+                    <div class="idle-value" id="idleTimerValue">1:00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== RIGHT: Actions ========== -->
+    <div class="right-panel">
+        <div class="actions-card">
+            <h3 class="section-title">
+                <span class="section-icon">📋</span>
+                Attendance Actions
+            </h3>
+
+            <div class="actions-grid">
+
+                <!-- Time In -->
+                <button class="action-card time-in disabled" id="btnTimeIn" onclick="handleAction('Time In')">
+                    <div class="action-top">
+                        <div class="action-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" />
+                                <polyline points="10 17 15 12 10 7" />
+                                <line x1="15" y1="12" x2="3" y2="12" />
+                            </svg>
+                        </div>
+                        <div class="action-name">Time In</div>
+                    </div>
+                    <div class="action-time-bar" id="timeInStamp">—</div>
+                </button>
+
+                <!-- Lunch In -->
+                <button class="action-card lunch-in disabled" id="btnLunchIn" onclick="handleAction('Lunch In')">
+                    <div class="action-top">
+                        <div class="action-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M18 8h1a4 4 0 010 8h-1" />
+                                <path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z" />
+                                <line x1="6" y1="1" x2="6" y2="4" />
+                                <line x1="10" y1="1" x2="10" y2="4" />
+                                <line x1="14" y1="1" x2="14" y2="4" />
+                            </svg>
+                        </div>
+                        <div class="action-name">Lunch In</div>
+                    </div>
+                    <div class="action-time-bar" id="lunchInStamp">—</div>
+                </button>
+
+                <!-- Lunch Out -->
+                <button class="action-card lunch-out disabled" id="btnLunchOut" onclick="handleAction('Lunch Out')">
+                    <div class="action-top">
+                        <div class="action-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                                <polyline points="22 4 12 14.01 9 11.01" />
+                            </svg>
+                        </div>
+                        <div class="action-name">Lunch Out</div>
+                    </div>
+                    <div class="action-time-bar" id="lunchOutStamp">—</div>
+                </button>
+
+                <!-- Time Out -->
+                <button class="action-card time-out disabled" id="btnTimeOut" onclick="handleAction('Time Out')">
+                    <div class="action-top">
+                        <div class="action-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                                <polyline points="16 17 21 12 16 7" />
+                                <line x1="21" y1="12" x2="9" y2="12" />
+                            </svg>
+                        </div>
+                        <div class="action-name">Time Out</div>
+                    </div>
+                    <div class="action-time-bar" id="timeOutStamp">—</div>
+                </button>
+
+                <!-- Pause Work -->
+                <button class="action-card pause-work disabled" id="btnPauseWork" onclick="handleAction('Pause Work')">
+                    <div class="action-top">
+                        <div class="action-icon">
+                            <svg viewBox="0 0 24 24">
+                                <rect x="6" y="4" width="4" height="16" />
+                                <rect x="14" y="4" width="4" height="16" />
+                            </svg>
+                        </div>
+                        <div class="action-name">Pause Work</div>
+                    </div>
+                    <div class="action-time-bar" id="pauseStamp">—</div>
+                </button>
+
+                <!-- Resume -->
+                <button class="action-card resume disabled" id="btnResume" onclick="handleAction('Resume')">
+                    <div class="action-top">
+                        <div class="action-icon">
+                            <svg viewBox="0 0 24 24">
+                                <polygon points="5 3 19 12 5 21 5 3" />
+                            </svg>
+                        </div>
+                        <div class="action-name">Resume</div>
+                    </div>
+                    <div class="action-time-bar" id="resumeStamp">—</div>
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+</div>

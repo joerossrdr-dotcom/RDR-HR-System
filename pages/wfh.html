@@ -1,0 +1,1730 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RDR Attendance — Work From Home</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-card: #ffffff;
+            --bg-input: #ffffff;
+            --navy-900: #0a1628;
+            --navy-800: #0f2140;
+            --navy-700: #132d56;
+            --navy-600: #1a3a6c;
+            --blue-500: #2563eb;
+            --blue-400: #3b82f6;
+            --blue-300: #60a5fa;
+            --cyan-400: #22d3ee;
+            --cyan-300: #67e8f9;
+
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-900: #0f172a;
+
+            --green-500: #22c55e;
+            --green-600: #16a34a;
+            --green-50: #f0fdf4;
+            --red-500: #ef4444;
+            --red-600: #dc2626;
+            --red-50: #fef2f2;
+            --amber-500: #f59e0b;
+            --amber-600: #d97706;
+            --amber-50: #fffbeb;
+            --violet-500: #1a3a6c;
+            --violet-600: #0f2140;
+            --violet-50: #eef2ff;
+
+            --shadow-blue: rgba(37, 99, 235, 0.25);
+            --shadow-dark: rgba(10, 22, 40, 0.4);
+
+            --sp-xs: 0.5rem;
+            --sp-sm: 0.75rem;
+            --sp-md: 1rem;
+            --sp-lg: 1.5rem;
+            --sp-xl: 2rem;
+            --sp-2xl: 3rem;
+
+            --r-sm: 8px;
+            --r-md: 14px;
+            --r-lg: 20px;
+            --r-xl: 28px;
+            --r-full: 9999px;
+        }
+
+        /* â”€â”€ DARK MODE â”€â”€ */
+        [data-theme="dark"] {
+            --bg-card: #162032;
+            --bg-input: #0d1b2a;
+            --navy-900: #0a1628;
+            --navy-800: #0f2140;
+            --navy-700: #132d56;
+            --gray-50: #0d1b2a;
+            --gray-100: #162032;
+            --gray-200: #1e3050;
+            --gray-300: #475569;
+            --gray-400: #64748b;
+            --gray-500: #94a3b8;
+            --gray-600: #94a3b8;
+            --gray-700: #cbd5e1;
+            --gray-800: #e2e8f0;
+            --gray-900: #e2e8f0;
+            --shadow-dark: rgba(0, 0, 0, 0.5);
+            --green-50: #0a2618;
+            --red-50: #2a0f0f;
+            --blue-50: #0f1a2e;
+            --amber-50: #2a1f0a;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background: var(--gray-50);
+        }
+
+        #app {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--gray-50);
+        }
+
+        /* HEADER */
+        .app-header {
+            background: linear-gradient(135deg, #0f2140 0%, #1a3a6c 60%, #7c3aed 100%);
+            color: #ffffff;
+            padding: var(--sp-lg) var(--sp-xl);
+            box-shadow: 0 4px 20px var(--shadow-dark);
+            position: relative;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .app-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.03) 75%, transparent 100%);
+            animation: headerShimmer 8s ease-in-out infinite;
+        }
+
+        @keyframes headerShimmer {
+
+            0%,
+            100% {
+                transform: translateX(-25%);
+            }
+
+            50% {
+                transform: translateX(25%);
+            }
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: var(--sp-lg);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-logo {
+            width: 54px;
+            height: 54px;
+            background: #ffffff;
+            border-radius: var(--r-md);
+            padding: 7px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            flex-shrink: 0;
+        }
+
+        .header-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-text {
+            flex: 1;
+        }
+
+        .header-title {
+            font-size: 1.55rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            background: linear-gradient(135deg, var(--white) 0%, #c4b5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-datetime {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        .wfh-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(26, 58, 108, 0.4);
+            border: 1px solid rgba(147, 197, 253, 0.3);
+            padding: 6px 14px;
+            border-radius: var(--r-full);
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #e9d5ff;
+            letter-spacing: 0.05em;
+        }
+
+        .exit-btn {
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            border-radius: 14px;
+            color: var(--white);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .exit-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.5);
+            transform: scale(1.08);
+        }
+
+        .exit-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+        }
+
+        /* BODY */
+        .app-body {
+            flex: 1;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: var(--sp-xl);
+            padding-top: var(--sp-lg);
+            position: relative;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            min-height: 0;
+        }
+
+        .app-body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, var(--gray-200) 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* SCAN CARD */
+        .scan-card {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--r-xl);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 20px 60px rgba(124, 58, 237, 0.15), 0 4px 16px rgba(0, 0, 0, 0.06);
+            padding: var(--sp-2xl) var(--sp-xl);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            animation: cardFloat 0.5s ease-out;
+        }
+
+        @keyframes cardFloat {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .scan-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #1a3a6c, #2563eb);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .wfh-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto var(--sp-xl);
+            background: linear-gradient(135deg, #0f2140 0%, #1a3a6c 100%);
+            border-radius: var(--r-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(26, 58, 108, 0.4);
+            font-size: 2.2rem;
+        }
+
+        .scan-title {
+            font-size: 1.7rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--navy-800);
+            margin-bottom: 4px;
+        }
+
+        .scan-subtitle {
+            font-size: 0.92rem;
+            color: var(--gray-500);
+            margin-bottom: var(--sp-xl);
+        }
+
+        /* Card ID Input */
+        .input-group {
+            margin-bottom: var(--sp-xl);
+            text-align: left;
+        }
+
+        .input-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--gray-500);
+            margin-bottom: 6px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+        }
+
+        .card-input {
+            flex: 1;
+            padding: 14px 18px;
+            background: var(--bg-card);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--r-md);
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: var(--navy-800);
+            letter-spacing: 0.05em;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .card-input:focus {
+            border-color: #1a3a6c;
+            box-shadow: 0 0 0 4px rgba(26, 58, 108, 0.2);
+        }
+
+        .card-input::placeholder {
+            color: var(--gray-300);
+            font-weight: 400;
+            letter-spacing: 0;
+        }
+
+        .submit-btn {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #0f2140, #1a3a6c);
+            color: #ffffff;
+            border: none;
+            border-radius: var(--r-md);
+            font-size: 0.85rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            box-shadow: 0 4px 16px rgba(26, 58, 108, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .scan-footer {
+            margin-top: var(--sp-xl);
+            padding-top: var(--sp-lg);
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .credits {
+            text-align: center;
+        }
+
+        .credits-author {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--navy-700);
+            margin-bottom: 2px;
+        }
+
+        .credits-sub {
+            font-size: 0.75rem;
+            color: var(--gray-400);
+        }
+
+        /* LOADING / MSG OVERLAYS — same as Menu */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.92);
+            backdrop-filter: blur(12px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: var(--white);
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            border-top-color: #2563eb;
+            border-radius: var(--r-full);
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto var(--sp-lg);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            font-size: 1rem;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .msg-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.5);
+            backdrop-filter: blur(6px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .msg-overlay.active {
+            display: flex;
+        }
+
+        .msg-box {
+            background: var(--bg-card);
+            padding: var(--sp-2xl);
+            border-radius: var(--r-xl);
+            box-shadow: 0 20px 60px var(--shadow-dark);
+            text-align: center;
+            max-width: 380px;
+            width: 90%;
+            animation: msgIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes msgIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .msg-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: var(--r-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--sp-lg);
+            font-size: 2rem;
+        }
+
+        .msg-icon.success {
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .msg-icon.error {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .msg-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--sp-xs);
+        }
+
+        .msg-text {
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            line-height: 1.5;
+        }
+
+        /* CONFIRM OVERLAY */
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+        }
+
+        .confirm-overlay.active {
+            display: flex;
+        }
+
+        .confirm-box {
+            background: var(--bg-card);
+            padding: var(--sp-2xl);
+            border-radius: var(--r-xl);
+            box-shadow: 0 20px 60px var(--shadow-dark);
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            animation: msgIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .confirm-icon {
+            font-size: 3rem;
+            margin-bottom: var(--sp-md);
+        }
+
+        .confirm-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--sp-xs);
+        }
+
+        .confirm-text {
+            font-size: 0.95rem;
+            color: var(--gray-500);
+            margin-bottom: var(--sp-sm);
+        }
+
+        .confirm-workspace {
+            font-size: 1.05rem;
+            color: var(--navy-800);
+            margin-bottom: var(--sp-sm);
+        }
+
+        .confirm-workspace strong {
+            color: var(--blue-500);
+        }
+
+        .confirm-countdown {
+            font-size: 0.8rem;
+            color: var(--gray-400);
+            margin-bottom: var(--sp-xl);
+        }
+
+        .confirm-countdown strong {
+            color: var(--red-500);
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .confirm-btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: var(--r-md);
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .confirm-btn.yes {
+            background: linear-gradient(135deg, var(--red-500), var(--red-600));
+            color: var(--white);
+            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+        }
+
+        .confirm-btn.yes:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
+        }
+
+        .confirm-btn.no {
+            background: var(--gray-100);
+            color: var(--gray-600);
+            border: 1.5px solid var(--gray-200);
+        }
+
+        .confirm-btn.no:hover {
+            background: var(--gray-200);
+        }
+
+        @media (max-width: 768px) {
+            .app-header {
+                padding: var(--sp-sm) var(--sp-md);
+            }
+
+            .header-inner {
+                gap: 10px;
+            }
+
+            .header-logo {
+                width: 36px;
+                height: 36px;
+            }
+
+            .header-title {
+                font-size: 1.1rem;
+            }
+
+            .header-datetime {
+                font-size: 0.65rem;
+            }
+
+            .wfh-badge {
+                font-size: 0.6rem;
+                padding: 4px 10px;
+            }
+
+            .app-body {
+                padding: var(--sp-md);
+                padding-top: 20px;
+            }
+
+            .scan-card {
+                padding: var(--sp-lg) var(--sp-md);
+                border-radius: var(--r-md);
+            }
+
+            .wfh-icon {
+                width: 56px;
+                height: 56px;
+                font-size: 1.6rem;
+            }
+
+            .scan-title {
+                font-size: 1.2rem;
+            }
+
+            .input-wrapper {
+                flex-direction: column;
+            }
+
+            .submit-btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .app-header {
+                padding: var(--sp-xs) var(--sp-sm);
+            }
+
+            .header-title {
+                font-size: 0.95rem;
+            }
+
+            .wfh-badge {
+                font-size: 0.55rem;
+                padding: 3px 8px;
+                gap: 3px;
+            }
+
+            .app-body {
+                padding: var(--sp-sm);
+                padding-top: 16px;
+            }
+        }
+
+        /* â”€â”€ THEME TOGGLE â”€â”€ */
+        .theme-toggle {
+            margin-left: auto;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            color: #fff;
+            padding: 0;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* â”€â”€ DARK MODE CONTENT OVERRIDES â”€â”€ */
+        [data-theme="dark"] .scan-card,
+        [data-theme="dark"] .profile-bar,
+        [data-theme="dark"] .records-panel,
+        [data-theme="dark"] .actions-panel,
+        [data-theme="dark"] .form-card,
+        [data-theme="dark"] .overlay-card,
+        [data-theme="dark"] .msg-box,
+        [data-theme="dark"] .filing-card,
+        [data-theme="dark"] .section-panel,
+        [data-theme="dark"] .confirm-card,
+        [data-theme="dark"] .table-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .scan-title,
+        [data-theme="dark"] .form-title,
+        [data-theme="dark"] .panel-title,
+        [data-theme="dark"] .section-title,
+        [data-theme="dark"] h2,
+        [data-theme="dark"] h3 {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .scan-subtitle,
+        [data-theme="dark"] .form-subtitle,
+        [data-theme="dark"] .input-label,
+        [data-theme="dark"] label {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .card-input,
+        [data-theme="dark"] .form-input,
+        [data-theme="dark"] .form-select,
+        [data-theme="dark"] select,
+        [data-theme="dark"] .form-textarea,
+        [data-theme="dark"] input[type="text"],
+        [data-theme="dark"] input[type="date"],
+        [data-theme="dark"] input[type="time"],
+        [data-theme="dark"] input[type="number"],
+        [data-theme="dark"] input[type="email"],
+        [data-theme="dark"] textarea {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .card-input::placeholder,
+        [data-theme="dark"] input::placeholder,
+        [data-theme="dark"] textarea::placeholder {
+            color: #475569 !important;
+        }
+
+        [data-theme="dark"] .submit-btn,
+        [data-theme="dark"] .form-btn {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .credits-label,
+        [data-theme="dark"] .credits-sub,
+        [data-theme="dark"] .rtable td,
+        [data-theme="dark"] td,
+        [data-theme="dark"] th {
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="dark"] .status-pill,
+        [data-theme="dark"] .badge {
+            opacity: 0.9;
+        }
+
+        [data-theme="dark"] .loading-overlay {
+            background: rgba(0, 0, 0, 0.92) !important;
+        }
+
+        [data-theme="dark"] .msg-overlay {
+            background: rgba(0, 0, 0, 0.7) !important;
+        }
+
+        [data-theme="dark"] .overlay-bg {
+            background: rgba(0, 0, 0, 0.7) !important;
+        }
+
+        [data-theme="dark"] .action-btn,
+        [data-theme="dark"] .att-btn {
+            background: #1e3050 !important;
+            border-color: #2a4060 !important;
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="dark"] .action-btn.active,
+        [data-theme="dark"] .att-btn.active {
+            border-color: #3b82f6 !important;
+        }
+
+        [data-theme="dark"] .action-btn .btn-label,
+        [data-theme="dark"] .att-btn .btn-label {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .profile-name {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .profile-meta,
+        [data-theme="dark"] .profile-id {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .stat-value,
+        [data-theme="dark"] .stat-label,
+        [data-theme="dark"] .last-action {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .stat-value {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .footer-bar,
+        [data-theme="dark"] [class*="footer"] {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .p-arrow {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .rtable {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .rtable th {
+            background: #0f2140 !important;
+            border-color: #1e3050 !important;
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .rtable td {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .rtable tr:hover td {
+            background: rgba(26, 58, 108, 0.15) !important;
+        }
+
+        [data-theme="dark"] .date-row td {
+            background: #0f2140 !important;
+            color: #93c5fd !important;
+        }
+
+        [data-theme="dark"] .empty-state,
+        [data-theme="dark"] .no-data {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .no-account-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .data-table th {
+            background: #0f2140 !important;
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .data-table td {
+            color: #cbd5e1 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .section-header {
+            background: #162032 !important;
+        }
+
+        [data-theme="dark"] .filter-group select,
+        [data-theme="dark"] .filter-select {
+            background: #0d1b2a !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .action-bar {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .filing-summary-card,
+        [data-theme="dark"] .summary-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .info-row,
+        [data-theme="dark"] .detail-row {
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="dark"] .workspace-timer,
+        [data-theme="dark"] .timer-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .history-row,
+        [data-theme="dark"] .filing-row {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .history-row:hover,
+        [data-theme="dark"] .filing-row:hover {
+            background: rgba(26, 58, 108, 0.1) !important;
+        }
+
+        /* â”€â”€ HEADER RESPONSIVE (mobile fix) â”€â”€ */
+        @media (max-width: 480px) {
+            .header-inner {
+                gap: 8px !important;
+                padding: 0 !important;
+                flex-wrap: nowrap;
+            }
+
+            .header-logo {
+                width: 32px !important;
+                height: 32px !important;
+                min-width: 32px !important;
+                border-radius: 8px !important;
+            }
+
+            .header-logo img {
+                width: 100% !important;
+                height: 100% !important;
+            }
+
+            .header-titles h1,
+            .header-title {
+                font-size: 0.82rem !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 140px;
+            }
+
+            .header-sub,
+            .header-datetime {
+                font-size: 0.6rem !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 140px;
+            }
+
+            .theme-toggle {
+                width: 30px !important;
+                height: 30px !important;
+                min-width: 30px !important;
+                border-radius: 8px !important;
+            }
+
+            .theme-toggle svg {
+                width: 14px !important;
+                height: 14px !important;
+            }
+        }
+
+        /* â”€â”€ ENHANCED DARK MODE (v3) â”€â”€ */
+        [data-theme="dark"] #app {
+            background: #0d1b2a !important;
+        }
+
+        [data-theme="dark"] body {
+            background: #0d1b2a !important;
+        }
+
+        [data-theme="dark"] .app-body {
+            background: #0d1b2a !important;
+        }
+
+        [data-theme="dark"] .app-body::before {
+            opacity: 0.08 !important;
+        }
+
+        [data-theme="dark"] .header-title,
+        [data-theme="dark"] .header-titles h1,
+        [data-theme="dark"] .app-header h1 {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .header-sub,
+        [data-theme="dark"] .header-datetime,
+        [data-theme="dark"] .header-titles p {
+            color: #93c5fd !important;
+        }
+
+        [data-theme="dark"] .profile-card,
+        [data-theme="dark"] .info-card,
+        [data-theme="dark"] .workspace-card,
+        [data-theme="dark"] .timer-display,
+        [data-theme="dark"] .auto-reset-card,
+        [data-theme="dark"] .att-panel,
+        [data-theme="dark"] .filing-item,
+        [data-theme="dark"] .activity-log,
+        [data-theme="dark"] .filter-bar,
+        [data-theme="dark"] .admin-card,
+        [data-theme="dark"] .record-card,
+        [data-theme="dark"] .filing-section {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .stat-card,
+        [data-theme="dark"] .quick-stat,
+        [data-theme="dark"] .overview-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .stat-value,
+        [data-theme="dark"] .stat-number,
+        [data-theme="dark"] .count-value {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .stat-label,
+        [data-theme="dark"] .stat-title {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .date-nav,
+        [data-theme="dark"] .week-nav {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .date-nav button,
+        [data-theme="dark"] .week-nav button {
+            color: #93c5fd !important;
+            border-color: #1e3050 !important;
+            background: #162032 !important;
+        }
+
+        [data-theme="dark"] .profile-bar {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .profile-name,
+        [data-theme="dark"] .emp-name {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .profile-id,
+        [data-theme="dark"] .emp-id,
+        [data-theme="dark"] .profile-meta {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .time-display,
+        [data-theme="dark"] .date-display {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .time-label,
+        [data-theme="dark"] .date-label {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .last-action {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] p,
+        [data-theme="dark"] span {
+            color: inherit;
+        }
+
+        [data-theme="dark"] .section-title,
+        [data-theme="dark"] .panel-header,
+        [data-theme="dark"] .card-header {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .no-records,
+        [data-theme="dark"] .empty-msg {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .filing-count,
+        [data-theme="dark"] .pending-count {
+            color: #93c5fd !important;
+        }
+
+        [data-theme="dark"] .att-grid .att-btn {
+            background: #1e3050 !important;
+            border-color: #2a4060 !important;
+        }
+
+        [data-theme="dark"] .att-btn .btn-icon {
+            opacity: 0.9;
+        }
+
+        [data-theme="dark"] .att-btn .btn-label {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .att-btn .btn-time {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .portal-footer,
+        [data-theme="dark"] .footer-bar {
+            background: #0a1628 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .footer-bar *,
+        [data-theme="dark"] .portal-footer * {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .att-log-row {
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .att-log-row td {
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="dark"] .refresh-btn {
+            background: #1e3050 !important;
+            border-color: #2a4060 !important;
+            color: #93c5fd !important;
+        }
+
+        [data-theme="dark"] .header-logo,
+        [data-theme="dark"] .logo-circle {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+    </style>
+    <script src="../js/rdr-auth.js"></script>
+    <script src="../js/rdr-api.js"></script>
+    <script>
+        // Provide template-compatible variables from session
+        var USER_EMAIL = RDR_AUTH.getEmail();
+        var SESSION_TOKEN = RDR_AUTH.getSession();
+        var BASE_URL = RDR_AUTH.getGasUrl();
+        var userEmail = USER_EMAIL;
+        var sessionToken = SESSION_TOKEN;
+        var baseUrl = BASE_URL;
+    </script>
+</head>
+
+<body>
+    <div id="app">
+
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="header-inner">
+                <a id="backToPortal" onclick="window.location.href=this.getAttribute('data-url');return false;"
+                    data-url="#"
+                    style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:10px;color:#fff;text-decoration:none;cursor:pointer;flex-shrink:0;"
+                    href="javascript:void(0)">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                    </svg>
+                </a>
+                <div class="header-logo">
+                    <img id="headerLogo" src="https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png"
+                        alt="RDR" />
+                </div>
+                <div class="header-text">
+                    <h1 class="header-title">RDR Attendance System</h1>
+                    <p class="header-datetime" id="headerDateTime">Loading...</p>
+                </div>
+                <div class="wfh-badge">🏠 WORK FROM HOME</div>
+            </div>
+            <div style="position:absolute;top:50%;right:16px;transform:translateY(-50%);z-index:10;"><button
+                    class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><svg id="themeIcon"
+                        viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg></button></div>
+        </header>
+
+        <!-- LOADING VIEW (shown while auto-looking up employee) -->
+        <main class="app-body" id="scanView">
+            <div class="scan-card" style="text-align:center;
+                var logo = document.getElementById('headerLogo');
+                if (logo) logo.src = isDark ? LOGO_DARK : LOGO_LIGHT;">
+                <div class="wfh-icon">🏠</div>
+                <h2 class="scan-title">Work From Home</h2>
+                <p class="scan-subtitle" id="loadingStatus">Loading your profile...</p>
+            </div>
+        </main>
+
+        <!-- PROFILE VIEW -->
+        <main class="app-body" id="profileView" style="display:none;">
+            <?!= include('RDR_KioskProfile') ?>
+        </main>
+
+        <!-- Footer -->
+        <div
+            style="text-align:center; padding:10px 16px; font-size:0.75rem; color:var(--gray-400); font-weight:500; background:rgba(255,255,255,0.6); border-top:1px solid var(--gray-200);">
+            If you have any questions, contact me on Telegram <strong>@moverings</strong> or seek support from IT
+            Operations.
+        </div>
+    </div>
+
+    <!-- LOADING -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text" id="loadingText">Processing...</div>
+        </div>
+    </div>
+
+    <!-- MSG -->
+    <div id="msgOverlay" class="msg-overlay">
+        <div class="msg-box">
+            <div class="msg-icon success" id="msgIcon">✓</div>
+            <h3 class="msg-title" id="msgTitle">Success</h3>
+            <p class="msg-text" id="msgText">Action completed successfully</p>
+        </div>
+    </div>
+
+    <!-- TIME OUT CONFIRMATION -->
+    <div id="confirmOverlay" class="confirm-overlay">
+        <div class="confirm-box">
+            <div class="confirm-icon">⏱️</div>
+            <h3 class="confirm-title">Confirm Time Out</h3>
+            <p class="confirm-text">Are you sure you want to Time Out?</p>
+            <p class="confirm-workspace" id="confirmWorkspace">Your total workspace: <strong>0h 00m</strong></p>
+            <p class="confirm-countdown" id="confirmCountdown">Auto-confirming in <strong>10s</strong></p>
+            <div class="confirm-buttons">
+                <button class="confirm-btn yes" id="confirmYes" onclick="confirmTimeOut()">Yes, Time Out</button>
+                <button class="confirm-btn no" id="confirmNo" onclick="cancelTimeOut()">No, Go Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CAMERA SELFIE MODAL -->
+    <div id="cameraOverlay"
+        style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,22,40,0.92);backdrop-filter:blur(8px);flex-direction:column;align-items:center;justify-content:center;">
+        <div
+            style="max-width:400px;width:90%;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.4);">
+            <div
+                style="background:linear-gradient(135deg,#0a1628,#132d56,#2563eb);padding:16px 20px;text-align:center;">
+                <div style="font-size:1.1rem;font-weight:700;color:#fff;">📸 Take Selfie</div>
+                <div style="font-size:0.75rem;color:rgba(255,255,255,0.7);margin-top:4px;">Required for Time In
+                    verification</div>
+            </div>
+            <div style="padding:16px;text-align:center;">
+                <div
+                    style="position:relative;width:100%;aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:#000;">
+                    <video id="cameraVideo" autoplay playsinline muted
+                        style="width:100%;height:100%;object-fit:cover;transform:scaleX(-1);"></video>
+                    <canvas id="cameraCanvas" style="display:none;"></canvas>
+                    <img id="cameraPreview"
+                        style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1);" />
+                </div>
+                <div id="cameraActions" style="display:flex;gap:12px;margin-top:16px;">
+                    <button id="cameraCancelBtn" onclick="cancelCamera()"
+                        style="flex:1;padding:12px;border-radius:12px;border:2px solid #e2e8f0;background:#fff;font-size:0.85rem;font-weight:600;color:#64748b;cursor:pointer;">Cancel</button>
+                    <button id="cameraCaptureBtn" onclick="captureSelfie()"
+                        style="flex:1;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#22c55e,#16a34a);font-size:0.85rem;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 4px 12px rgba(26, 58, 108, 0.4);">📸
+                        Capture</button>
+                </div>
+                <div id="cameraRetakeActions" style="display:none;gap:12px;margin-top:16px;">
+                    <button onclick="retakeSelfie()"
+                        style="flex:1;padding:12px;border-radius:12px;border:2px solid #e2e8f0;background:#fff;font-size:0.85rem;font-weight:600;color:#64748b;cursor:pointer;">Retake</button>
+                    <button onclick="confirmSelfie()"
+                        style="flex:1;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#2563eb,#1d4ed8);font-size:0.85rem;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 4px 12px rgba(37,99,235,0.3);">✓
+                        Use This</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================================
+        // TEMPLATE VARIABLES
+        // ============================================================================
+        var USER_EMAIL = '' + RDR_AUTH.getEmail() + '';
+        var SESSION_TOKEN = '' + RDR_AUTH.getSession() + '';
+        var BASE_URL = '' + RDR_AUTH.getGasUrl() + '';
+
+        // ============================================================================
+        // APP STATE
+        // ============================================================================
+        var currentEmployee = null;
+        var currentState = null;
+        var workspaceInterval = null;
+        var confirmCountdownInterval = null;
+        var confirmSeconds = 10;
+
+        // ============================================================================
+        // CLOCK
+        // ============================================================================
+        function updateClock() {
+            var now = new Date();
+            var opts = { timeZone: 'Asia/Manila', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById('headerDateTime').textContent = now.toLocaleString('en-PH', opts);
+        }
+
+        // ============================================================================
+        // AUTO-LOOKUP BY EMAIL (replaces Card ID input)
+        // ============================================================================
+        function autoLookup() {
+            document.getElementById('loadingStatus').textContent = 'Loading your profile...';
+            callGAS('lookupEmployeeByEmail', [USER_EMAIL]).then(onLookupSuccess).catch(onLookupError);
+        }
+
+        function onLookupSuccess(result) {
+            if (!result.success) {
+                document.getElementById('loadingStatus').textContent = result.error || 'Could not load your profile.';
+                return;
+            }
+            currentEmployee = result.employee;
+            currentState = result.state;
+            showProfileView();
+        }
+
+        function onLookupError(err) {
+            document.getElementById('loadingStatus').textContent = err.message || 'Server error occurred.';
+        }
+
+        // ============================================================================
+        // VIEW SWITCHING
+        // ============================================================================
+        function showProfileView() {
+            document.getElementById('scanView').style.display = 'none';
+            document.getElementById('profileView').style.display = 'flex';
+            populateProfile();
+            startWorkspaceTimer();
+        }
+
+        // ============================================================================
+        // POPULATE PROFILE (same logic as tablet)
+        // ============================================================================
+        function populateProfile() {
+            var emp = currentEmployee;
+            var st = currentState;
+
+            var names = emp.empName.split(',');
+            var initials = (names.length >= 2) ? names[1].trim().charAt(0) + names[0].trim().charAt(0) : emp.empName.substring(0, 2);
+            document.getElementById('profileAvatar').textContent = initials.toUpperCase();
+            document.getElementById('profileName').textContent = emp.empName;
+            document.getElementById('profileId').textContent = 'Employee ID: ' + emp.empId;
+
+            // Load profile photo from GDrive (replaces initials if found)
+            if (emp.empId) {
+                callGAS('getProfilePhotoUrl', [emp.empId]).then(function (result) {
+                        if (result && result.url) {
+                            document.getElementById('profileAvatar').innerHTML = '<img src="' + result.url + '" alt="' + initials + '" />';
+                        }
+                    });
+            }
+
+            var badge = document.getElementById('statusBadge');
+            badge.className = 'status-badge ' + st.currentStatus;
+            badge.innerHTML = '<span class="pf-status-dot"></span> ' + st.statusText;
+
+            // Last action
+            var lastEl = document.getElementById('lastAction');
+            if (st.lastAction) {
+                document.getElementById('lastActionText').textContent = st.lastAction.type + ' at ' + st.lastAction.time;
+                lastEl.style.display = 'block';
+            } else {
+                lastEl.style.display = 'none';
+            }
+
+            updateProfileTime();
+
+            setStamp('timeInStamp', st.stamps.timeIn);
+            setStamp('lunchInStamp', st.stamps.lunchIn);
+            setStamp('lunchOutStamp', st.stamps.lunchOut);
+            setStamp('timeOutStamp', st.stamps.timeOut);
+            setStamp('pauseStamp', st.stamps.pause);
+            setStamp('resumeStamp', st.stamps.resume);
+
+            toggleBtn('btnTimeIn', st.canTimeIn);
+            toggleBtn('btnLunchIn', st.canLunchIn);
+            toggleBtn('btnLunchOut', st.canLunchOut);
+            toggleBtn('btnTimeOut', st.canTimeOut);
+            toggleBtn('btnPauseWork', st.canPause);
+            toggleBtn('btnResume', st.canResume);
+        }
+
+        function setStamp(id, val) {
+            var el = document.getElementById(id);
+            el.textContent = val;
+            if (val && val !== '—') el.classList.add('recorded');
+            else el.classList.remove('recorded');
+        }
+
+        function toggleBtn(id, enabled) {
+            var el = document.getElementById(id);
+            if (enabled) el.classList.remove('disabled');
+            else el.classList.add('disabled');
+        }
+
+        function updateProfileTime() {
+            var now = new Date();
+            var timeEl = document.getElementById('currentTime');
+            var dateEl = document.getElementById('currentDate');
+            if (timeEl) timeEl.textContent = now.toLocaleTimeString('en-PH', { timeZone: 'Asia/Manila', hour: '2-digit', minute: '2-digit' });
+            if (dateEl) dateEl.textContent = now.toLocaleDateString('en-PH', { timeZone: 'Asia/Manila', month: 'short', day: 'numeric' });
+        }
+
+        // ============================================================================
+        // WORKSPACE TIMER
+        // ============================================================================
+        function startWorkspaceTimer() { updateWorkspaceDisplay(); workspaceInterval = setInterval(updateWorkspaceDisplay, 1000); }
+        function stopWorkspaceTimer() { if (workspaceInterval) clearInterval(workspaceInterval); workspaceInterval = null; }
+
+        function updateWorkspaceDisplay() {
+            if (!currentState || !currentState.timeInMs) { document.getElementById('workspaceTimer').textContent = '0h 00m'; return; }
+            updateProfileTime();
+            var now = (currentState.timeOutMs) ? currentState.timeOutMs : Date.now();
+            var elapsed = now - currentState.timeInMs;
+            if (currentState.lunchInMs) {
+                var lunchEnd = currentState.lunchOutMs || now;
+                elapsed -= Math.max(3600000, lunchEnd - currentState.lunchInMs);
+            }
+            if (currentState.pauseBlocks) {
+                for (var i = 0; i < currentState.pauseBlocks.length; i++) {
+                    var b = currentState.pauseBlocks[i];
+                    elapsed -= ((b.resumeMs || now) - b.pauseMs);
+                }
+            }
+            if (elapsed < 0) elapsed = 0;
+            var totalMin = Math.floor(elapsed / 60000);
+            document.getElementById('workspaceTimer').textContent = Math.floor(totalMin / 60) + 'h ' + ((totalMin % 60) < 10 ? '0' : '') + (totalMin % 60) + 'm';
+        }
+
+        // ============================================================================
+        // ACTION BUTTONS — always sends "Work From Home" as location
+        // ============================================================================
+        // ============================================================================
+        // CAMERA SELFIE
+        // ============================================================================
+        var cameraStream = null;
+        var capturedSelfieBase64 = '';
+
+        function openCamera() {
+            capturedSelfieBase64 = '';
+            var overlay = document.getElementById('cameraOverlay');
+            overlay.style.display = 'flex';
+            document.getElementById('cameraActions').style.display = 'flex';
+            document.getElementById('cameraRetakeActions').style.display = 'none';
+            document.getElementById('cameraPreview').style.display = 'none';
+            document.getElementById('cameraVideo').style.display = 'block';
+
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false })
+                .then(function (stream) {
+                    cameraStream = stream;
+                    document.getElementById('cameraVideo').srcObject = stream;
+                })
+                .catch(function (err) {
+                    cancelCamera();
+                    showMessage('error', 'Camera Error', 'Could not access camera. Please allow camera permission and try again.');
+                });
+        }
+
+        function captureSelfie() {
+            var video = document.getElementById('cameraVideo');
+            var canvas = document.getElementById('cameraCanvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            var ctx = canvas.getContext('2d');
+            ctx.translate(canvas.width, 0);
+            ctx.scale(-1, 1);
+            ctx.drawImage(video, 0, 0);
+            capturedSelfieBase64 = canvas.toDataURL('image/jpeg', 0.8);
+
+            // Show preview
+            document.getElementById('cameraPreview').src = capturedSelfieBase64;
+            document.getElementById('cameraPreview').style.display = 'block';
+            document.getElementById('cameraVideo').style.display = 'none';
+            document.getElementById('cameraActions').style.display = 'none';
+            document.getElementById('cameraRetakeActions').style.display = 'flex';
+        }
+
+        function retakeSelfie() {
+            capturedSelfieBase64 = '';
+            document.getElementById('cameraPreview').style.display = 'none';
+            document.getElementById('cameraVideo').style.display = 'block';
+            document.getElementById('cameraActions').style.display = 'flex';
+            document.getElementById('cameraRetakeActions').style.display = 'none';
+        }
+
+        function confirmSelfie() {
+            stopCamera();
+            document.getElementById('cameraOverlay').style.display = 'none';
+            // Submit Time In with selfie
+            submitAction('Time In', capturedSelfieBase64);
+        }
+
+        function cancelCamera() {
+            stopCamera();
+            capturedSelfieBase64 = '';
+            document.getElementById('cameraOverlay').style.display = 'none';
+        }
+
+        function stopCamera() {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(function (t) { t.stop(); });
+                cameraStream = null;
+            }
+            var video = document.getElementById('cameraVideo');
+            if (video) video.srcObject = null;
+        }
+
+        // ============================================================================
+        // ACTION BUTTONS — always sends "Work From Home" as location
+        // ============================================================================
+        function handleAction(actionType) {
+            if (!currentEmployee) return;
+
+            // Time Out → show confirmation dialog
+            if (actionType === 'Time Out') {
+                showTimeOutConfirm();
+                return;
+            }
+
+            // Time In → open camera for selfie
+            if (actionType === 'Time In') {
+                openCamera();
+                return;
+            }
+
+            // All other actions → submit directly (no selfie)
+            submitAction(actionType, '');
+        }
+
+        function submitAction(actionType, selfieBase64) {
+            showLoading('Logging attendance...');
+            callGAS('logAttendance', [
+                    currentEmployee.cardId,
+                    currentEmployee.empId,
+                    currentEmployee.empName,
+                    actionType,
+                    selfieBase64 || '',
+                    'Work From Home'
+                ]).then(function (result) {
+                    hideLoading();
+                    if (result.success) showMessage('success', 'Done!', result.message);
+                    else showMessage('error', 'Failed', result.error);
+                    // Refresh state after action
+                    setTimeout(function () { autoLookup(); }, 1500);
+                }).catch(function (err) {
+                    hideLoading();
+                    showMessage('error', 'Error', err.message || 'Server error.');
+                });
+        }
+
+        // ============================================================================
+        // TIME OUT CONFIRMATION
+        // ============================================================================
+        function showTimeOutConfirm() {
+            var wsText = document.getElementById('workspaceTimer').textContent;
+            document.getElementById('confirmWorkspace').innerHTML = 'Your total workspace: <strong>' + wsText + '</strong>';
+            confirmSeconds = 10;
+            document.getElementById('confirmCountdown').innerHTML = 'Auto-confirming in <strong>' + confirmSeconds + 's</strong>';
+            document.getElementById('confirmOverlay').classList.add('active');
+
+            confirmCountdownInterval = setInterval(function () {
+                confirmSeconds--;
+                if (confirmSeconds <= 0) {
+                    confirmTimeOut();
+                    return;
+                }
+                document.getElementById('confirmCountdown').innerHTML = 'Auto-confirming in <strong>' + confirmSeconds + 's</strong>';
+            }, 1000);
+        }
+
+        function confirmTimeOut() {
+            clearInterval(confirmCountdownInterval);
+            confirmCountdownInterval = null;
+            document.getElementById('confirmOverlay').classList.remove('active');
+            showLoading('Logging attendance...');
+            callGAS('logAttendance', [
+                    currentEmployee.cardId,
+                    currentEmployee.empId,
+                    currentEmployee.empName,
+                    'Time Out',
+                    '',
+                    'Work From Home'
+                ]).then(function (result) {
+                    hideLoading();
+                    if (result.success) showMessage('success', 'Done!', result.message);
+                    else showMessage('error', 'Failed', result.error);
+                    setTimeout(function () { autoLookup(); }, 1500);
+                }).catch(function (err) {
+                    hideLoading();
+                    showMessage('error', 'Error', err.message || 'Server error.');
+                });
+        }
+
+        function cancelTimeOut() {
+            clearInterval(confirmCountdownInterval);
+            confirmCountdownInterval = null;
+            document.getElementById('confirmOverlay').classList.remove('active');
+        }
+
+        // ============================================================================
+        // OVERLAYS
+        // ============================================================================
+        function showLoading(text) { document.getElementById('loadingText').textContent = text || 'Processing...'; document.getElementById('loadingOverlay').classList.add('active'); }
+        function hideLoading() { document.getElementById('loadingOverlay').classList.remove('active'); }
+        function showMessage(type, title, text) {
+            var icon = document.getElementById('msgIcon');
+            icon.className = 'msg-icon ' + type;
+            icon.textContent = type === 'success' ? '✓' : '✕';
+            document.getElementById('msgTitle').textContent = title;
+            document.getElementById('msgText').textContent = text;
+            document.getElementById('msgOverlay').classList.add('active');
+        }
+        function hideMsgOverlay() { document.getElementById('msgOverlay').classList.remove('active'); }
+
+        // ============================================================================
+        // INIT
+        // ============================================================================
+        document.addEventListener('DOMContentLoaded', function () {
+            updateClock();
+            setInterval(updateClock, 1000);
+
+            // Set Back to Portal link
+            document.getElementById('backToPortal').setAttribute('data-url', './');
+
+            document.getElementById('msgOverlay').addEventListener('click', hideMsgOverlay);
+
+            // Auto-lookup employee by email
+            autoLookup();
+        });
+        // â”€â”€ THEME TOGGLE â”€â”€
+        (function () {
+            var LOGO_LIGHT = 'https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png';
+            var LOGO_DARK = 'https://i.ibb.co/6crnBjPv/RDR-Logo-White.png';
+            var saved = 'light';
+            try { saved = localStorage.getItem('rdr-theme') || 'light'; } catch (e) { }
+            document.documentElement.setAttribute('data-theme', saved);
+            function updateIcon() {
+                var el = document.getElementById('themeIcon');
+                if (!el) return;
+                var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                el.innerHTML = isDark
+                    ? '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>'
+                    : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+                var logo = document.getElementById('headerLogo');
+                if (logo) logo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
+            }
+            updateIcon();
+            var btn = document.getElementById('themeToggle');
+            if (btn) btn.addEventListener('click', function () {
+                var current = document.documentElement.getAttribute('data-theme');
+                var next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                try { localStorage.setItem('rdr-theme', next); } catch (e) { }
+                updateIcon();
+            });
+        })();
+    </script>
+    <div
+        style="text-align:center;padding:12px 24px 20px;font-family:'Inter',sans-serif;font-size:11px;color:#94a3b8;line-height:1.5;">
+        Created by: <strong>Joeross Delos Reyes</strong>
+    </div>
+
+</body>
+
+</html>

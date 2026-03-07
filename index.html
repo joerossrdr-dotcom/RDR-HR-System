@@ -1,0 +1,1424 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RDR HR Module">
+    <meta name="theme-color" content="#0a1628">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png">
+    <link rel="icon" type="image/png" href="https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png">
+    <title>RDR HR Module Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --navy-900: #0a1628;
+            --navy-800: #0f2140;
+            --navy-700: #132d56;
+            --blue-600: #1a3a6c;
+            --blue-500: #2563eb;
+            --blue-400: #3b82f6;
+            --blue-300: #93c5fd;
+            --white: #ffffff;
+            --gray-50: #f5f7fa;
+            --gray-100: #eef1f6;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-700: #334155;
+            --gray-900: #0f172a;
+            --green-500: #22c55e;
+            --green-50: #f0fdf4;
+            --red-500: #ef4444;
+            --red-50: #fef2f2;
+            --amber-500: #f59e0b;
+            --amber-50: #fffbeb;
+            --shadow-dark: rgba(10, 22, 40, 0.3);
+
+            /* Theme vars (light defaults) */
+            --bg-app: #f5f7fa;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f8fafc;
+            --border-card: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --text-accent: #1a3a6c;
+            --icon-bg: #eef2ff;
+            --icon-color: #1a3a6c;
+            --overlay-bg: rgba(10, 22, 40, 0.6);
+        }
+
+        [data-theme="dark"] {
+            --bg-app: #0d1b2a;
+            --bg-card: #162032;
+            --bg-card-hover: #1c2a3f;
+            --border-card: #1e3050;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --text-accent: #93c5fd;
+            --icon-bg: #1a2d4a;
+            --icon-color: #93c5fd;
+            --overlay-bg: rgba(0, 0, 0, 0.7);
+            --gray-50: #0d1b2a;
+            --gray-100: #162032;
+            --gray-200: #1e3050;
+            --gray-900: #e2e8f0;
+            --gray-500: #94a3b8;
+            --gray-400: #64748b;
+            --gray-300: #475569;
+            --gray-700: #cbd5e1;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background: var(--bg-app);
+        }
+
+        #app {
+            width: 100%;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-app);
+        }
+
+        /* ── HEADER ── */
+        .app-header {
+            background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 60%, var(--blue-500) 100%);
+            color: #ffffff;
+            padding: 20px 24px;
+            box-shadow: 0 4px 20px var(--shadow-dark);
+            position: relative;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .header-container {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .app-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.03) 75%, transparent);
+            animation: headerShimmer 8s ease-in-out infinite;
+        }
+
+        @keyframes headerShimmer {
+            0% {
+                transform: translateX(-30%)
+            }
+
+            100% {
+                transform: translateX(30%)
+            }
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
+            flex-shrink: 0;
+            padding: 5px;
+            overflow: hidden;
+        }
+
+        .logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-text h1 {
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+
+        .header-text p {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--blue-300);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 1px;
+        }
+
+        /* THEME TOGGLE */
+        .theme-toggle {
+            margin-left: auto;
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            color: #fff;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* ── MAIN CONTAINER (centers content on desktop) ── */
+        .main-container {
+            flex: 1;
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        /* ── GREETING ── */
+        .greeting-section {
+            padding: 28px 24px 8px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .greeting-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .greeting-welcome {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .greeting-name {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .greeting-email {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* ── PROFILE AVATAR (Portal Header) ── */
+        .profile-avatar-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .profile-avatar-link:hover {
+            transform: translateY(-2px);
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 2.5px solid var(--border-card);
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-avatar-initials {
+            font-size: 16px;
+            font-weight: 800;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0f2140, #2563eb);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-avatar-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── MODULE SECTIONS ── */
+        .modules-section {
+            padding: 20px 24px 12px;
+        }
+
+        .section-group {
+            margin-bottom: 20px;
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .module-grid.single {
+            grid-template-columns: 1fr;
+        }
+
+        /* ── MODULE CARD ── */
+        .module-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 20px 16px;
+            text-decoration: none;
+            border: 1px solid var(--border-card);
+            box-shadow: 0 2px 8px rgba(10, 22, 40, 0.04);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 16px 16px 0 0;
+            background: linear-gradient(90deg, var(--blue-600), var(--blue-400));
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .module-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(10, 22, 40, 0.1);
+            border-color: transparent;
+        }
+
+        .module-card:hover::before {
+            opacity: 1;
+        }
+
+        .module-card:active {
+            transform: translateY(-1px);
+        }
+
+        .module-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .module-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .module-info h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.2px;
+        }
+
+        .module-info p {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+            line-height: 1.4;
+        }
+
+        /* Module icons — unified blue palette */
+        .module-icon {
+            background: var(--icon-bg) !important;
+        }
+
+        .module-icon svg {
+            fill: var(--icon-color) !important;
+        }
+
+        /* Module color themes */
+        .module-card[data-module="dashboard"] .module-icon {
+            background: var(--violet-50);
+        }
+
+        .module-card[data-module="dashboard"] .module-icon svg {
+            fill: var(--violet-500);
+        }
+
+        .module-card[data-module="dashboard"]::before {
+            background: linear-gradient(90deg, var(--violet-500), #a78bfa);
+        }
+
+        .module-card[data-module="profile"] .module-icon {
+            background: #f0fdfa;
+        }
+
+        .module-card[data-module="profile"] .module-icon svg {
+            fill: #0d9488;
+        }
+
+        .module-card[data-module="profile"]::before {
+            background: linear-gradient(90deg, #0d9488, #2dd4bf);
+        }
+
+        .module-card[data-module="wfh"] .module-icon {
+            background: #eff6ff;
+        }
+
+        .module-card[data-module="wfh"] .module-icon svg {
+            fill: var(--blue-500);
+        }
+
+        .module-card[data-module="wfh"]::before {
+            background: linear-gradient(90deg, var(--blue-500), var(--blue-300));
+        }
+
+        .module-card[data-module="fieldwork"] .module-icon {
+            background: var(--green-50);
+        }
+
+        .module-card[data-module="fieldwork"] .module-icon svg {
+            fill: var(--green-500);
+        }
+
+        .module-card[data-module="fieldwork"]::before {
+            background: linear-gradient(90deg, var(--green-500), #4ade80);
+        }
+
+        .module-card[data-module="leave"] .module-icon {
+            background: var(--teal-50);
+        }
+
+        .module-card[data-module="leave"] .module-icon svg {
+            fill: var(--teal-500);
+        }
+
+        .module-card[data-module="leave"]::before {
+            background: linear-gradient(90deg, var(--teal-500), #2dd4bf);
+        }
+
+        .module-card[data-module="overtime"] .module-icon {
+            background: var(--rose-50);
+        }
+
+        .module-card[data-module="overtime"] .module-icon svg {
+            fill: var(--rose-500);
+        }
+
+        .module-card[data-module="overtime"]::before {
+            background: linear-gradient(90deg, var(--rose-500), #fb7185);
+        }
+
+        .module-card[data-module="admin"] .module-icon {
+            background: var(--amber-50);
+        }
+
+        .module-card[data-module="admin"] .module-icon svg {
+            fill: var(--amber-500);
+        }
+
+        .module-card[data-module="admin"]::before {
+            background: linear-gradient(90deg, var(--amber-500), #fbbf24);
+        }
+
+        .module-card[data-module="onsite"] .module-icon {
+            background: var(--sky-50);
+        }
+
+        .module-card[data-module="onsite"] .module-icon svg {
+            fill: var(--sky-500);
+        }
+
+        .module-card[data-module="onsite"]::before {
+            background: linear-gradient(90deg, var(--sky-500), #38bdf8);
+        }
+
+        /* Daily Activity - green */
+        .module-card[data-module="dailyactivity"] .module-icon {
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .module-card[data-module="dailyactivity"] .module-icon svg {
+            fill: #22c55e;
+        }
+
+        .module-card[data-module="dailyactivity"]::before {
+            background: linear-gradient(90deg, #22c55e, #4ade80);
+        }
+
+        /* Suspicious - red */
+        .module-card[data-module="suspicious"] .module-icon {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .module-card[data-module="suspicious"] .module-icon svg {
+            fill: #ef4444;
+        }
+
+        .module-card[data-module="suspicious"]::before {
+            background: linear-gradient(90deg, #ef4444, #f87171);
+        }
+
+        /* Semi-Monthly - purple */
+        .module-card[data-module="semimonthly"] .module-icon {
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .module-card[data-module="semimonthly"] .module-icon svg {
+            fill: #8b5cf6;
+        }
+
+        .module-card[data-module="semimonthly"]::before {
+            background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+        }
+
+        .module-card[data-module="calendar"] .module-icon {
+            background: linear-gradient(135deg, #0891b2, #06b6d4);
+        }
+
+        .module-card[data-module="calendar"] .module-icon svg {
+            fill: #fff;
+        }
+
+        .module-card[data-module="calendar"]::before {
+            background: linear-gradient(90deg, #0891b2, #06b6d4);
+        }
+
+        .module-card[data-module="leavecredits"] .module-icon {
+            background: linear-gradient(135deg, #059669, #10b981);
+        }
+
+        .module-card[data-module="leavecredits"] .module-icon svg {
+            fill: #fff;
+        }
+
+        .module-card[data-module="leavecredits"]::before {
+            background: linear-gradient(90deg, #059669, #10b981);
+        }
+
+        /* Coming Soon */
+        .module-card.coming-soon {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .coming-soon-badge {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            background: var(--gray-100);
+            padding: 3px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 2px;
+        }
+
+        /* Card entrance stagger */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .anim-1 {
+            animation-delay: 0.05s;
+        }
+
+        .anim-2 {
+            animation-delay: 0.1s;
+        }
+
+        .anim-3 {
+            animation-delay: 0.15s;
+        }
+
+        .anim-4 {
+            animation-delay: 0.2s;
+        }
+
+        .anim-5 {
+            animation-delay: 0.25s;
+        }
+
+        .anim-6 {
+            animation-delay: 0.3s;
+        }
+
+        .anim-7 {
+            animation-delay: 0.35s;
+        }
+
+        /* ── INSTALL BANNER ── */
+        .install-banner {
+            margin: 4px 24px 20px;
+            background: linear-gradient(135deg, var(--navy-900), var(--navy-700));
+            border-radius: 14px;
+            padding: 16px 18px;
+            display: none;
+            align-items: center;
+            gap: 14px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .install-banner:hover {
+            transform: translateY(-2px);
+        }
+
+        .install-banner.visible {
+            display: flex;
+        }
+
+        .install-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .install-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: #93c5fd;
+        }
+
+        .install-text h4 {
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .install-text p {
+            font-size: 11px;
+            color: #93c5fd;
+            margin-top: 2px;
+        }
+
+        .install-dismiss {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: var(--gray-400);
+            cursor: pointer;
+            padding: 4px;
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        /* ── INSTALL OVERLAY (replaces alert) ── */
+        .overlay-bg {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(10, 22, 40, 0.6);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .overlay-bg.show {
+            display: flex;
+        }
+
+        .overlay-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 32px 28px;
+            max-width: 340px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: fadeUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .overlay-card h3 {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 6px;
+        }
+
+        .overlay-card .subtitle {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-bottom: 20px;
+        }
+
+        .overlay-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            text-align: left;
+            margin-bottom: 14px;
+        }
+
+        .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0f2140, #1a3a6c);
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            font-size: 13px;
+            color: var(--gray-700);
+            line-height: 1.5;
+            padding-top: 3px;
+        }
+
+        .step-text strong {
+            color: var(--gray-900);
+        }
+
+        .overlay-close {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background: #0f2140;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .overlay-close:hover {
+            background: var(--gray-700);
+        }
+
+        /* ── FOOTER ── */
+        .portal-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 8px 24px 10px;
+            text-align: center;
+            background: rgba(10, 22, 40, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            z-index: 100;
+        }
+
+        .portal-credits {
+            font-size: 11px;
+            color: var(--gray-400);
+            line-height: 1.8;
+            margin-top: 0;
+        }
+
+        .portal-credits a {
+            color: var(--teal-400);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .sign-out-btn {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 10px;
+            padding: 10px 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .sign-out-btn:hover {
+            color: var(--red-500);
+            border-color: var(--red-500);
+            background: var(--red-50);
+        }
+
+        .sign-out-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .footer-contact {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 16px;
+            line-height: 1.5;
+        }
+
+        .footer-contact strong {
+            color: var(--text-secondary);
+        }
+
+        .footer-version {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (min-width: 768px) {
+            .module-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .module-grid.triple {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .app-header {
+                padding: 14px 12px 18px;
+            }
+
+            .header-container {
+                gap: 8px;
+            }
+
+            .portal-logo {
+                width: 36px;
+                height: 36px;
+            }
+
+            .portal-title {
+                font-size: 1.1rem;
+            }
+
+            .portal-subtitle {
+                font-size: 0.65rem;
+            }
+
+            .portal-body {
+                padding: 12px;
+            }
+
+            .section-label {
+                font-size: 0.65rem;
+            }
+
+            .module-card {
+                padding: 16px;
+            }
+
+            .sign-out-btn {
+                font-size: 12px;
+                padding: 8px 18px;
+            }
+
+            .header-top {
+                gap: 8px !important;
+            }
+
+            .logo-circle {
+                width: 32px !important;
+                height: 32px !important;
+                min-width: 32px !important;
+                border-radius: 8px !important;
+                padding: 3px !important;
+            }
+
+            .header-text h1 {
+                font-size: 14px !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 160px;
+            }
+
+            .header-text p {
+                font-size: 9px !important;
+                max-width: 160px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .theme-toggle {
+                width: 30px !important;
+                height: 30px !important;
+                min-width: 30px !important;
+            }
+
+            .theme-toggle svg {
+                width: 14px !important;
+                height: 14px !important;
+            }
+        }
+
+        /* ── DARK MODE CONTENT OVERRIDES ── */
+        [data-theme="dark"] .overlay-card,
+        [data-theme="dark"] .msg-box {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .overlay-card h3 {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .overlay-card .subtitle,
+        [data-theme="dark"] .step-text {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .overlay-close {
+            background: #1a3a6c !important;
+        }
+
+        [data-theme="dark"] .install-banner {
+            border: 1px solid #1e3050;
+            background: #162032 !important;
+        }
+
+        [data-theme="dark"] .install-banner .install-text strong {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .install-banner .install-text span {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] #app {
+            background: #0d1b2a !important;
+        }
+
+        [data-theme="dark"] .portal-body {
+            background: #0d1b2a !important;
+        }
+
+        [data-theme="dark"] .greeting-name {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .greeting-sub {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .section-label {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .module-card {
+            background: #162032 !important;
+            border-color: #1e3050 !important;
+        }
+
+        [data-theme="dark"] .module-card:hover {
+            border-color: #2a4060 !important;
+        }
+
+        [data-theme="dark"] .module-name {
+            color: #e2e8f0 !important;
+        }
+
+        [data-theme="dark"] .module-desc {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .step-num {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .portal-footer {
+            background: rgba(10, 22, 40, 0.9) !important;
+            border-color: rgba(255, 255, 255, 0.06) !important;
+        }
+
+        [data-theme="dark"] .portal-credits {
+            color: #64748b !important;
+        }
+
+        [data-theme="dark"] .footer-contact strong {
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .sign-out-btn {
+            background: #1e3050 !important;
+            border-color: #2a4060 !important;
+            color: #94a3b8 !important;
+        }
+
+        [data-theme="dark"] .header-logo,
+        [data-theme="dark"] .logo-circle {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+    </style>
+    <script src="js/rdr-auth.js"></script>
+    <script src="js/rdr-api.js"></script>
+    <script>
+        // Provide template-compatible variables from session
+        var USER_EMAIL = RDR_AUTH.getEmail();
+        var SESSION_TOKEN = RDR_AUTH.getSession();
+        var BASE_URL = RDR_AUTH.getGasUrl();
+        var userEmail = USER_EMAIL;
+        var sessionToken = SESSION_TOKEN;
+        var baseUrl = BASE_URL;
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <header class="app-header">
+            <div class="header-container">
+                <div class="header-top">
+                    <div class="logo-circle">
+                        <img id="headerLogo" src="https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png"
+                            alt="RDR" />
+                    </div>
+                    <div class="header-text">
+                        <h1>RDR HR Module Portal</h1>
+                        <p>Human Resources Management</p>
+                    </div>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                        <svg id="themeIcon" viewBox="0 0 24 24">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-container">
+            <!-- Greeting -->
+            <div class="greeting-section">
+                <div class="greeting-info">
+                    <div class="greeting-welcome">Welcome!</div>
+                    <div class="greeting-name" id="greetingName"></div>
+                    <div class="greeting-email" id="greetingEmail"></div>
+                </div>
+            </div>
+
+            <!-- Module sections injected by JS -->
+            <div class="modules-section" id="modulesSection"></div>
+
+            <!-- Install Banner (always visible) -->
+            <div class="install-banner" id="installBanner">
+                <div class="install-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z" />
+                    </svg>
+                </div>
+                <div class="install-text">
+                    <h4>Add to Home Screen</h4>
+                    <p>Open this app like a native app</p>
+                </div>
+            </div>
+
+            <!-- Sign Out (scrollable, not frozen) -->
+            <div style="text-align:center;padding:16px 24px 80px;">
+                <a class="sign-out-btn" id="signOutBtn" href="#" target="_top">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
+                    </svg>
+                    Sign Out
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer (frozen at bottom) -->
+        <div class="portal-footer">
+            <div class="portal-credits">
+                Created by: <strong>Joeross Delos Reyes</strong><br>
+                Need help? Contact <a href="https://t.me/moverings" target="_blank">@moverings</a> on Telegram or reach
+                out to IT Operations
+            </div>
+        </div>
+    </div>
+
+    <!-- Install Overlay -->
+    <div class="overlay-bg" id="installOverlay">
+        <div class="overlay-card">
+            <h3>Add to Home Screen</h3>
+            <p class="subtitle">Access RDR Portal like a native app</p>
+            <div id="installSteps"></div>
+            <button class="overlay-close" id="overlayClose">Got it</button>
+        </div>
+    </div>
+
+    <script>
+        var USER_EMAIL = '' + RDR_AUTH.getEmail() + '';
+        var USER_NAME = '' + RDR_AUTH.getEmail() + '';
+        var USER_ROLES = <?!= userRoles ?>;
+        var SESSION_TOKEN = '' + RDR_AUTH.getSession() + '';
+        var BASE_URL = '' + RDR_AUTH.getGasUrl() + '';
+
+        // ── Module definitions by section ──
+        var SECTIONS = [
+            {
+                label: 'Employee',
+                role: 'employee',
+                modules: [
+                    {
+                        key: 'dashboard', title: 'My Dashboard', desc: 'Attendance records & profile',
+                        icon: '<svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>',
+                        mode: 'dashboard'
+                    },
+                    {
+                        key: 'profile', title: 'View Profile', desc: 'Your employee profile',
+                        icon: '<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>',
+                        mode: 'profile'
+                    }
+                ]
+            },
+            {
+                label: 'Attendance',
+                role: 'employee',
+                modules: [
+                    {
+                        key: 'wfh', title: 'Work From Home', desc: 'Log remote work attendance',
+                        icon: '<svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>',
+                        mode: 'wfh'
+                    },
+                    {
+                        key: 'fieldwork', title: 'Field Work', desc: 'Log field work attendance',
+                        icon: '<svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>',
+                        mode: 'fieldwork'
+                    }
+                ]
+            },
+            {
+                label: 'Filing',
+                role: 'employee',
+                modules: [
+                    {
+                        key: 'leave', title: 'File Leave', desc: 'Submit leave requests',
+                        icon: '<svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>',
+                        mode: 'leave'
+                    },
+                    {
+                        key: 'overtime', title: 'File Overtime', desc: 'Submit Regular OT & Rest Day OT',
+                        icon: '<svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>',
+                        mode: 'overtime'
+                    },
+                    {
+                        key: 'holiday', title: 'Holiday Work', desc: 'Record holiday work rendered',
+                        icon: '<svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-1.5-5h3v-2h-3v2zm0-4h3V7h-3v4z"/></svg>',
+                        mode: 'holiday'
+                    },
+                    {
+                        key: 'offset', title: 'File Offset', desc: 'Submit offset / make-up day',
+                        icon: '<svg viewBox="0 0 24 24"><path d="M12.5 8H11v5l4.28 2.54.72-1.21-3.5-2.08V8zM13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>',
+                        mode: 'offset'
+                    },
+                    {
+                        key: 'cashadvance', title: 'Cash Advance', desc: 'Submit cash advance request',
+                        icon: '<svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>',
+                        mode: 'cashadvance'
+                    },
+                    {
+                        key: 'wfhfiling', title: 'WFH Filing', desc: 'Submit work-from-home request',
+                        icon: '<svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>',
+                        mode: 'wfhfiling'
+                    }
+                ]
+            },
+            {
+                label: 'Admin',
+                role: 'admin',
+                modules: [
+                    {
+                        key: 'admin', title: 'Admin Panel', desc: 'Manage employees & attendance',
+                        icon: '<svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>',
+                        mode: 'admin'
+                    },
+                    {
+                        key: 'approvals', title: 'Filing Approvals', desc: 'Review & approve employee filings',
+                        icon: '<svg viewBox="0 0 24 24"><path d="M23 12l-2.44-2.78.34-3.68-3.61-.82-1.89-3.18L12 3 8.6 1.54 6.71 4.72l-3.61.81.34 3.68L1 12l2.44 2.78-.34 3.69 3.61.82 1.89 3.18L12 21l3.4 1.46 1.89-3.18 3.61-.82-.34-3.68L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/></svg>',
+                        mode: 'approvals'
+                    },
+                    {
+                        key: 'dailyactivity', title: 'Daily Activity', desc: 'Daily attendance overview with grace period tracking',
+                        icon: '<svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>',
+                        mode: 'dailyactivity'
+                    },
+                    {
+                        key: 'suspicious', title: 'Suspicious Activity', desc: 'Auto-detect attendance anomalies',
+                        icon: '<svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>',
+                        mode: 'suspicious'
+                    },
+                    {
+                        key: 'semimonthly', title: 'Semi-Monthly Report', desc: 'Per-employee payroll period breakdown',
+                        icon: '<svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>',
+                        mode: 'semimonthly'
+                    },
+                    {
+                        key: 'calendar', title: 'Calendar Management', desc: 'Declare holidays and company WFH days',
+                        icon: '<svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>',
+                        mode: 'calendar'
+                    }
+                ]
+            },
+            {
+                label: 'Tablet',
+                role: 'onsite',
+                modules: [
+                    {
+                        key: 'onsite', title: 'On-Site Attendance', desc: 'Clock in/out at the office',
+                        icon: '<svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>',
+                        mode: 'onsite'
+                    }
+                ]
+            }
+        ];
+
+        function init() {
+            // Greeting
+            document.getElementById('greetingName').textContent = USER_NAME || USER_EMAIL;
+            document.getElementById('greetingEmail').textContent = USER_EMAIL;
+
+            // Build module sections
+            var container = document.getElementById('modulesSection');
+            container.innerHTML = '';
+            var animIndex = 0;
+
+            SECTIONS.forEach(function (section) {
+                // Only show section if user has this role
+                if (!USER_ROLES[section.role]) return;
+
+                var group = document.createElement('div');
+                group.className = 'section-group';
+
+                var label = document.createElement('div');
+                label.className = 'section-label';
+                label.textContent = section.label;
+                group.appendChild(label);
+
+                var grid = document.createElement('div');
+                grid.className = 'module-grid' + (section.modules.length === 1 ? ' single' : '');
+
+                section.modules.forEach(function (mod) {
+                    animIndex++;
+                    var card = document.createElement('a');
+                    card.className = 'module-card anim-' + Math.min(animIndex, 7) + (mod.comingSoon ? ' coming-soon' : '');
+                    card.setAttribute('data-module', mod.key);
+
+                    if (!mod.comingSoon) {
+                        card.href = BASE_URL + '?session=' + SESSION_TOKEN + '&mode=' + mod.mode;
+                        card.target = '_top';
+                    }
+
+                    card.innerHTML =
+                        '<div class="module-icon">' + mod.icon + '</div>' +
+                        '<div class="module-info">' +
+                        '<h3>' + mod.title + '</h3>' +
+                        '<p>' + mod.desc + '</p>' +
+                        (mod.comingSoon ? '<span class="coming-soon-badge">Coming Soon</span>' : '') +
+                        '</div>';
+
+                    grid.appendChild(card);
+                });
+
+                group.appendChild(grid);
+                container.appendChild(group);
+            });
+
+            // Sign out
+            document.getElementById('signOutBtn').href = BASE_URL;
+
+            // Install banner
+            showInstallBanner();
+        }
+
+        function showInstallBanner() {
+            if (window.matchMedia('(display-mode: standalone)').matches) return;
+            if (window.navigator.standalone === true) return;
+
+
+
+            var banner = document.getElementById('installBanner');
+            banner.classList.add('visible');
+
+
+            banner.addEventListener('click', function () {
+                showInstallOverlay();
+            });
+        }
+
+        function showInstallOverlay() {
+            var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+            var stepsEl = document.getElementById('installSteps');
+            var steps;
+
+            if (isIOS) {
+                steps = [
+                    { text: 'Tap the <strong>Share</strong> button (square with arrow) at the bottom of Safari' },
+                    { text: 'Scroll down and tap <strong>"Add to Home Screen"</strong>' },
+                    { text: 'Tap <strong>"Add"</strong> in the top right corner' }
+                ];
+            } else {
+                steps = [
+                    { text: 'Tap the <strong>menu</strong> (⋮) in the top right corner of Chrome' },
+                    { text: 'Tap <strong>"Add to Home Screen"</strong>' },
+                    { text: 'Tap <strong>"Add"</strong> to confirm' }
+                ];
+            }
+
+            stepsEl.innerHTML = '';
+            steps.forEach(function (step, i) {
+                var div = document.createElement('div');
+                div.className = 'overlay-step';
+                div.innerHTML =
+                    '<div class="step-num">' + (i + 1) + '</div>' +
+                    '<div class="step-text">' + step.text + '</div>';
+                stepsEl.appendChild(div);
+            });
+
+            document.getElementById('installOverlay').classList.add('show');
+            document.getElementById('overlayClose').addEventListener('click', function () {
+                document.getElementById('installOverlay').classList.remove('show');
+            });
+        }
+
+        // Theme toggle
+        (function () {
+            var LOGO_LIGHT = 'https://i.ibb.co/zVsd2Mgk/RDR-Business-Solutions-proper-Blue.png';
+            var LOGO_DARK = 'https://i.ibb.co/6crnBjPv/RDR-Logo-White.png';
+            var saved = 'light';
+            try { saved = localStorage.getItem('rdr-theme') || 'light'; } catch (e) { }
+            document.documentElement.setAttribute('data-theme', saved);
+            function updateIcon() {
+                var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                document.getElementById('themeIcon').innerHTML = isDark
+                    ? '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>'
+                    : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+                var logo = document.getElementById('headerLogo');
+                if (logo) logo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
+            }
+            updateIcon();
+            document.getElementById('themeToggle').addEventListener('click', function () {
+                var current = document.documentElement.getAttribute('data-theme');
+                var next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                try { localStorage.setItem('rdr-theme', next); } catch (e) { }
+                updateIcon();
+            });
+        })();
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>
